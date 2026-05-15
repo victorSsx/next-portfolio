@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 
 type CategoryId = "todos" | "base" | "tecnico" | "pacote";
 type Billing = "once" | "monthly";
+type BudgetChannel = "workana" | "upwork" | "direto";
+type SendStatus = "idle" | "sending" | "sent" | "not-configured" | "error";
 
 type BudgetService = {
   id: string;
@@ -13,6 +15,8 @@ type BudgetService = {
   billing: Billing;
   summary: string;
   details?: string[];
+  allowQuantity?: boolean;
+  unitLabel?: string;
 };
 
 type Project = {
@@ -29,6 +33,27 @@ const categories: { id: CategoryId; label: string }[] = [
   { id: "pacote", label: "Pacotes" },
 ];
 
+const budgetChannels: { id: BudgetChannel; label: string; description: string; copyable: boolean }[] = [
+  {
+    id: "workana",
+    label: "Cliente Workana",
+    description: "Gera uma mensagem pronta para copiar no chat da Workana e envia o resumo para seu email.",
+    copyable: true,
+  },
+  {
+    id: "upwork",
+    label: "Cliente Upwork",
+    description: "Gera uma proposta em inglês para copiar no chat da Upwork e envia o resumo para seu email.",
+    copyable: true,
+  },
+  {
+    id: "direto",
+    label: "Cliente direto",
+    description: "Envia o pedido de orçamento somente para seu email.",
+    copyable: false,
+  },
+];
+
 const services: BudgetService[] = [
   {
     id: "site-institucional",
@@ -37,6 +62,16 @@ const services: BudgetService[] = [
     price: 600,
     billing: "once",
     summary: "Até 5 páginas para apresentar marca, serviços e contato.",
+  },
+  {
+    id: "pagina-adicional",
+    category: "base",
+    title: "Página adicional",
+    price: 120,
+    billing: "once",
+    summary: "Para sites institucionais acima das 5 páginas inclusas no pacote base.",
+    allowQuantity: true,
+    unitLabel: "páginas",
   },
   {
     id: "seo-avancado",
@@ -140,6 +175,8 @@ const services: BudgetService[] = [
     price: 100,
     billing: "once",
     summary: "Correções para celular, tablet e desktop.",
+    allowQuantity: true,
+    unitLabel: "páginas",
   },
   {
     id: "botoes-links",
@@ -260,15 +297,6 @@ const projects: Project[] = [
   },
 ];
 
-const pricingRules = [
-  { label: "Correções simples", value: "R$ 100 a R$ 250" },
-  { label: "Ajustes médios", value: "R$ 250 a R$ 600" },
-  { label: "Problemas complexos", value: "R$ 600 a R$ 1.500+" },
-  { label: "Até 1 hora", value: "R$ 100 a R$ 150" },
-  { label: "2 a 4 horas", value: "R$ 250 a R$ 600" },
-  { label: "1 a 3 dias", value: "R$ 600 a R$ 1.500" },
-];
-
 const formatCurrency = (value: number) =>
   value.toLocaleString("pt-BR", {
     style: "currency",
@@ -278,6 +306,9 @@ const formatCurrency = (value: number) =>
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState<CategoryId>("todos");
+  const [budgetChannel, setBudgetChannel] = useState<BudgetChannel>("workana");
+  const [copyStatus, setCopyStatus] = useState("");
+  const [sendStatus, setSendStatus] = useState<SendStatus>("idle");
   const [selectedServices, setSelectedServices] = useState<Record<string, number>>({});
 
   const filteredServices = useMemo(() => {
@@ -315,28 +346,76 @@ export default function Home() {
     return total + item.service.price * item.quantity;
   }, 0);
 
-  const budgetBody = selectedItems.length
-    ? selectedItems
-        .map(({ service, quantity }) => {
-          const suffix = service.billing === "monthly" ? "/mês" : "";
-          return `- ${quantity}x ${service.title}: ${formatCurrency(service.price * quantity)}${suffix}`;
-        })
-        .join("\n")
-    : "Quero montar um orçamento para serviços WordPress.";
+  const selectedChannel = budgetChannels.find((channel) => channel.id === budgetChannel) || budgetChannels[0];
 
-  const mailHref = `mailto:contato@dunkarley.dev?subject=${encodeURIComponent(
-    "Pedido de orçamento"
-  )}&body=${encodeURIComponent(
-    `${budgetBody}\n\nTotal único: ${formatCurrency(onceTotal)}\nMensal: ${formatCurrency(
-      monthlyTotal
-    )}`
-  )}`;
+  const budgetMessage = useMemo(() => {
+    const serviceLines = selectedItems.length
+      ? selectedItems
+          .map(({ service, quantity }) => {
+            const suffix = service.billing === "monthly" ? "/mês" : "";
+            const quantityText = service.allowQuantity
+              ? `${quantity} ${service.unitLabel || "unidades"}`
+              : "1 serviço";
+
+            return `- ${service.title} (${quantityText}): ${formatCurrency(service.price * quantity)}${suffix}`;
+          })
+          .join("\n")
+      : "- Ainda não selecionei serviços.";
+
+    if (budgetChannel === "upwork") {
+      return [
+        "Hello! Here is my suggested scope and investment for this WordPress project:",
+        "",
+        "Selected services:",
+        serviceLines,
+        "",
+        `One-time investment: ${formatCurrency(onceTotal)}`,
+        monthlyTotal ? `Monthly investment: ${formatCurrency(monthlyTotal)}` : "",
+        "",
+        "If we need to adapt the budget, we can remove optional items and keep the essential scope first.",
+      ]
+        .filter(Boolean)
+        .join("\n");
+    }
+
+    if (budgetChannel === "workana") {
+      return [
+        "Olá! Segue uma sugestão de orçamento para o projeto no Workana:",
+        "",
+        "Serviços selecionados:",
+        serviceLines,
+        "",
+        `Investimento único: ${formatCurrency(onceTotal)}`,
+        monthlyTotal ? `Investimento mensal: ${formatCurrency(monthlyTotal)}` : "",
+        "",
+        "Caso seja necessário adequar ao orçamento, podemos remover serviços opcionais e manter primeiro o escopo essencial.",
+      ]
+        .filter(Boolean)
+        .join("\n");
+    }
+
+    return [
+      "Novo pedido de orçamento pelo portfólio:",
+      "",
+      "Serviços selecionados:",
+      serviceLines,
+      "",
+      `Total único: ${formatCurrency(onceTotal)}`,
+      monthlyTotal ? `Mensal: ${formatCurrency(monthlyTotal)}` : "",
+    ]
+      .filter(Boolean)
+      .join("\n");
+  }, [budgetChannel, monthlyTotal, onceTotal, selectedItems]);
 
   function addService(id: string) {
-    setSelectedServices((current) => ({
-      ...current,
-      [id]: (current[id] || 0) + 1,
-    }));
+    setSelectedServices((current) => {
+      const service = services.find((item) => item.id === id);
+
+      return {
+        ...current,
+        [id]: service?.allowQuantity ? (current[id] || 0) + 1 : 1,
+      };
+    });
   }
 
   function decreaseService(id: string) {
@@ -360,6 +439,61 @@ export default function Home() {
       delete next[id];
       return next;
     });
+  }
+
+  async function copyBudgetMessage() {
+    if (!selectedChannel.copyable) {
+      return false;
+    }
+
+    try {
+      await navigator.clipboard.writeText(budgetMessage);
+      setCopyStatus("Mensagem copiada para colar no chat.");
+      return true;
+    } catch {
+      setCopyStatus("Não consegui copiar automaticamente. Selecione o texto e copie manualmente.");
+      return false;
+    }
+  }
+
+  async function submitBudget() {
+    setSendStatus("sending");
+    setCopyStatus("");
+
+    if (selectedChannel.copyable) {
+      await copyBudgetMessage();
+    }
+
+    try {
+      const response = await fetch("/api/budget", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          channel: budgetChannel,
+          message: budgetMessage,
+          onceTotal,
+          monthlyTotal,
+          items: selectedItems.map(({ service, quantity }) => ({
+            id: service.id,
+            title: service.title,
+            price: service.price,
+            billing: service.billing,
+            quantity,
+          })),
+        }),
+      });
+      const result = (await response.json().catch(() => null)) as { emailSent?: boolean } | null;
+
+      if (!response.ok) {
+        throw new Error("Budget email failed");
+      }
+
+      setSendStatus(result?.emailSent === false ? "not-configured" : "sent");
+    } catch {
+      setSendStatus("error");
+    }
   }
 
   return (
@@ -481,8 +615,17 @@ export default function Home() {
                       {formatCurrency(service.price)}
                       {service.billing === "monthly" ? "/mês" : ""}
                     </strong>
-                    <button type="button" onClick={() => addService(service.id)}>
-                      + Adicionar
+                    <button
+                      className={selectedServices[service.id] && !service.allowQuantity ? "is-selected" : ""}
+                      disabled={Boolean(selectedServices[service.id] && !service.allowQuantity)}
+                      type="button"
+                      onClick={() => addService(service.id)}
+                    >
+                      {selectedServices[service.id] && !service.allowQuantity
+                        ? "Selecionado"
+                        : service.allowQuantity && selectedServices[service.id]
+                          ? `Adicionar mais (${selectedServices[service.id]})`
+                          : "+ Adicionar"}
                     </button>
                   </div>
                 </article>
@@ -503,19 +646,25 @@ export default function Home() {
                     <div>
                       <strong>{service.title}</strong>
                       <span>
-                        {quantity}x {formatCurrency(service.price)}
+                        {service.allowQuantity
+                          ? `${quantity} ${service.unitLabel || "unidades"} x ${formatCurrency(service.price)}`
+                          : formatCurrency(service.price)}
                         {service.billing === "monthly" ? "/mês" : ""}
                       </span>
                     </div>
                     <div className="selected-item__actions">
-                      <button type="button" onClick={() => decreaseService(service.id)} aria-label={`Diminuir ${service.title}`}>
-                        -
-                      </button>
-                      <button type="button" onClick={() => addService(service.id)} aria-label={`Adicionar ${service.title}`}>
-                        +
-                      </button>
-                      <button type="button" onClick={() => removeService(service.id)} aria-label={`Remover ${service.title}`}>
-                        x
+                      {service.allowQuantity ? (
+                        <>
+                          <button type="button" onClick={() => decreaseService(service.id)} aria-label={`Diminuir ${service.title}`}>
+                            -
+                          </button>
+                          <button type="button" onClick={() => addService(service.id)} aria-label={`Adicionar ${service.title}`}>
+                            +
+                          </button>
+                        </>
+                      ) : null}
+                      <button className="selected-item__remove" type="button" onClick={() => removeService(service.id)}>
+                        Remover
                       </button>
                     </div>
                   </div>
@@ -536,19 +685,61 @@ export default function Home() {
               </div>
             </div>
 
-            <a className="button button--primary budget-panel__cta" href={mailHref}>
-              Enviar orçamento <span aria-hidden="true">-&gt;</span>
-            </a>
-          </aside>
-        </div>
-
-        <div className="pricing-rules">
-          {pricingRules.map((rule) => (
-            <div key={rule.label}>
-              <span>{rule.label}</span>
-              <strong>{rule.value}</strong>
+            <div className="budget-channel">
+              <p className="eyebrow">Destino</p>
+              <div className="budget-channel__options">
+                {budgetChannels.map((channel) => (
+                  <button
+                    aria-pressed={budgetChannel === channel.id}
+                    className={budgetChannel === channel.id ? "is-active" : ""}
+                    key={channel.id}
+                    onClick={() => {
+                      setBudgetChannel(channel.id);
+                      setCopyStatus("");
+                      setSendStatus("idle");
+                    }}
+                    type="button"
+                  >
+                    {channel.label}
+                  </button>
+                ))}
+              </div>
+              <p>{selectedChannel.description}</p>
             </div>
-          ))}
+
+            {selectedChannel.copyable ? (
+              <div className="budget-message">
+                <label htmlFor="budget-message">Mensagem para copiar</label>
+                <textarea id="budget-message" readOnly value={budgetMessage} />
+                <button type="button" onClick={copyBudgetMessage}>
+                  Copiar mensagem
+                </button>
+              </div>
+            ) : null}
+
+            {copyStatus ? <p className="budget-status">{copyStatus}</p> : null}
+
+            <button className="button button--primary budget-panel__cta" disabled={sendStatus === "sending"} onClick={submitBudget} type="button">
+              {sendStatus === "sending"
+                ? "Enviando..."
+                : selectedChannel.copyable
+                  ? "Copiar e enviar para meu email"
+                  : "Enviar para meu email"}
+              <span aria-hidden="true">-&gt;</span>
+            </button>
+
+            {sendStatus === "sent" ? <p className="budget-status">Orçamento enviado para seu email.</p> : null}
+            {sendStatus === "not-configured" ? (
+              <p className="budget-status budget-status--warning">
+                A mensagem foi gerada, mas o envio automático ainda precisa das variáveis de email na Vercel.
+              </p>
+            ) : null}
+            {sendStatus === "error" ? (
+              <p className="budget-status budget-status--warning">
+                Não consegui enviar automaticamente. Confira a configuração de email na Vercel.
+              </p>
+            ) : null}
+          </aside>
         </div>
       </section>
 

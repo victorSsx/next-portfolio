@@ -480,6 +480,14 @@ a {
   padding: 9px 12px;
 }
 
+.service-card__footer button:disabled,
+.service-card__footer button.is-selected {
+  border-color: rgba(245, 242, 236, 0.12);
+  background: rgba(245, 242, 236, 0.06);
+  color: rgba(245, 242, 236, 0.58);
+  cursor: default;
+}
+
 .budget-panel {
   position: sticky;
   top: 22px;
@@ -531,9 +539,14 @@ a {
 
 .selected-item__actions button {
   display: grid;
-  width: 32px;
+  min-width: 32px;
   height: 32px;
   place-items: center;
+  padding: 0 10px;
+}
+
+.selected-item__remove {
+  width: auto;
 }
 
 .totals {
@@ -571,33 +584,87 @@ a {
   margin-top: 18px;
 }
 
-.pricing-rules {
+.budget-panel__cta:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.budget-channel {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
-  margin-top: 18px;
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
 }
 
-.pricing-rules div {
-  padding: 14px 16px;
-  border: 1px solid rgba(245, 242, 236, 0.1);
-  border-radius: 8px;
-  background: rgba(8, 9, 9, 0.38);
+.budget-channel__options {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 8px;
 }
 
-.pricing-rules span,
-.pricing-rules strong {
-  display: block;
+.budget-channel__options button,
+.budget-message button {
+  min-height: 40px;
+  border: 1px solid rgba(245, 242, 236, 0.14);
+  border-radius: 4px;
+  background: rgba(245, 242, 236, 0.05);
+  color: rgba(245, 242, 236, 0.78);
+  cursor: pointer;
+  font-weight: 850;
 }
 
-.pricing-rules span {
+.budget-channel__options button.is-active,
+.budget-channel__options button:hover,
+.budget-message button:hover {
+  border-color: rgba(199, 164, 71, 0.72);
+  background: rgba(199, 164, 71, 0.13);
+  color: var(--white);
+}
+
+.budget-channel > p:last-child {
+  margin: 0;
   color: rgba(245, 242, 236, 0.62);
   font-size: 13px;
+  line-height: 1.55;
 }
 
-.pricing-rules strong {
-  margin-top: 6px;
-  color: var(--white);
+.budget-message {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.budget-message label {
+  color: rgba(245, 242, 236, 0.72);
+  font-size: 13px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.budget-message textarea {
+  width: 100%;
+  min-height: 210px;
+  resize: vertical;
+  border: 1px solid rgba(245, 242, 236, 0.14);
+  border-radius: 8px;
+  background: rgba(8, 9, 9, 0.42);
+  color: rgba(245, 242, 236, 0.84);
+  font: inherit;
+  font-size: 13px;
+  line-height: 1.55;
+  padding: 12px;
+}
+
+.budget-status {
+  margin: 12px 0 0;
+  color: var(--gold-strong);
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.budget-status--warning {
+  color: #f0c66c;
 }
 
 .process {
@@ -700,8 +767,7 @@ a {
 
   .service-grid,
   .project-grid,
-  .process__steps,
-  .pricing-rules {
+  .process__steps {
     grid-template-columns: 1fr 1fr;
   }
 
@@ -793,8 +859,7 @@ a {
 
   .service-grid,
   .project-grid,
-  .process__steps,
-  .pricing-rules {
+  .process__steps {
     grid-template-columns: 1fr;
   }
 

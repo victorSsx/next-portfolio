@@ -4,3 +4,5 @@ out
 dist
 .vercel
 *.log
+.env*
+!.env.example
