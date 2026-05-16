@@ -15,6 +15,13 @@ const channelLabels: Record<string, string> = {
   direto: "Cliente direto",
 };
 
+const formatCurrency = (value = 0) =>
+  value.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    maximumFractionDigits: 0,
+  });
+
 export async function POST(request: Request) {
   let payload: BudgetPayload;
 
@@ -53,8 +60,8 @@ export async function POST(request: Request) {
         "",
         "---",
         `Origem: ${channelLabels[channel] || channel}`,
-        `Total único: R$ ${payload.onceTotal || 0}`,
-        `Mensal: R$ ${payload.monthlyTotal || 0}`,
+        `Total único estimado: ${formatCurrency(payload.onceTotal || 0)}`,
+        `Mensal: ${formatCurrency(payload.monthlyTotal || 0)}`,
       ].join("\n"),
     }),
   });

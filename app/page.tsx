@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 
-type CategoryId = "todos" | "base" | "tecnico" | "pacote";
+type CategoryId = "todos" | "sites" | "seo" | "suporte";
 type Billing = "once" | "monthly";
 type BudgetChannel = "workana" | "upwork" | "direto";
 type SendStatus = "idle" | "sending" | "sent" | "not-configured" | "error";
@@ -17,6 +17,7 @@ type BudgetService = {
   details?: string[];
   allowQuantity?: boolean;
   unitLabel?: string;
+  startingAt?: boolean;
 };
 
 type Project = {
@@ -28,10 +29,16 @@ type Project = {
 
 const categories: { id: CategoryId; label: string }[] = [
   { id: "todos", label: "Todos" },
-  { id: "base", label: "Serviços base" },
-  { id: "tecnico", label: "Ajustes técnicos" },
-  { id: "pacote", label: "Pacotes" },
+  { id: "sites", label: "Sites" },
+  { id: "seo", label: "SEO e performance" },
+  { id: "suporte", label: "Suporte" },
 ];
+
+const serviceCategoryLabels: Record<Exclude<CategoryId, "todos">, string> = {
+  sites: "Sites WordPress",
+  seo: "SEO e performance",
+  suporte: "Suporte",
+};
 
 const budgetChannels: { id: BudgetChannel; label: string; description: string; copyable: boolean }[] = [
   {
@@ -56,223 +63,142 @@ const budgetChannels: { id: BudgetChannel; label: string; description: string; c
 
 const services: BudgetService[] = [
   {
+    id: "landing-page",
+    category: "sites",
+    title: "Landing page",
+    price: 350,
+    billing: "once",
+    summary: "Página única para apresentar uma oferta, serviço ou campanha com visual profissional.",
+    startingAt: true,
+  },
+  {
     id: "site-institucional",
-    category: "base",
+    category: "sites",
     title: "Site institucional",
-    price: 600,
+    price: 550,
     billing: "once",
     summary: "Até 5 páginas para apresentar marca, serviços e contato.",
+    startingAt: true,
+    details: [
+      "Layout profissional e responsivo",
+      "WordPress + Elementor",
+      "Home, Sobre, Serviços e Contato",
+      "WhatsApp e formulário",
+      "SEO básico e mobile",
+    ],
   },
   {
     id: "pagina-adicional",
-    category: "base",
+    category: "sites",
     title: "Página adicional",
-    price: 120,
+    price: 100,
     billing: "once",
     summary: "Para sites institucionais acima das 5 páginas inclusas no pacote base.",
     allowQuantity: true,
     unitLabel: "páginas",
   },
   {
-    id: "seo-avancado",
-    category: "base",
-    title: "SEO avançado",
-    price: 500,
-    billing: "once",
-    summary: "Otimização mais profunda para páginas, estrutura e conteúdo.",
-  },
-  {
-    id: "performance",
-    category: "base",
-    title: "Otimização de performance",
-    price: 300,
-    billing: "once",
-    summary: "Ajustes para melhorar carregamento, peso visual e experiência.",
-  },
-  {
-    id: "analytics",
-    category: "base",
-    title: "Google Analytics + Search Console",
-    price: 200,
-    billing: "once",
-    summary: "Configuração de mensuração e presença nas ferramentas Google.",
-  },
-  {
-    id: "blog",
-    category: "base",
-    title: "Blog",
-    price: 300,
-    billing: "once",
-    summary: "Estrutura inicial para posts, categorias e organização editorial.",
-  },
-  {
-    id: "suporte-30",
-    category: "base",
-    title: "Suporte por 30 dias",
-    price: 200,
-    billing: "once",
-    summary: "Acompanhamento após entrega para dúvidas e pequenos ajustes.",
-  },
-  {
-    id: "manutencao",
-    category: "base",
-    title: "Manutenção mensal",
+    id: "blog-wordpress",
+    category: "sites",
+    title: "Blog WordPress",
     price: 250,
-    billing: "monthly",
-    summary: "Rotina mensal de cuidado, atualizações e pequenas correções.",
+    billing: "once",
+    summary: "Estrutura de blog organizada para publicar artigos com boa apresentação.",
+    details: [
+      "Estrutura de blog",
+      "Página de categorias",
+      "Template de post",
+      "Sidebar personalizada",
+      "Organização visual dos artigos",
+    ],
   },
   {
     id: "seo-essencial",
-    category: "base",
+    category: "seo",
     title: "SEO essencial",
-    price: 250,
+    price: 200,
     billing: "once",
-    summary: "Base de SEO compatível com sites WordPress de pequeno e médio porte.",
+    summary: "Configuração inicial para o site ficar mais organizado para mecanismos de busca.",
     details: [
       "Titles e meta descriptions",
       "URLs amigáveis",
       "Headings H1, H2 e H3",
       "Sitemap XML",
-      "Plugin de SEO configurado",
+      "Plugin SEO configurado",
     ],
   },
   {
-    id: "diagnostico-tecnico",
-    category: "tecnico",
-    title: "Diagnóstico técnico e correção",
+    id: "seo-tecnico",
+    category: "seo",
+    title: "SEO técnico",
+    price: 400,
+    billing: "once",
+    summary: "Ajustes técnicos para melhorar indexação, estrutura e leitura do site.",
+    details: [
+      "Ajustes técnicos de indexação",
+      "Otimização estrutural",
+      "Correção básica de SEO técnico",
+      "Search Console configurado",
+      "Melhorias de performance para SEO",
+    ],
+  },
+  {
+    id: "performance",
+    category: "seo",
+    title: "Otimização de performance",
     price: 250,
     billing: "once",
-    summary: "Mapeamento de erros e correções iniciais no WordPress.",
+    summary: "Melhorias para reduzir lentidão e deixar o site mais leve no mobile.",
+    details: [
+      "Otimização de imagens",
+      "Configuração de cache",
+      "Redução de lentidão",
+      "Melhorias básicas no PageSpeed",
+      "Ajustes de carregamento mobile",
+    ],
   },
   {
-    id: "elementor",
-    category: "tecnico",
-    title: "Correção de erro no Elementor",
+    id: "analytics",
+    category: "seo",
+    title: "Google Analytics + Search Console",
+    price: 150,
+    billing: "once",
+    summary: "Integração das ferramentas do Google para acompanhar acessos e presença na busca.",
+    details: [
+      "Google Analytics integrado",
+      "Search Console configurado",
+      "Verificação de domínio",
+      "Monitoramento básico de acessos",
+    ],
+  },
+  {
+    id: "suporte-30",
+    category: "suporte",
+    title: "Suporte por 30 dias",
+    price: 150,
+    billing: "once",
+    summary: "Acompanhamento pós-entrega para correções leves e dúvidas básicas.",
+    details: [
+      "Correções leves",
+      "Ajustes simples",
+      "Suporte técnico pós-entrega",
+      "Auxílio em dúvidas básicas",
+    ],
+  },
+  {
+    id: "manutencao",
+    category: "suporte",
+    title: "Manutenção mensal",
     price: 200,
-    billing: "once",
-    summary: "Correção de conflitos, widgets quebrados e problemas visuais.",
-  },
-  {
-    id: "layout-existente",
-    category: "tecnico",
-    title: "Ajuste de layout existente",
-    price: 150,
-    billing: "once",
-    summary: "Refino visual em uma página já publicada.",
-  },
-  {
-    id: "hero-section",
-    category: "tecnico",
-    title: "Edição de Hero Section",
-    price: 150,
-    billing: "once",
-    summary: "Ajuste da primeira dobra com texto, imagem e chamada principal.",
-  },
-  {
-    id: "responsividade",
-    category: "tecnico",
-    title: "Responsividade por página",
-    price: 100,
-    billing: "once",
-    summary: "Correções para celular, tablet e desktop.",
-    allowQuantity: true,
-    unitLabel: "páginas",
-  },
-  {
-    id: "botoes-links",
-    category: "tecnico",
-    title: "Configuração de botões e links",
-    price: 50,
-    billing: "once",
-    summary: "Revisão de CTAs, links, WhatsApp e navegação.",
-  },
-  {
-    id: "conteudo",
-    category: "tecnico",
-    title: "Inserção e formatação de conteúdo",
-    price: 100,
-    billing: "once",
-    summary: "Publicação de textos, imagens e blocos de conteúdo.",
-  },
-  {
-    id: "pagina-blog",
-    category: "tecnico",
-    title: "Página de blog",
-    price: 150,
-    billing: "once",
-    summary: "Criação ou edição de página para posts e listagens.",
-  },
-  {
-    id: "template-post",
-    category: "tecnico",
-    title: "Template de post e categoria",
-    price: 200,
-    billing: "once",
-    summary: "Modelo visual para posts, categorias e navegação do blog.",
-  },
-  {
-    id: "ssl",
-    category: "tecnico",
-    title: "Correção de HTTPS/SSL",
-    price: 150,
-    billing: "once",
-    summary: "Ajuste de certificado, links mistos e redirecionamentos.",
-  },
-  {
-    id: "php-limits",
-    category: "tecnico",
-    title: "Aumento de limites PHP",
-    price: 100,
-    billing: "once",
-    summary: "Configuração de memória, upload e execução quando permitido.",
-  },
-  {
-    id: "whatsapp",
-    category: "tecnico",
-    title: "Integração com WhatsApp",
-    price: 80,
-    billing: "once",
-    summary: "Botões, links e chamadas para conversa direta.",
-  },
-  {
-    id: "formularios",
-    category: "tecnico",
-    title: "Formulários externos",
-    price: 100,
-    billing: "once",
-    summary: "Integração com ferramentas externas de captura.",
-  },
-  {
-    id: "backup-migracao",
-    category: "tecnico",
-    title: "Backup e migração",
-    price: 200,
-    billing: "once",
-    summary: "Cópia, transferência e organização inicial do site.",
-  },
-  {
-    id: "pacote-ajuste",
-    category: "pacote",
-    title: "Ajuste Técnico Essencial",
-    price: 450,
-    billing: "once",
-    summary: "Diagnóstico, Elementor, HTTPS e botões básicos.",
-  },
-  {
-    id: "pacote-refino",
-    category: "pacote",
-    title: "Refinamento Visual",
-    price: 600,
-    billing: "once",
-    summary: "Layout, responsividade, conteúdo e Hero Section.",
-  },
-  {
-    id: "pacote-premium",
-    category: "pacote",
-    title: "Finalização Premium",
-    price: 900,
-    billing: "once",
-    summary: "Ajustes técnicos, refino visual e performance.",
+    billing: "monthly",
+    summary: "Cuidado mensal para manter WordPress, plugins e backups em dia.",
+    details: [
+      "Atualização de plugins",
+      "Atualização do WordPress",
+      "Backup preventivo",
+      "Monitoramento básico",
+      "Pequenos ajustes mensais",
+    ],
   },
 ];
 
@@ -303,6 +229,9 @@ const formatCurrency = (value: number) =>
     currency: "BRL",
     maximumFractionDigits: 0,
   });
+
+const formatServicePrice = (service: BudgetService, value = service.price) =>
+  `${service.startingAt ? "A partir de " : ""}${formatCurrency(value)}${service.billing === "monthly" ? "/mês" : ""}`;
 
 export default function Home() {
   const [activeCategory, setActiveCategory] = useState<CategoryId>("todos");
@@ -357,7 +286,11 @@ export default function Home() {
               ? `${quantity} ${service.unitLabel || "unidades"}`
               : "1 serviço";
 
-            return `- ${service.title} (${quantityText}): ${formatCurrency(service.price * quantity)}${suffix}`;
+            const priceText = service.startingAt
+              ? `a partir de ${formatCurrency(service.price * quantity)}${suffix}`
+              : `${formatCurrency(service.price * quantity)}${suffix}`;
+
+            return `- ${service.title} (${quantityText}): ${priceText}`;
           })
           .join("\n")
       : "- Ainda não selecionei serviços.";
@@ -369,7 +302,7 @@ export default function Home() {
         "Selected services:",
         serviceLines,
         "",
-        `One-time investment: ${formatCurrency(onceTotal)}`,
+        `Estimated one-time investment: ${formatCurrency(onceTotal)}`,
         monthlyTotal ? `Monthly investment: ${formatCurrency(monthlyTotal)}` : "",
         "",
         "If we need to adapt the budget, we can remove optional items and keep the essential scope first.",
@@ -385,7 +318,7 @@ export default function Home() {
         "Serviços selecionados:",
         serviceLines,
         "",
-        `Investimento único: ${formatCurrency(onceTotal)}`,
+        `Investimento único estimado: ${formatCurrency(onceTotal)}`,
         monthlyTotal ? `Investimento mensal: ${formatCurrency(monthlyTotal)}` : "",
         "",
         "Caso seja necessário adequar ao orçamento, podemos remover serviços opcionais e manter primeiro o escopo essencial.",
@@ -400,7 +333,7 @@ export default function Home() {
       "Serviços selecionados:",
       serviceLines,
       "",
-      `Total único: ${formatCurrency(onceTotal)}`,
+      `Total único estimado: ${formatCurrency(onceTotal)}`,
       monthlyTotal ? `Mensal: ${formatCurrency(monthlyTotal)}` : "",
     ]
       .filter(Boolean)
@@ -576,7 +509,7 @@ export default function Home() {
         <div className="section__intro section__intro--budget">
           <p className="eyebrow">Orçamento SaaS</p>
           <h2>Monte um orçamento WordPress em tempo real.</h2>
-          <p>Serviços base, ajustes técnicos e pacotes com totalização automática.</p>
+          <p>Serviços de sites, SEO, performance e suporte com explicação direta para clientes.</p>
         </div>
 
         <div className="budget-layout">
@@ -599,7 +532,7 @@ export default function Home() {
               {filteredServices.map((service) => (
                 <article className="service-card" key={service.id}>
                   <div>
-                    <p>{service.category === "pacote" ? "Pacote recomendado" : "Serviço"}</p>
+                    <p>{serviceCategoryLabels[service.category]}</p>
                     <h3>{service.title}</h3>
                     <p>{service.summary}</p>
                     {service.details ? (
@@ -612,8 +545,7 @@ export default function Home() {
                   </div>
                   <div className="service-card__footer">
                     <strong>
-                      {formatCurrency(service.price)}
-                      {service.billing === "monthly" ? "/mês" : ""}
+                      {formatServicePrice(service)}
                     </strong>
                     <button
                       className={selectedServices[service.id] && !service.allowQuantity ? "is-selected" : ""}
@@ -648,8 +580,8 @@ export default function Home() {
                       <span>
                         {service.allowQuantity
                           ? `${quantity} ${service.unitLabel || "unidades"} x ${formatCurrency(service.price)}`
-                          : formatCurrency(service.price)}
-                        {service.billing === "monthly" ? "/mês" : ""}
+                          : formatServicePrice(service)}
+                        {service.allowQuantity && service.billing === "monthly" ? "/mês" : ""}
                       </span>
                     </div>
                     <div className="selected-item__actions">
@@ -676,7 +608,7 @@ export default function Home() {
 
             <div className="totals">
               <div>
-                <span>Total único</span>
+                <span>Total único estimado</span>
                 <strong>{formatCurrency(onceTotal)}</strong>
               </div>
               <div>
