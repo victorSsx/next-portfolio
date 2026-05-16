@@ -70,6 +70,13 @@ const services: BudgetService[] = [
     billing: "once",
     summary: "Página única para apresentar uma oferta, serviço ou campanha com visual profissional.",
     startingAt: true,
+    details: [
+      "Seção principal com chamada forte",
+      "Layout responsivo",
+      "Botão para WhatsApp ou contato",
+      "Formulário simples",
+      "SEO básico da página",
+    ],
   },
   {
     id: "site-institucional",
@@ -96,6 +103,12 @@ const services: BudgetService[] = [
     summary: "Para sites institucionais acima das 5 páginas inclusas no pacote base.",
     allowQuantity: true,
     unitLabel: "páginas",
+    details: [
+      "Layout seguindo o visual do site",
+      "Conteúdo organizado na página",
+      "Ajuste para celular",
+      "Botões e links necessários",
+    ],
   },
   {
     id: "blog-wordpress",
@@ -289,8 +302,11 @@ export default function Home() {
             const priceText = service.startingAt
               ? `a partir de ${formatCurrency(service.price * quantity)}${suffix}`
               : `${formatCurrency(service.price * quantity)}${suffix}`;
+            const detailsText = service.details?.length
+              ? `\n  Inclui: ${service.details.join("; ")}`
+              : "";
 
-            return `- ${service.title} (${quantityText}): ${priceText}`;
+            return `- ${service.title} (${quantityText}): ${priceText}${detailsText}`;
           })
           .join("\n")
       : "- Ainda não selecionei serviços.";
