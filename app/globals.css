@@ -994,7 +994,27 @@ a {
 
 .admin-login {
   width: min(440px, 100%);
-  padding: 26px;
+  display: grid;
+  gap: 18px;
+  padding: 28px;
+}
+
+.admin-login__mark {
+  display: grid;
+  width: 58px;
+  height: 66px;
+  place-items: center;
+}
+
+.admin-login__mark svg {
+  width: 58px;
+  height: 66px;
+  fill: none;
+  stroke: var(--gold-strong);
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+  stroke-width: 5;
+  filter: drop-shadow(0 12px 22px rgba(199, 164, 71, 0.18));
 }
 
 .admin-login h1,
@@ -1002,6 +1022,67 @@ a {
   margin: 8px 0 0;
   font-size: 42px;
   line-height: 1.05;
+}
+
+.admin-login__lead {
+  margin: -6px 0 0;
+  color: rgba(245, 242, 236, 0.68);
+  line-height: 1.65;
+}
+
+.admin-login__form {
+  display: grid;
+  gap: 12px;
+}
+
+.admin-password {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  overflow: hidden;
+  border: 1px solid rgba(245, 242, 236, 0.14);
+  border-radius: 4px;
+  background: rgba(8, 9, 9, 0.44);
+}
+
+.admin-password input {
+  border: 0;
+  background: transparent;
+}
+
+.admin-password input:focus {
+  outline: none;
+}
+
+.admin-password:focus-within {
+  border-color: rgba(199, 164, 71, 0.7);
+  box-shadow: 0 0 0 3px rgba(199, 164, 71, 0.12);
+}
+
+.admin-password button {
+  min-width: 86px;
+  border: 0;
+  border-left: 1px solid rgba(245, 242, 236, 0.12);
+  background: rgba(245, 242, 236, 0.06);
+  color: var(--gold-strong);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.admin-login__form .button {
+  width: 100%;
+}
+
+.admin-login__back {
+  width: fit-content;
+  color: rgba(245, 242, 236, 0.62);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.admin-login__back:hover {
+  color: var(--gold-strong);
 }
 
 .admin-header {

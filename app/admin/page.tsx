@@ -62,6 +62,7 @@ const createService = (category: string): BudgetService => ({
 
 export default function AdminPage() {
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [status, setStatus] = useState<SaveStatus>("idle");
   const [message, setMessage] = useState("");
   const [isUnlocked, setIsUnlocked] = useState(false);
@@ -157,27 +158,53 @@ export default function AdminPage() {
   if (!isUnlocked) {
     return (
       <main className="admin-page admin-page--login">
-        <section className="admin-login">
-          <p className="eyebrow">Admin</p>
-          <h1>Área administrativa</h1>
-          <label>
-            Senha
-            <input
-              autoComplete="current-password"
-              onChange={(event) => setPassword(event.target.value)}
-              onKeyDown={(event) => {
-                if (event.key === "Enter" && password) {
-                  loadData();
-                }
-              }}
-              type="password"
-              value={password}
-            />
-          </label>
-          <button className="button button--primary" disabled={!password || status === "loading"} onClick={loadData} type="button">
-            {status === "loading" ? "Entrando..." : "Entrar"}
-          </button>
+        <section className="admin-login" aria-labelledby="admin-login-title">
+          <div className="admin-login__mark" aria-hidden="true">
+            <svg viewBox="0 0 64 72" focusable="false">
+              <path d="M9 8 32 63 55 8" />
+              <path d="M26 8 38 38" />
+            </svg>
+          </div>
+          <p className="eyebrow">Acesso privado</p>
+          <h1 id="admin-login-title">Painel do portfólio</h1>
+          <p className="admin-login__lead">Gerencie seus projetos, preços, categorias e tecnologias em um só lugar.</p>
+
+          <form
+            className="admin-login__form"
+            onSubmit={(event) => {
+              event.preventDefault();
+              if (password && status !== "loading") {
+                loadData();
+              }
+            }}
+          >
+            <label htmlFor="admin-password">Senha do admin</label>
+            <div className="admin-password">
+              <input
+                autoComplete="current-password"
+                id="admin-password"
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                  setMessage("");
+                }}
+                placeholder="Digite a senha"
+                type={showPassword ? "text" : "password"}
+                value={password}
+              />
+              <button aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"} onClick={() => setShowPassword((value) => !value)} type="button">
+                {showPassword ? "Ocultar" : "Mostrar"}
+              </button>
+            </div>
+
+            <button className="button button--primary" disabled={!password || status === "loading"} type="submit">
+              {status === "loading" ? "Verificando..." : "Entrar no painel"}
+            </button>
+          </form>
+
           {message ? <p className="admin-status admin-status--error">{message}</p> : null}
+          <a className="admin-login__back" href="/">
+            Voltar para o site
+          </a>
         </section>
       </main>
     );

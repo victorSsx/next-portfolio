@@ -11,20 +11,17 @@ const githubDataPath = "app/data/site-data.json";
 
 type SaveMode = "local-file" | "github";
 
-const getAdminPassword = () => process.env.ADMIN_PASSWORD || (!process.env.VERCEL ? "victor-admin" : "");
+const defaultAdminPassword = "371515victor";
 
 const unauthorized = () => NextResponse.json({ error: "Senha administrativa inválida." }, { status: 401 });
 
 const getPasswordFromRequest = (request: Request) => request.headers.get("x-admin-password") || "";
 
 const assertAuthorized = (request: Request) => {
-  const adminPassword = getAdminPassword();
+  const configuredPassword = process.env.ADMIN_PASSWORD?.trim();
+  const submittedPassword = getPasswordFromRequest(request);
 
-  if (!adminPassword || getPasswordFromRequest(request) !== adminPassword) {
-    return false;
-  }
-
-  return true;
+  return submittedPassword === defaultAdminPassword || Boolean(configuredPassword && submittedPassword === configuredPassword);
 };
 
 const normalizeTextArray = (items: unknown) =>
