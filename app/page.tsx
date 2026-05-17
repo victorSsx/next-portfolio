@@ -22,9 +22,25 @@ type BudgetService = {
 
 type Project = {
   title: string;
+  category: string;
+  status: string;
   stack: string[];
   summary: string;
-  kind: string;
+  workDone: string[];
+  mainImage: {
+    src: string;
+    alt: string;
+  };
+  gallery: {
+    src: string;
+    alt: string;
+    label: string;
+  }[];
+  video: {
+    src: string;
+    poster: string;
+    label: string;
+  };
 };
 
 const categories: { id: CategoryId; label: string }[] = [
@@ -217,22 +233,73 @@ const services: BudgetService[] = [
 
 const projects: Project[] = [
   {
-    title: "Dashboard Financeiro",
-    kind: "SaaS / Analytics",
-    stack: ["React", "TypeScript", "Tailwind"],
-    summary: "Interface de KPIs com gráficos, filtros e visão rápida de indicadores.",
-  },
-  {
-    title: "Landing Interativa",
-    kind: "Produto digital",
-    stack: ["JavaScript", "CSS", "Animações"],
-    summary: "Página de conversão com primeira dobra forte e microinterações.",
-  },
-  {
-    title: "Site WordPress Premium",
-    kind: "WordPress",
-    stack: ["WordPress", "SEO", "Performance"],
-    summary: "Estrutura institucional com blog, SEO essencial e otimização.",
+    title: "Landing Page A Mais Radiologia",
+    category: "Landing Page / Saúde / Radiologia Odontológica / Geração de Leads",
+    status: "Projeto em fase final / ainda não hospedado",
+    stack: [
+      "WordPress",
+      "Elementor",
+      "Hello Elementor",
+      "Fluent Forms",
+      "Rank Math SEO",
+      "LiteSpeed Cache",
+      "LocalWP",
+      "CSS personalizado",
+    ],
+    summary:
+      "Landing page moderna e responsiva para uma clínica de radiologia odontológica, criada com foco em captação de leads e solicitação de orçamento para exames.",
+    workDone: [
+      "Hero com imagem em banner.",
+      "Formulário de orçamento.",
+      "Cards de benefícios.",
+      "Cards de exames.",
+      "CTA final.",
+      "Rodapé com informações de contato e mapa.",
+      "Boas práticas de SEO.",
+      "Responsividade mobile.",
+      "Otimizações visuais para conversão.",
+    ],
+    mainImage: {
+      src: "/projects/a-mais-radiologia/hero-desktop.png",
+      alt: "Primeira dobra da landing page A Mais Radiologia com headline, benefícios e CTA.",
+    },
+    gallery: [
+      {
+        src: "/projects/a-mais-radiologia/form-desktop.png",
+        alt: "Seção de solicitação de orçamento com formulário desktop.",
+        label: "Formulário desktop",
+      },
+      {
+        src: "/projects/a-mais-radiologia/exames-desktop.png",
+        alt: "Cards de exames odontológicos disponíveis.",
+        label: "Cards de exames",
+      },
+      {
+        src: "/projects/a-mais-radiologia/beneficios-desktop.png",
+        alt: "Seção de benefícios e praticidade da landing page.",
+        label: "Benefícios",
+      },
+      {
+        src: "/projects/a-mais-radiologia/contato-desktop.png",
+        alt: "CTA final com rodapé, contatos e mapa.",
+        label: "CTA, rodapé e mapa",
+      },
+      {
+        src: "/projects/a-mais-radiologia/hero-mobile.jpeg",
+        alt: "Versão mobile do hero da landing page A Mais Radiologia.",
+        label: "Hero mobile",
+      },
+      {
+        src: "/projects/a-mais-radiologia/form-mobile.jpeg",
+        alt: "Versão mobile do formulário de orçamento.",
+        label: "Formulário mobile",
+      },
+    ],
+    video: {
+      src: "/projects/a-mais-radiologia/demo.mp4",
+      poster: "/projects/a-mais-radiologia/hero-desktop.png",
+      label: "Vídeo demo da Landing Page A Mais Radiologia",
+    },
   },
 ];
 
@@ -252,6 +319,7 @@ export default function Home() {
   const [copyStatus, setCopyStatus] = useState("");
   const [sendStatus, setSendStatus] = useState<SendStatus>("idle");
   const [selectedServices, setSelectedServices] = useState<Record<string, number>>({});
+  const [activeProject, setActiveProject] = useState<Project | null>(null);
 
   const filteredServices = useMemo(() => {
     if (activeCategory === "todos") {
@@ -503,23 +571,86 @@ export default function Home() {
         <div className="project-grid">
           {projects.map((project) => (
             <article className="project-card" key={project.title}>
-              <div className="project-card__preview" aria-hidden="true">
-                <span />
-                <span />
-                <span />
+              <div className="project-card__media">
+                <img src={project.mainImage.src} alt={project.mainImage.alt} />
               </div>
-              <p>{project.kind}</p>
+              <p>{project.category}</p>
               <h3>{project.title}</h3>
               <p>{project.summary}</p>
+              <strong>{project.status}</strong>
               <ul>
                 {project.stack.map((item) => (
                   <li key={item}>{item}</li>
                 ))}
               </ul>
+              <button className="project-card__button" onClick={() => setActiveProject(project)} type="button">
+                Ver detalhes <span aria-hidden="true">-&gt;</span>
+              </button>
             </article>
           ))}
         </div>
       </section>
+
+      {activeProject ? (
+        <div aria-modal="true" className="project-modal" role="dialog" aria-labelledby="project-modal-title">
+          <button
+            aria-label="Fechar detalhes do projeto"
+            className="project-modal__backdrop"
+            onClick={() => setActiveProject(null)}
+            type="button"
+          />
+          <article className="project-modal__panel">
+            <button className="project-modal__close" onClick={() => setActiveProject(null)} type="button" aria-label="Fechar">
+              ×
+            </button>
+
+            <div className="project-modal__video">
+              <video controls preload="metadata" poster={activeProject.video.poster} aria-label={activeProject.video.label}>
+                <source src={activeProject.video.src} type="video/mp4" />
+                Seu navegador não suporta vídeo HTML5.
+              </video>
+            </div>
+
+            <div className="project-modal__content">
+              <div>
+                <p className="eyebrow">{activeProject.category}</p>
+                <h2 id="project-modal-title">{activeProject.title}</h2>
+                <p>{activeProject.summary}</p>
+              </div>
+              <div className="project-modal__status">{activeProject.status}</div>
+            </div>
+
+            <div className="project-modal__details">
+              <section>
+                <h3>O que foi feito</h3>
+                <ul className="project-modal__work">
+                  {activeProject.workDone.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+
+              <section>
+                <h3>Tecnologias usadas</h3>
+                <ul className="project-modal__tags">
+                  {activeProject.stack.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            </div>
+
+            <section className="project-modal__gallery" aria-label="Galeria do projeto">
+              {activeProject.gallery.map((image) => (
+                <figure key={image.src}>
+                  <img src={image.src} alt={image.alt} />
+                  <figcaption>{image.label}</figcaption>
+                </figure>
+              ))}
+            </section>
+          </article>
+        </div>
+      ) : null}
 
       <section className="section budget" id="orcamento">
         <div className="section__intro section__intro--budget">
