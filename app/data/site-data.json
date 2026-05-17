@@ -1,0 +1,267 @@
+{
+  "serviceCategories": [
+    {
+      "id": "sites",
+      "label": "Sites WordPress"
+    },
+    {
+      "id": "seo",
+      "label": "SEO e performance"
+    },
+    {
+      "id": "suporte",
+      "label": "Suporte"
+    }
+  ],
+  "technologies": [
+    "WordPress",
+    "Elementor",
+    "Hello Elementor",
+    "Fluent Forms",
+    "Rank Math SEO",
+    "LiteSpeed Cache",
+    "LocalWP",
+    "CSS personalizado"
+  ],
+  "services": [
+    {
+      "id": "landing-page",
+      "category": "sites",
+      "title": "Landing page",
+      "price": 350,
+      "billing": "once",
+      "summary": "Página única para apresentar uma oferta, serviço ou campanha com visual profissional.",
+      "details": [
+        "Seção principal com chamada forte",
+        "Layout responsivo",
+        "Botão para WhatsApp ou contato",
+        "Formulário simples",
+        "SEO básico da página"
+      ],
+      "allowQuantity": false,
+      "startingAt": true
+    },
+    {
+      "id": "site-institucional",
+      "category": "sites",
+      "title": "Site institucional",
+      "price": 550,
+      "billing": "once",
+      "summary": "Até 5 páginas para apresentar marca, serviços e contato.",
+      "details": [
+        "Layout profissional e responsivo",
+        "WordPress + Elementor",
+        "Home, Sobre, Serviços e Contato",
+        "WhatsApp e formulário",
+        "SEO básico e mobile"
+      ],
+      "allowQuantity": false,
+      "startingAt": true
+    },
+    {
+      "id": "pagina-adicional",
+      "category": "sites",
+      "title": "Página adicional",
+      "price": 100,
+      "billing": "once",
+      "summary": "Para sites institucionais acima das 5 páginas inclusas no pacote base.",
+      "details": [
+        "Layout seguindo o visual do site",
+        "Conteúdo organizado na página",
+        "Ajuste para celular",
+        "Botões e links necessários"
+      ],
+      "allowQuantity": true,
+      "unitLabel": "páginas",
+      "startingAt": false
+    },
+    {
+      "id": "blog-wordpress",
+      "category": "sites",
+      "title": "Blog WordPress",
+      "price": 250,
+      "billing": "once",
+      "summary": "Estrutura de blog organizada para publicar artigos com boa apresentação.",
+      "details": [
+        "Estrutura de blog",
+        "Página de categorias",
+        "Template de post",
+        "Sidebar personalizada",
+        "Organização visual dos artigos"
+      ],
+      "allowQuantity": false,
+      "startingAt": false
+    },
+    {
+      "id": "seo-essencial",
+      "category": "seo",
+      "title": "SEO essencial",
+      "price": 200,
+      "billing": "once",
+      "summary": "Configuração inicial para o site ficar mais organizado para mecanismos de busca.",
+      "details": [
+        "Titles e meta descriptions",
+        "URLs amigáveis",
+        "Headings H1, H2 e H3",
+        "Sitemap XML",
+        "Plugin SEO configurado"
+      ],
+      "allowQuantity": false,
+      "startingAt": false
+    },
+    {
+      "id": "seo-tecnico",
+      "category": "seo",
+      "title": "SEO técnico",
+      "price": 400,
+      "billing": "once",
+      "summary": "Ajustes técnicos para melhorar indexação, estrutura e leitura do site.",
+      "details": [
+        "Ajustes técnicos de indexação",
+        "Otimização estrutural",
+        "Correção básica de SEO técnico",
+        "Search Console configurado",
+        "Melhorias de performance para SEO"
+      ],
+      "allowQuantity": false,
+      "startingAt": false
+    },
+    {
+      "id": "performance",
+      "category": "seo",
+      "title": "Otimização de performance",
+      "price": 250,
+      "billing": "once",
+      "summary": "Melhorias para reduzir lentidão e deixar o site mais leve no mobile.",
+      "details": [
+        "Otimização de imagens",
+        "Configuração de cache",
+        "Redução de lentidão",
+        "Melhorias básicas no PageSpeed",
+        "Ajustes de carregamento mobile"
+      ],
+      "allowQuantity": false,
+      "startingAt": false
+    },
+    {
+      "id": "analytics",
+      "category": "seo",
+      "title": "Google Analytics + Search Console",
+      "price": 150,
+      "billing": "once",
+      "summary": "Integração das ferramentas do Google para acompanhar acessos e presença na busca.",
+      "details": [
+        "Google Analytics integrado",
+        "Search Console configurado",
+        "Verificação de domínio",
+        "Monitoramento básico de acessos"
+      ],
+      "allowQuantity": false,
+      "startingAt": false
+    },
+    {
+      "id": "suporte-30",
+      "category": "suporte",
+      "title": "Suporte por 30 dias",
+      "price": 150,
+      "billing": "once",
+      "summary": "Acompanhamento pós-entrega para correções leves e dúvidas básicas.",
+      "details": [
+        "Correções leves",
+        "Ajustes simples",
+        "Suporte técnico pós-entrega",
+        "Auxílio em dúvidas básicas"
+      ],
+      "allowQuantity": false,
+      "startingAt": false
+    },
+    {
+      "id": "manutencao",
+      "category": "suporte",
+      "title": "Manutenção mensal",
+      "price": 200,
+      "billing": "monthly",
+      "summary": "Cuidado mensal para manter WordPress, plugins e backups em dia.",
+      "details": [
+        "Atualização de plugins",
+        "Atualização do WordPress",
+        "Backup preventivo",
+        "Monitoramento básico",
+        "Pequenos ajustes mensais"
+      ],
+      "allowQuantity": false,
+      "startingAt": false
+    }
+  ],
+  "projects": [
+    {
+      "id": "a-mais-radiologia",
+      "title": "Landing Page A Mais Radiologia",
+      "category": "Landing Page / Saúde / Radiologia Odontológica / Geração de Leads",
+      "status": "Projeto em fase final / ainda não hospedado",
+      "stack": [
+        "WordPress",
+        "Elementor",
+        "Hello Elementor",
+        "Fluent Forms",
+        "Rank Math SEO",
+        "LiteSpeed Cache",
+        "LocalWP",
+        "CSS personalizado"
+      ],
+      "summary": "Landing page moderna e responsiva para uma clínica de radiologia odontológica, criada com foco em captação de leads e solicitação de orçamento para exames.",
+      "workDone": [
+        "Hero com imagem em banner.",
+        "Formulário de orçamento.",
+        "Cards de benefícios.",
+        "Cards de exames.",
+        "CTA final.",
+        "Rodapé com informações de contato e mapa.",
+        "Boas práticas de SEO.",
+        "Responsividade mobile.",
+        "Otimizações visuais para conversão."
+      ],
+      "mainImage": {
+        "src": "/projects/a-mais-radiologia/hero-desktop.png",
+        "alt": "Primeira dobra da landing page A Mais Radiologia com headline, benefícios e CTA."
+      },
+      "gallery": [
+        {
+          "src": "/projects/a-mais-radiologia/form-desktop.png",
+          "alt": "Seção de solicitação de orçamento com formulário desktop.",
+          "label": "Formulário desktop"
+        },
+        {
+          "src": "/projects/a-mais-radiologia/exames-desktop.png",
+          "alt": "Cards de exames odontológicos disponíveis.",
+          "label": "Cards de exames"
+        },
+        {
+          "src": "/projects/a-mais-radiologia/beneficios-desktop.png",
+          "alt": "Seção de benefícios e praticidade da landing page.",
+          "label": "Benefícios"
+        },
+        {
+          "src": "/projects/a-mais-radiologia/contato-desktop.png",
+          "alt": "CTA final com rodapé, contatos e mapa.",
+          "label": "CTA, rodapé e mapa"
+        },
+        {
+          "src": "/projects/a-mais-radiologia/hero-mobile.jpeg",
+          "alt": "Versão mobile do hero da landing page A Mais Radiologia.",
+          "label": "Hero mobile"
+        },
+        {
+          "src": "/projects/a-mais-radiologia/form-mobile.jpeg",
+          "alt": "Versão mobile do formulário de orçamento.",
+          "label": "Formulário mobile"
+        }
+      ],
+      "video": {
+        "src": "/projects/a-mais-radiologia/demo.mp4",
+        "poster": "/projects/a-mais-radiologia/hero-desktop.png",
+        "label": "Vídeo demo da Landing Page A Mais Radiologia"
+      }
+    }
+  ]
+}

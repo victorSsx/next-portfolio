@@ -1,60 +1,17 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState } from "react";
+import { siteData, type BudgetService, type CategoryId, type Project } from "./lib/site-data";
 
-type CategoryId = "todos" | "sites" | "seo" | "suporte";
-type Billing = "once" | "monthly";
 type BudgetChannel = "workana" | "upwork" | "direto";
 type SendStatus = "idle" | "sending" | "sent" | "not-configured" | "error";
 
-type BudgetService = {
-  id: string;
-  category: Exclude<CategoryId, "todos">;
-  title: string;
-  price: number;
-  billing: Billing;
-  summary: string;
-  details?: string[];
-  allowQuantity?: boolean;
-  unitLabel?: string;
-  startingAt?: boolean;
-};
+const categories: { id: CategoryId; label: string }[] = [{ id: "todos", label: "Todos" }, ...siteData.serviceCategories];
 
-type Project = {
-  title: string;
-  category: string;
-  status: string;
-  stack: string[];
-  summary: string;
-  workDone: string[];
-  mainImage: {
-    src: string;
-    alt: string;
-  };
-  gallery: {
-    src: string;
-    alt: string;
-    label: string;
-  }[];
-  video: {
-    src: string;
-    poster: string;
-    label: string;
-  };
-};
-
-const categories: { id: CategoryId; label: string }[] = [
-  { id: "todos", label: "Todos" },
-  { id: "sites", label: "Sites" },
-  { id: "seo", label: "SEO e performance" },
-  { id: "suporte", label: "Suporte" },
-];
-
-const serviceCategoryLabels: Record<Exclude<CategoryId, "todos">, string> = {
-  sites: "Sites WordPress",
-  seo: "SEO e performance",
-  suporte: "Suporte",
-};
+const serviceCategoryLabels = siteData.serviceCategories.reduce<Record<string, string>>((labels, category) => {
+  labels[category.id] = category.label;
+  return labels;
+}, {});
 
 const budgetChannels: { id: BudgetChannel; label: string; description: string; copyable: boolean }[] = [
   {
@@ -77,231 +34,8 @@ const budgetChannels: { id: BudgetChannel; label: string; description: string; c
   },
 ];
 
-const services: BudgetService[] = [
-  {
-    id: "landing-page",
-    category: "sites",
-    title: "Landing page",
-    price: 350,
-    billing: "once",
-    summary: "Página única para apresentar uma oferta, serviço ou campanha com visual profissional.",
-    startingAt: true,
-    details: [
-      "Seção principal com chamada forte",
-      "Layout responsivo",
-      "Botão para WhatsApp ou contato",
-      "Formulário simples",
-      "SEO básico da página",
-    ],
-  },
-  {
-    id: "site-institucional",
-    category: "sites",
-    title: "Site institucional",
-    price: 550,
-    billing: "once",
-    summary: "Até 5 páginas para apresentar marca, serviços e contato.",
-    startingAt: true,
-    details: [
-      "Layout profissional e responsivo",
-      "WordPress + Elementor",
-      "Home, Sobre, Serviços e Contato",
-      "WhatsApp e formulário",
-      "SEO básico e mobile",
-    ],
-  },
-  {
-    id: "pagina-adicional",
-    category: "sites",
-    title: "Página adicional",
-    price: 100,
-    billing: "once",
-    summary: "Para sites institucionais acima das 5 páginas inclusas no pacote base.",
-    allowQuantity: true,
-    unitLabel: "páginas",
-    details: [
-      "Layout seguindo o visual do site",
-      "Conteúdo organizado na página",
-      "Ajuste para celular",
-      "Botões e links necessários",
-    ],
-  },
-  {
-    id: "blog-wordpress",
-    category: "sites",
-    title: "Blog WordPress",
-    price: 250,
-    billing: "once",
-    summary: "Estrutura de blog organizada para publicar artigos com boa apresentação.",
-    details: [
-      "Estrutura de blog",
-      "Página de categorias",
-      "Template de post",
-      "Sidebar personalizada",
-      "Organização visual dos artigos",
-    ],
-  },
-  {
-    id: "seo-essencial",
-    category: "seo",
-    title: "SEO essencial",
-    price: 200,
-    billing: "once",
-    summary: "Configuração inicial para o site ficar mais organizado para mecanismos de busca.",
-    details: [
-      "Titles e meta descriptions",
-      "URLs amigáveis",
-      "Headings H1, H2 e H3",
-      "Sitemap XML",
-      "Plugin SEO configurado",
-    ],
-  },
-  {
-    id: "seo-tecnico",
-    category: "seo",
-    title: "SEO técnico",
-    price: 400,
-    billing: "once",
-    summary: "Ajustes técnicos para melhorar indexação, estrutura e leitura do site.",
-    details: [
-      "Ajustes técnicos de indexação",
-      "Otimização estrutural",
-      "Correção básica de SEO técnico",
-      "Search Console configurado",
-      "Melhorias de performance para SEO",
-    ],
-  },
-  {
-    id: "performance",
-    category: "seo",
-    title: "Otimização de performance",
-    price: 250,
-    billing: "once",
-    summary: "Melhorias para reduzir lentidão e deixar o site mais leve no mobile.",
-    details: [
-      "Otimização de imagens",
-      "Configuração de cache",
-      "Redução de lentidão",
-      "Melhorias básicas no PageSpeed",
-      "Ajustes de carregamento mobile",
-    ],
-  },
-  {
-    id: "analytics",
-    category: "seo",
-    title: "Google Analytics + Search Console",
-    price: 150,
-    billing: "once",
-    summary: "Integração das ferramentas do Google para acompanhar acessos e presença na busca.",
-    details: [
-      "Google Analytics integrado",
-      "Search Console configurado",
-      "Verificação de domínio",
-      "Monitoramento básico de acessos",
-    ],
-  },
-  {
-    id: "suporte-30",
-    category: "suporte",
-    title: "Suporte por 30 dias",
-    price: 150,
-    billing: "once",
-    summary: "Acompanhamento pós-entrega para correções leves e dúvidas básicas.",
-    details: [
-      "Correções leves",
-      "Ajustes simples",
-      "Suporte técnico pós-entrega",
-      "Auxílio em dúvidas básicas",
-    ],
-  },
-  {
-    id: "manutencao",
-    category: "suporte",
-    title: "Manutenção mensal",
-    price: 200,
-    billing: "monthly",
-    summary: "Cuidado mensal para manter WordPress, plugins e backups em dia.",
-    details: [
-      "Atualização de plugins",
-      "Atualização do WordPress",
-      "Backup preventivo",
-      "Monitoramento básico",
-      "Pequenos ajustes mensais",
-    ],
-  },
-];
-
-const projects: Project[] = [
-  {
-    title: "Landing Page A Mais Radiologia",
-    category: "Landing Page / Saúde / Radiologia Odontológica / Geração de Leads",
-    status: "Projeto em fase final / ainda não hospedado",
-    stack: [
-      "WordPress",
-      "Elementor",
-      "Hello Elementor",
-      "Fluent Forms",
-      "Rank Math SEO",
-      "LiteSpeed Cache",
-      "LocalWP",
-      "CSS personalizado",
-    ],
-    summary:
-      "Landing page moderna e responsiva para uma clínica de radiologia odontológica, criada com foco em captação de leads e solicitação de orçamento para exames.",
-    workDone: [
-      "Hero com imagem em banner.",
-      "Formulário de orçamento.",
-      "Cards de benefícios.",
-      "Cards de exames.",
-      "CTA final.",
-      "Rodapé com informações de contato e mapa.",
-      "Boas práticas de SEO.",
-      "Responsividade mobile.",
-      "Otimizações visuais para conversão.",
-    ],
-    mainImage: {
-      src: "/projects/a-mais-radiologia/hero-desktop.png",
-      alt: "Primeira dobra da landing page A Mais Radiologia com headline, benefícios e CTA.",
-    },
-    gallery: [
-      {
-        src: "/projects/a-mais-radiologia/form-desktop.png",
-        alt: "Seção de solicitação de orçamento com formulário desktop.",
-        label: "Formulário desktop",
-      },
-      {
-        src: "/projects/a-mais-radiologia/exames-desktop.png",
-        alt: "Cards de exames odontológicos disponíveis.",
-        label: "Cards de exames",
-      },
-      {
-        src: "/projects/a-mais-radiologia/beneficios-desktop.png",
-        alt: "Seção de benefícios e praticidade da landing page.",
-        label: "Benefícios",
-      },
-      {
-        src: "/projects/a-mais-radiologia/contato-desktop.png",
-        alt: "CTA final com rodapé, contatos e mapa.",
-        label: "CTA, rodapé e mapa",
-      },
-      {
-        src: "/projects/a-mais-radiologia/hero-mobile.jpeg",
-        alt: "Versão mobile do hero da landing page A Mais Radiologia.",
-        label: "Hero mobile",
-      },
-      {
-        src: "/projects/a-mais-radiologia/form-mobile.jpeg",
-        alt: "Versão mobile do formulário de orçamento.",
-        label: "Formulário mobile",
-      },
-    ],
-    video: {
-      src: "/projects/a-mais-radiologia/demo.mp4",
-      poster: "/projects/a-mais-radiologia/hero-desktop.png",
-      label: "Vídeo demo da Landing Page A Mais Radiologia",
-    },
-  },
-];
+const services: BudgetService[] = siteData.services;
+const projects: Project[] = siteData.projects;
 
 const formatCurrency = (value: number) =>
   value.toLocaleString("pt-BR", {
@@ -604,12 +338,18 @@ export default function Home() {
               ×
             </button>
 
-            <div className="project-modal__video">
-              <video controls preload="metadata" poster={activeProject.video.poster} aria-label={activeProject.video.label}>
-                <source src={activeProject.video.src} type="video/mp4" />
-                Seu navegador não suporta vídeo HTML5.
-              </video>
-            </div>
+            {activeProject.video?.src ? (
+              <div className="project-modal__video">
+                <video controls preload="metadata" poster={activeProject.video.poster} aria-label={activeProject.video.label}>
+                  <source src={activeProject.video.src} type="video/mp4" />
+                  Seu navegador não suporta vídeo HTML5.
+                </video>
+              </div>
+            ) : (
+              <div className="project-modal__video">
+                <img src={activeProject.mainImage.src} alt={activeProject.mainImage.alt} />
+              </div>
+            )}
 
             <div className="project-modal__content">
               <div>
@@ -679,7 +419,7 @@ export default function Home() {
               {filteredServices.map((service) => (
                 <article className="service-card" key={service.id}>
                   <div>
-                    <p>{serviceCategoryLabels[service.category]}</p>
+                    <p>{serviceCategoryLabels[service.category] || service.category}</p>
                     <h3>{service.title}</h3>
                     <p>{service.summary}</p>
                     {service.details ? (
