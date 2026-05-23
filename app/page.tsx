@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useMemo, useState } from "react";
 import { siteData, type BudgetService, type CategoryId, type Project } from "./lib/site-data";
@@ -47,7 +47,17 @@ const formatCurrency = (value: number) =>
 const formatServicePrice = (service: BudgetService, value = service.price) =>
   `${service.startingAt ? "A partir de " : ""}${formatCurrency(value)}${service.billing === "monthly" ? "/mês" : ""}`;
 
+// Configuração do Logo Personalizado
+// Se você deseja usar uma imagem própria (SVG, PNG, JPG, etc.), salve o arquivo em public/images/
+// e configure o caminho abaixo (ex: "/images/meu-logo.svg").
+// Se deixar como null, o portfólio tentará automaticamente carregar "/images/logo.svg" ou "/images/logo.png".
+// Se não encontrar nenhum arquivo, usará o vetor ultra-premium padrão como fallback automático.
+const CUSTOM_LOGO_PATH: string | null = null;
+
 export default function Home() {
+  const [logoStage, setLogoStage] = useState<"custom" | "svg" | "png" | "vector">(
+    CUSTOM_LOGO_PATH ? "custom" : "svg"
+  );
   const [activeCategory, setActiveCategory] = useState<CategoryId>("todos");
   const [budgetChannel, setBudgetChannel] = useState<BudgetChannel>("workana");
   const [copyStatus, setCopyStatus] = useState("");
@@ -255,10 +265,54 @@ export default function Home() {
 
         <nav className="topbar" aria-label="Navegação principal">
           <a className="brand-mark" href="#inicio" aria-label="Voltar ao início">
-            <svg viewBox="0 0 64 72" aria-hidden="true" focusable="false">
-              <path d="M9 8 32 63 55 8" />
-              <path d="M26 8 38 38" />
-            </svg>
+            {logoStage === "custom" && (
+              <img
+                src={CUSTOM_LOGO_PATH || ""}
+                alt="Logo Victor"
+                onError={() => setLogoStage("vector")}
+                className="brand-mark__img"
+              />
+            )}
+            {logoStage === "svg" && (
+              <img
+                src="/images/logo.svg"
+                alt="Logo Victor"
+                onError={() => setLogoStage("png")}
+                className="brand-mark__img"
+              />
+            )}
+            {logoStage === "png" && (
+              <img
+                src="/images/logo.png"
+                alt="Logo Victor"
+                onError={() => setLogoStage("vector")}
+                className="brand-mark__img"
+              />
+            )}
+            {logoStage === "vector" && (
+              <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+                <defs>
+                  <linearGradient id="gold-primary" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="#ffd56b" />
+                    <stop offset="50%" stopColor="#c7a447" />
+                    <stop offset="100%" stopColor="#9f741f" />
+                  </linearGradient>
+                  <linearGradient id="gold-secondary" x1="100%" y1="0%" x2="0%" y2="100%">
+                    <stop offset="0%" stopColor="#fff0ca" />
+                    <stop offset="100%" stopColor="#765310" />
+                  </linearGradient>
+                  <filter id="logo-glow" x="-20%" y="-20%" width="140%" height="140%">
+                    <feGaussianBlur stdDeviation="4" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                  </filter>
+                </defs>
+                <circle cx="50" cy="50" r="45" stroke="url(#gold-primary)" strokeWidth="1" strokeDasharray="3 6" opacity="0.3" />
+                <circle cx="50" cy="50" r="40" stroke="url(#gold-primary)" strokeWidth="1.5" opacity="0.15" />
+                <path d="M25 25 L46 72 H52 L31 25 Z" fill="url(#gold-primary)" />
+                <path d="M75 25 L54 72 H48 L69 25 Z" fill="url(#gold-secondary)" />
+                <circle cx="50" cy="72" r="3" fill="#ffd56b" filter="url(#logo-glow)" />
+              </svg>
+            )}
           </a>
           <div className="availability">
             <span aria-hidden="true" />
