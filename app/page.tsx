@@ -4,7 +4,11 @@ import { useMemo, useState } from "react";
 import { siteData, type BudgetService, type CategoryId, type Project } from "./lib/site-data";
 
 type BudgetChannel = "workana" | "upwork" | "direto";
-type SendStatus = "idle" | "sending" | "sent" | "not-configured" | "error";
+type SendStatus = "idle" | "sending" | "sent" | "error";
+
+const WHATSAPP_NUMBER = "5521975990988";
+const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}`;
+const INSTAGRAM_URL = "https://www.instagram.com/__devictor";
 
 const categories: { id: CategoryId; label: string }[] = [{ id: "todos", label: "Todos" }, ...siteData.serviceCategories];
 
@@ -17,20 +21,20 @@ const budgetChannels: { id: BudgetChannel; label: string; description: string; c
   {
     id: "workana",
     label: "Cliente Workana",
-    description: "Gera uma mensagem pronta para copiar no chat da Workana e envia o resumo para seu email.",
+    description: "Gera uma mensagem pronta para o cliente copiar e colar no chat da Workana.",
     copyable: true,
   },
   {
     id: "upwork",
     label: "Cliente Upwork",
-    description: "Gera uma proposta em inglês para copiar no chat da Upwork e envia o resumo para seu email.",
+    description: "Gera uma mensagem em inglês para o cliente copiar e colar no chat da Upwork.",
     copyable: true,
   },
   {
     id: "direto",
     label: "Cliente direto",
-    description: "Envia o pedido de orçamento somente para seu email.",
-    copyable: false,
+    description: "Gera uma mensagem como se o cliente estivesse pedindo orçamento pelo WhatsApp.",
+    copyable: true,
   },
 ];
 
@@ -49,14 +53,12 @@ const formatServicePrice = (service: BudgetService, value = service.price) =>
 
 // Configuração do Logo Personalizado
 // Se você deseja usar uma imagem própria (SVG, PNG, JPG, etc.), salve o arquivo em public/images/
-// e configure o caminho abaixo (ex: "/images/meu-logo.svg").
-// Se deixar como null, o portfólio tentará automaticamente carregar "/images/logo.svg" ou "/images/logo.png".
-// Se não encontrar nenhum arquivo, usará o vetor ultra-premium padrão como fallback automático.
+// e configure o caminho abaixo (ex: "/images/meu-logo.svg"). Se deixar como null, usa o vetor padrão.
 const CUSTOM_LOGO_PATH: string | null = null;
 
 export default function Home() {
   const [logoStage, setLogoStage] = useState<"custom" | "svg" | "png" | "vector">(
-    CUSTOM_LOGO_PATH ? "custom" : "svg"
+    CUSTOM_LOGO_PATH ? "custom" : "vector"
   );
   const [activeCategory, setActiveCategory] = useState<CategoryId>("todos");
   const [budgetChannel, setBudgetChannel] = useState<BudgetChannel>("workana");
@@ -122,16 +124,16 @@ export default function Home() {
 
     if (budgetChannel === "upwork") {
       return [
-        "Hello! Thank you for the opportunity. Here is my suggested investment for this WordPress project:",
+        "Hi Victor! I'd like to request a quote for my project.",
         "",
-        "Selected services:",
+        "I'm interested in the following services:",
         serviceLines,
         "",
-        `Estimated one-time investment: ${formatCurrency(onceTotal)}`,
-        monthlyTotal ? `Monthly investment: ${formatCurrency(monthlyTotal)}` : "",
+        `Estimated one-time investment shown on your portfolio: ${formatCurrency(onceTotal)}`,
+        monthlyTotal ? `Estimated monthly investment: ${formatCurrency(monthlyTotal)}` : "",
         "",
-        "If needed, we can adjust the scope to better fit your available budget.",
-        "I remain available to align the next steps and start as soon as everything is approved.",
+        "Could you please review the scope and confirm the next steps?",
+        "Thank you!",
       ]
         .filter(Boolean)
         .join("\n");
@@ -139,31 +141,32 @@ export default function Home() {
 
     if (budgetChannel === "workana") {
       return [
-        "Olá! Obrigado pela oportunidade. Segue uma sugestão de investimento para o projeto:",
+        "Olá, Victor! Gostaria de solicitar um orçamento para meu projeto.",
         "",
-        "Serviços selecionados:",
+        "Tenho interesse nos seguintes serviços:",
         serviceLines,
         "",
-        `Investimento único estimado: ${formatCurrency(onceTotal)}`,
-        monthlyTotal ? `Investimento mensal: ${formatCurrency(monthlyTotal)}` : "",
+        `Investimento único estimado no seu portfólio: ${formatCurrency(onceTotal)}`,
+        monthlyTotal ? `Investimento mensal estimado: ${formatCurrency(monthlyTotal)}` : "",
         "",
-        "Caso seja necessário, podemos ajustar o escopo para ficar mais adequado ao orçamento disponível.",
-        "Fico à disposição para alinhar os próximos passos e iniciar assim que estiver tudo aprovado.",
+        "Pode revisar o escopo e me orientar sobre os próximos passos?",
+        "Obrigado!",
       ]
         .filter(Boolean)
         .join("\n");
     }
 
     return [
-      "Olá, Victor! Um novo pedido de orçamento foi gerado pelo portfólio.",
+      "Olá, Victor! Gostaria de solicitar um orçamento para meu projeto.",
       "",
-      "Serviços selecionados:",
+      "Tenho interesse nos seguintes serviços:",
       serviceLines,
       "",
-      `Total único estimado: ${formatCurrency(onceTotal)}`,
-      monthlyTotal ? `Mensal: ${formatCurrency(monthlyTotal)}` : "",
+      `Investimento único estimado no seu portfólio: ${formatCurrency(onceTotal)}`,
+      monthlyTotal ? `Investimento mensal estimado: ${formatCurrency(monthlyTotal)}` : "",
       "",
-      "Mensagem pronta para revisão e envio ao cliente.",
+      "Pode revisar o escopo e me orientar sobre os próximos passos?",
+      "Obrigado!",
     ]
       .filter(Boolean)
       .join("\n");
@@ -218,44 +221,22 @@ export default function Home() {
     }
   }
 
-  async function submitBudget() {
+  async function prepareBudgetMessage() {
     setSendStatus("sending");
     setCopyStatus("");
 
-    if (selectedChannel.copyable) {
-      await copyBudgetMessage();
-    }
+    const copied = await copyBudgetMessage();
 
-    try {
-      const response = await fetch("/api/budget", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          channel: budgetChannel,
-          message: budgetMessage,
-          onceTotal,
-          monthlyTotal,
-          items: selectedItems.map(({ service, quantity }) => ({
-            id: service.id,
-            title: service.title,
-            price: service.price,
-            billing: service.billing,
-            quantity,
-          })),
-        }),
-      });
-      const result = (await response.json().catch(() => null)) as { emailSent?: boolean } | null;
-
-      if (!response.ok) {
-        throw new Error("Budget email failed");
-      }
-
-      setSendStatus(result?.emailSent === false ? "not-configured" : "sent");
-    } catch {
+    if (!copied && budgetChannel !== "direto") {
       setSendStatus("error");
+      return;
     }
+
+    if (budgetChannel === "direto") {
+      window.open(`${WHATSAPP_URL}?text=${encodeURIComponent(budgetMessage)}`, "_blank", "noopener,noreferrer");
+    }
+
+    setSendStatus("sent");
   }
 
   return (
@@ -592,24 +573,23 @@ export default function Home() {
 
             {copyStatus ? <p className="budget-status">{copyStatus}</p> : null}
 
-            <button className="button button--primary budget-panel__cta" disabled={sendStatus === "sending"} onClick={submitBudget} type="button">
+            <button className="button button--primary budget-panel__cta" disabled={sendStatus === "sending"} onClick={prepareBudgetMessage} type="button">
               {sendStatus === "sending"
-                ? "Enviando..."
-                : selectedChannel.copyable
-                  ? "Copiar e enviar para meu email"
-                  : "Enviar para meu email"}
+                ? "Preparando..."
+                : budgetChannel === "direto"
+                  ? "Copiar e abrir WhatsApp"
+                  : "Copiar mensagem"}
               <span aria-hidden="true">-&gt;</span>
             </button>
 
-            {sendStatus === "sent" ? <p className="budget-status">Orçamento enviado para seu email.</p> : null}
-            {sendStatus === "not-configured" ? (
-              <p className="budget-status budget-status--warning">
-                A mensagem foi gerada, mas o envio automático ainda precisa das variáveis de email na Vercel.
+            {sendStatus === "sent" ? (
+              <p className="budget-status">
+                {budgetChannel === "direto" ? "Mensagem copiada e WhatsApp aberto." : "Mensagem copiada para o chat."}
               </p>
             ) : null}
             {sendStatus === "error" ? (
               <p className="budget-status budget-status--warning">
-                Não consegui enviar automaticamente. Confira a configuração de email na Vercel.
+                Não consegui copiar automaticamente. Selecione o texto e copie manualmente.
               </p>
             ) : null}
           </aside>
@@ -644,9 +624,14 @@ export default function Home() {
         <div>
           <p className="eyebrow">Contato</p>
           <h2>Seu projeto pode ser a próxima história de sucesso.</h2>
-          <a className="button button--primary" href="mailto:victorspires.dev@gmail.com">
-            Falar sobre projeto <span aria-hidden="true">-&gt;</span>
-          </a>
+          <div className="hero__actions contact__actions">
+            <a className="button button--primary" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
+              WhatsApp <span aria-hidden="true">-&gt;</span>
+            </a>
+            <a className="button button--ghost" href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
+              Instagram <span aria-hidden="true">-&gt;</span>
+            </a>
+          </div>
         </div>
       </section>
     </main>
