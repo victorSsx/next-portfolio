@@ -36,7 +36,7 @@ export async function POST(request: Request) {
   }
 
   const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.BUDGET_TO_EMAIL || "contato@dunkarley.dev";
+  const to = process.env.BUDGET_TO_EMAIL || "victorspires.dev@gmail.com";
   const from = process.env.RESEND_FROM_EMAIL || "Portfolio <onboarding@resend.dev>";
   const channel = payload.channel || "direto";
   const subject = `Novo orçamento - ${channelLabels[channel] || channel}`;

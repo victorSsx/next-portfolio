@@ -644,7 +644,7 @@ export default function Home() {
         <div>
           <p className="eyebrow">Contato</p>
           <h2>Seu projeto pode ser a próxima história de sucesso.</h2>
-          <a className="button button--primary" href="mailto:contato@dunkarley.dev">
+          <a className="button button--primary" href="mailto:victorspires.dev@gmail.com">
             Falar sobre projeto <span aria-hidden="true">-&gt;</span>
           </a>
         </div>
