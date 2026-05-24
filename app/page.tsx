@@ -563,11 +563,8 @@ export default function Home() {
 
             {selectedChannel.copyable ? (
               <div className="budget-message">
-                <label htmlFor="budget-message">Mensagem para copiar</label>
+                <label htmlFor="budget-message">Mensagem gerada</label>
                 <textarea id="budget-message" readOnly value={budgetMessage} />
-                <button type="button" onClick={copyBudgetMessage}>
-                  Copiar mensagem
-                </button>
               </div>
             ) : null}
 
