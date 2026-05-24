@@ -114,18 +114,15 @@ export default function Home() {
             const priceText = service.startingAt
               ? `a partir de ${formatCurrency(service.price * quantity)}${suffix}`
               : `${formatCurrency(service.price * quantity)}${suffix}`;
-            const detailsText = service.details?.length
-              ? `\n  Inclui: ${service.details.join("; ")}`
-              : "";
 
-            return `- ${service.title} (${quantityText}): ${priceText}${detailsText}`;
+            return `- ${service.title} (${quantityText}): ${priceText}`;
           })
           .join("\n")
       : "- Ainda não selecionei serviços.";
 
     if (budgetChannel === "upwork") {
       return [
-        "Hello! Here is my suggested scope and investment for this WordPress project:",
+        "Hello! Thank you for the opportunity. Here is my suggested investment for this WordPress project:",
         "",
         "Selected services:",
         serviceLines,
@@ -133,7 +130,8 @@ export default function Home() {
         `Estimated one-time investment: ${formatCurrency(onceTotal)}`,
         monthlyTotal ? `Monthly investment: ${formatCurrency(monthlyTotal)}` : "",
         "",
-        "If we need to adapt the budget, we can remove optional items and keep the essential scope first.",
+        "If needed, we can adjust the scope to better fit your available budget.",
+        "I remain available to align the next steps and start as soon as everything is approved.",
       ]
         .filter(Boolean)
         .join("\n");
@@ -141,7 +139,7 @@ export default function Home() {
 
     if (budgetChannel === "workana") {
       return [
-        "Olá! Segue uma sugestão de orçamento para o projeto no Workana:",
+        "Olá! Obrigado pela oportunidade. Segue uma sugestão de investimento para o projeto:",
         "",
         "Serviços selecionados:",
         serviceLines,
@@ -149,20 +147,23 @@ export default function Home() {
         `Investimento único estimado: ${formatCurrency(onceTotal)}`,
         monthlyTotal ? `Investimento mensal: ${formatCurrency(monthlyTotal)}` : "",
         "",
-        "Caso seja necessário adequar ao orçamento, podemos remover serviços opcionais e manter primeiro o escopo essencial.",
+        "Caso seja necessário, podemos ajustar o escopo para ficar mais adequado ao orçamento disponível.",
+        "Fico à disposição para alinhar os próximos passos e iniciar assim que estiver tudo aprovado.",
       ]
         .filter(Boolean)
         .join("\n");
     }
 
     return [
-      "Novo pedido de orçamento pelo portfólio:",
+      "Olá, Victor! Um novo pedido de orçamento foi gerado pelo portfólio.",
       "",
       "Serviços selecionados:",
       serviceLines,
       "",
       `Total único estimado: ${formatCurrency(onceTotal)}`,
       monthlyTotal ? `Mensal: ${formatCurrency(monthlyTotal)}` : "",
+      "",
+      "Mensagem pronta para revisão e envio ao cliente.",
     ]
       .filter(Boolean)
       .join("\n");
@@ -448,7 +449,6 @@ export default function Home() {
 
       <section className="section budget" id="orcamento">
         <div className="section__intro section__intro--budget">
-          <p className="eyebrow">Orçamento SaaS</p>
           <h2>Monte um orçamento WordPress em tempo real.</h2>
           <p>Serviços de sites, SEO, performance e suporte com explicação direta para clientes.</p>
         </div>
