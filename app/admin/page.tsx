@@ -1,16 +1,22 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, type ChangeEvent } from "react";
 import {
   siteData as defaultSiteData,
   type BudgetService,
   type Project,
-  type ProjectImage,
   type SiteData,
 } from "../lib/site-data";
 
 type AdminTab = "projects" | "services" | "categories" | "technologies";
-type SaveStatus = "idle" | "loading" | "saving" | "saved" | "error";
+type SaveStatus = "idle" | "loading" | "saving" | "uploading" | "saved" | "error";
+type UploadKind = "main-image" | "gallery" | "video" | "video-poster";
+type UploadPayload = {
+  asset?: {
+    src: string;
+  };
+  error?: string;
+};
 
 const cloneSiteData = () => structuredClone(defaultSiteData) as SiteData;
 
@@ -21,17 +27,6 @@ const linesToArray = (value: string) =>
     .filter(Boolean);
 
 const arrayToLines = (items?: string[]) => (items || []).join("\n");
-
-const galleryToLines = (items?: ProjectImage[]) =>
-  (items || []).map((image) => [image.label || "", image.src, image.alt].join(" | ")).join("\n");
-
-const linesToGallery = (value: string): ProjectImage[] =>
-  linesToArray(value)
-    .map((line) => {
-      const [label = "", src = "", alt = ""] = line.split("|").map((part) => part.trim());
-      return { label, src, alt };
-    })
-    .filter((image) => image.src);
 
 const makeId = (prefix: string) => `${prefix}-${Date.now().toString(36)}`;
 
@@ -70,6 +65,7 @@ export default function AdminPage() {
   const [data, setData] = useState<SiteData>(() => cloneSiteData());
   const [activeProjectId, setActiveProjectId] = useState(defaultSiteData.projects[0]?.id || "");
   const [activeServiceId, setActiveServiceId] = useState(defaultSiteData.services[0]?.id || "");
+  const [uploadingKey, setUploadingKey] = useState("");
 
   const activeProject = useMemo(
     () => data.projects.find((project) => project.id === activeProjectId) || data.projects[0],
@@ -98,6 +94,159 @@ export default function AdminPage() {
   const updateProjectId = (id: string, nextId: string) => {
     updateProject(id, { id: nextId });
     setActiveProjectId(nextId);
+  };
+
+  const updateGalleryItem = (index: number, update: Partial<Project["gallery"][number]>) => {
+    if (!activeProject) {
+      return;
+    }
+
+    updateProject(activeProject.id, {
+      gallery: activeProject.gallery.map((image, imageIndex) => (imageIndex === index ? { ...image, ...update } : image)),
+    });
+  };
+
+  const removeGalleryItem = (index: number) => {
+    if (!activeProject) {
+      return;
+    }
+
+    updateProject(activeProject.id, {
+      gallery: activeProject.gallery.filter((_, imageIndex) => imageIndex !== index),
+    });
+  };
+
+  const uploadFile = async (project: Project, file: File, kind: UploadKind, key: string) => {
+    setStatus("uploading");
+    setMessage("");
+    setUploadingKey(key);
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("kind", kind);
+    formData.append("projectId", project.id);
+
+    try {
+      const response = await fetch("/api/admin/upload", {
+        method: "POST",
+        headers: {
+          "x-admin-password": password,
+        },
+        body: formData,
+      });
+      const payload = (await response.json()) as UploadPayload;
+
+      if (!response.ok || !payload.asset?.src) {
+        throw new Error(payload.error || "Nao foi possivel enviar o arquivo.");
+      }
+
+      setStatus("saved");
+      setMessage("Arquivo enviado. Revise o projeto e clique em Salvar alteracoes.");
+      return payload.asset.src;
+    } catch (error) {
+      setStatus("error");
+      setMessage(error instanceof Error ? error.message : "Nao foi possivel enviar o arquivo.");
+      return null;
+    } finally {
+      setUploadingKey("");
+    }
+  };
+
+  const uploadMainImage = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (!file || !activeProject) {
+      return;
+    }
+
+    const src = await uploadFile(activeProject, file, "main-image", "main-image");
+
+    if (src) {
+      updateProject(activeProject.id, {
+        mainImage: {
+          src,
+          alt: activeProject.mainImage.alt || `${activeProject.title} - imagem principal`,
+        },
+      });
+    }
+
+    event.target.value = "";
+  };
+
+  const uploadVideo = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (!file || !activeProject) {
+      return;
+    }
+
+    const src = await uploadFile(activeProject, file, "video", "video");
+
+    if (src) {
+      updateProject(activeProject.id, {
+        video: {
+          src,
+          poster: activeProject.video?.poster || activeProject.mainImage.src,
+          label: activeProject.video?.label || `Video demo de ${activeProject.title}`,
+        },
+      });
+    }
+
+    event.target.value = "";
+  };
+
+  const uploadVideoPoster = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+
+    if (!file || !activeProject) {
+      return;
+    }
+
+    const src = await uploadFile(activeProject, file, "video-poster", "video-poster");
+
+    if (src) {
+      updateProject(activeProject.id, {
+        video: {
+          src: activeProject.video?.src || "",
+          poster: src,
+          label: activeProject.video?.label || `Video demo de ${activeProject.title}`,
+        },
+      });
+    }
+
+    event.target.value = "";
+  };
+
+  const uploadGalleryImage = async (event: ChangeEvent<HTMLInputElement>, index?: number) => {
+    const file = event.target.files?.[0];
+
+    if (!file || !activeProject) {
+      return;
+    }
+
+    const isReplacing = typeof index === "number";
+    const src = await uploadFile(activeProject, file, "gallery", isReplacing ? `gallery-${index}` : "gallery-new");
+
+    if (src) {
+      if (isReplacing) {
+        updateProject(activeProject.id, {
+          gallery: activeProject.gallery.map((image, imageIndex) => (imageIndex === index ? { ...image, src } : image)),
+        });
+      } else {
+        updateProject(activeProject.id, {
+          gallery: [
+            ...activeProject.gallery,
+            {
+              src,
+              alt: `${activeProject.title} - print do projeto`,
+              label: `Print ${activeProject.gallery.length + 1}`,
+            },
+          ],
+        });
+      }
+    }
+
+    event.target.value = "";
   };
 
   const updateServiceId = (id: string, nextId: string) => {
@@ -160,9 +309,27 @@ export default function AdminPage() {
       <main className="admin-page admin-page--login">
         <section className="admin-login" aria-labelledby="admin-login-title">
           <div className="admin-login__mark" aria-hidden="true">
-            <svg viewBox="0 0 64 72" focusable="false">
-              <path d="M9 8 32 63 55 8" />
-              <path d="M26 8 38 38" />
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false">
+              <defs>
+                <linearGradient id="admin-gold-primary" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#ffd56b" />
+                  <stop offset="50%" stopColor="#c7a447" />
+                  <stop offset="100%" stopColor="#9f741f" />
+                </linearGradient>
+                <linearGradient id="admin-gold-secondary" x1="100%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#fff0ca" />
+                  <stop offset="100%" stopColor="#765310" />
+                </linearGradient>
+                <filter id="admin-logo-glow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
+              <circle cx="50" cy="50" r="45" stroke="url(#admin-gold-primary)" strokeWidth="1" strokeDasharray="3 6" opacity="0.3" />
+              <circle cx="50" cy="50" r="40" stroke="url(#admin-gold-primary)" strokeWidth="1.5" opacity="0.15" />
+              <path d="M25 25 L46 72 H52 L31 25 Z" fill="url(#admin-gold-primary)" />
+              <path d="M75 25 L54 72 H48 L69 25 Z" fill="url(#admin-gold-secondary)" />
+              <circle cx="50" cy="72" r="3" fill="#ffd56b" filter="url(#admin-logo-glow)" />
             </svg>
           </div>
           <p className="eyebrow">Acesso privado</p>
@@ -221,8 +388,8 @@ export default function AdminPage() {
           <a className="admin-link" href="/">
             Ver site
           </a>
-          <button className="button button--primary" disabled={status === "saving"} onClick={saveData} type="button">
-            {status === "saving" ? "Salvando..." : "Salvar alterações"}
+          <button className="button button--primary" disabled={status === "saving" || status === "uploading"} onClick={saveData} type="button">
+            {status === "saving" ? "Salvando..." : status === "uploading" ? "Enviando arquivo..." : "Salvar alterações"}
           </button>
         </div>
       </header>
@@ -293,58 +460,120 @@ export default function AdminPage() {
                 <textarea value={activeProject.summary} onChange={(event) => updateProject(activeProject.id, { summary: event.target.value })} />
               </label>
 
-              <div className="admin-form__grid">
-                <label>
-                  Imagem principal
-                  <input
-                    value={activeProject.mainImage.src}
-                    onChange={(event) =>
-                      updateProject(activeProject.id, { mainImage: { ...activeProject.mainImage, src: event.target.value } })
-                    }
-                  />
-                </label>
-                <label>
-                  Alt da imagem
-                  <input
-                    value={activeProject.mainImage.alt}
-                    onChange={(event) =>
-                      updateProject(activeProject.id, { mainImage: { ...activeProject.mainImage, alt: event.target.value } })
-                    }
-                  />
-                </label>
-                <label>
-                  Vídeo demo
-                  <input
-                    value={activeProject.video?.src || ""}
-                    onChange={(event) =>
-                      updateProject(activeProject.id, {
-                        video: event.target.value
-                          ? {
-                              src: event.target.value,
+              <section className="admin-project-section">
+                <div className="admin-section-heading">
+                  <div>
+                    <p className="eyebrow">Midia</p>
+                    <h2>Imagem principal e video</h2>
+                  </div>
+                  <p>Escolha os arquivos do computador. O painel preenche o caminho automaticamente.</p>
+                </div>
+
+                <div className="admin-media-grid">
+                  <article className="admin-media-card">
+                    <div className="admin-media-preview">
+                      {activeProject.mainImage.src ? (
+                        <img src={activeProject.mainImage.src} alt={activeProject.mainImage.alt || activeProject.title} />
+                      ) : (
+                        <span>Sem imagem principal</span>
+                      )}
+                    </div>
+                    <label className="admin-upload-button">
+                      {uploadingKey === "main-image" ? "Enviando..." : "Enviar imagem principal"}
+                      <input accept="image/*" disabled={status === "uploading"} onChange={uploadMainImage} type="file" />
+                    </label>
+                    <label>
+                      Texto alternativo
+                      <input
+                        value={activeProject.mainImage.alt}
+                        onChange={(event) =>
+                          updateProject(activeProject.id, { mainImage: { ...activeProject.mainImage, alt: event.target.value } })
+                        }
+                        placeholder="Descreva a imagem para acessibilidade"
+                      />
+                    </label>
+                    <details className="admin-path">
+                      <summary>Editar caminho manualmente</summary>
+                      <input
+                        value={activeProject.mainImage.src}
+                        onChange={(event) =>
+                          updateProject(activeProject.id, { mainImage: { ...activeProject.mainImage, src: event.target.value } })
+                        }
+                        placeholder="/projects/meu-projeto/imagem.png"
+                      />
+                    </details>
+                  </article>
+
+                  <article className="admin-media-card">
+                    <div className="admin-media-preview admin-media-preview--video">
+                      {activeProject.video?.src ? (
+                        <video controls preload="metadata" poster={activeProject.video.poster}>
+                          <source src={activeProject.video.src} />
+                        </video>
+                      ) : (
+                        <span>Sem video demo</span>
+                      )}
+                    </div>
+                    <div className="admin-media-actions">
+                      <label className="admin-upload-button">
+                        {uploadingKey === "video" ? "Enviando..." : "Enviar video"}
+                        <input accept="video/mp4,video/webm,video/quicktime" disabled={status === "uploading"} onChange={uploadVideo} type="file" />
+                      </label>
+                      <label className="admin-upload-button admin-upload-button--ghost">
+                        {uploadingKey === "video-poster" ? "Enviando..." : "Capa do video"}
+                        <input accept="image/*" disabled={status === "uploading"} onChange={uploadVideoPoster} type="file" />
+                      </label>
+                    </div>
+                    <label>
+                      Titulo do video
+                      <input
+                        value={activeProject.video?.label || ""}
+                        onChange={(event) =>
+                          updateProject(activeProject.id, {
+                            video: {
+                              src: activeProject.video?.src || "",
                               poster: activeProject.video?.poster || activeProject.mainImage.src,
-                              label: activeProject.video?.label || `Vídeo demo de ${activeProject.title}`,
-                            }
-                          : undefined,
-                      })
-                    }
-                  />
-                </label>
-                <label>
-                  Poster do vídeo
-                  <input
-                    value={activeProject.video?.poster || ""}
-                    onChange={(event) =>
-                      updateProject(activeProject.id, {
-                        video: {
-                          src: activeProject.video?.src || "",
-                          poster: event.target.value,
-                          label: activeProject.video?.label || `Vídeo demo de ${activeProject.title}`,
-                        },
-                      })
-                    }
-                  />
-                </label>
-              </div>
+                              label: event.target.value,
+                            },
+                          })
+                        }
+                        placeholder={`Video demo de ${activeProject.title}`}
+                      />
+                    </label>
+                    <details className="admin-path">
+                      <summary>Editar caminhos manualmente</summary>
+                      <input
+                        value={activeProject.video?.src || ""}
+                        onChange={(event) =>
+                          updateProject(activeProject.id, {
+                            video: event.target.value
+                              ? {
+                                  src: event.target.value,
+                                  poster: activeProject.video?.poster || activeProject.mainImage.src,
+                                  label: activeProject.video?.label || `Video demo de ${activeProject.title}`,
+                                }
+                              : undefined,
+                          })
+                        }
+                        placeholder="/projects/meu-projeto/demo.mp4"
+                      />
+                      <input
+                        value={activeProject.video?.poster || ""}
+                        onChange={(event) =>
+                          updateProject(activeProject.id, {
+                            video: {
+                              src: activeProject.video?.src || "",
+                              poster: event.target.value,
+                              label: activeProject.video?.label || `Video demo de ${activeProject.title}`,
+                            },
+                          })
+                        }
+                        placeholder="/projects/meu-projeto/capa.png"
+                      />
+                    </details>
+                  </article>
+                </div>
+              </section>
 
               <label>
                 Tecnologias
@@ -362,13 +591,57 @@ export default function AdminPage() {
                 />
               </label>
 
-              <label>
-                Galeria
-                <textarea
-                  value={galleryToLines(activeProject.gallery)}
-                  onChange={(event) => updateProject(activeProject.id, { gallery: linesToGallery(event.target.value) })}
-                />
-              </label>
+              <section className="admin-project-section">
+                <div className="admin-section-heading">
+                  <div>
+                    <p className="eyebrow">Galeria</p>
+                    <h2>Prints do projeto</h2>
+                  </div>
+                  <label className="admin-upload-button">
+                    {uploadingKey === "gallery-new" ? "Enviando..." : "+ Adicionar print"}
+                    <input accept="image/*" disabled={status === "uploading"} onChange={(event) => uploadGalleryImage(event)} type="file" />
+                  </label>
+                </div>
+
+                {activeProject.gallery.length ? (
+                  <div className="admin-gallery-editor">
+                    {activeProject.gallery.map((image, index) => (
+                      <article className="admin-gallery-item" key={`${image.src}-${index}`}>
+                        <div className="admin-gallery-thumb">
+                          {image.src ? <img src={image.src} alt={image.alt || image.label || activeProject.title} /> : <span>Sem imagem</span>}
+                        </div>
+                        <label className="admin-upload-button admin-upload-button--ghost">
+                          {uploadingKey === `gallery-${index}` ? "Enviando..." : "Trocar imagem"}
+                          <input accept="image/*" disabled={status === "uploading"} onChange={(event) => uploadGalleryImage(event, index)} type="file" />
+                        </label>
+                        <label>
+                          Legenda
+                          <input value={image.label || ""} onChange={(event) => updateGalleryItem(index, { label: event.target.value })} />
+                        </label>
+                        <label>
+                          Texto alternativo
+                          <input value={image.alt || ""} onChange={(event) => updateGalleryItem(index, { alt: event.target.value })} />
+                        </label>
+                        <details className="admin-path">
+                          <summary>Editar caminho manualmente</summary>
+                          <input value={image.src} onChange={(event) => updateGalleryItem(index, { src: event.target.value })} />
+                        </details>
+                        <button className="admin-danger" onClick={() => removeGalleryItem(index)} type="button">
+                          Remover print
+                        </button>
+                      </article>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="admin-empty">
+                    <p>Nenhum print cadastrado ainda.</p>
+                    <label className="admin-upload-button">
+                      Enviar primeiro print
+                      <input accept="image/*" disabled={status === "uploading"} onChange={(event) => uploadGalleryImage(event)} type="file" />
+                    </label>
+                  </div>
+                )}
+              </section>
 
               <button
                 className="admin-danger"
