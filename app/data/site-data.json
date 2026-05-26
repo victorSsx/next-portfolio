@@ -262,6 +262,24 @@
         "poster": "/projects/a-mais-radiologia/hero-desktop.png",
         "label": "Vídeo demo da Landing Page A Mais Radiologia"
       }
+    },
+    {
+      "id": "projeto-mplqmvz4",
+      "title": "FisioVida Landing Page",
+      "category": "Site institucional / Landing page / Saúde e fisioterapia",
+      "status": "Projeto Protótipo",
+      "stack": [
+        "WordPress, Hello Elementor Child Theme, PHP, HTML, CSS, JavaScript, AJAX WordPress, wp_mail"
+      ],
+      "summary": "Landing page responsiva para clínica de fisioterapia, com apresentação dos serviços, benefícios, depoimentos, chamada para WhatsApp e formulário de contato.",
+      "workDone": [
+        "Conversão do projeto original em Next.js para WordPress. Criei um tema filho do Hello Elementor, portei as seções da landing, adaptei o visual para CSS nativo, implementei menu mobile, botão fixo de WhatsApp, formulário via admin-ajax.php, carregamento de assets e ativação no WordPress local."
+      ],
+      "mainImage": {
+        "src": "/projects/admin-uploads/projeto-mplqmvz4/mplw9sze-captura-de-tela-2026-05-25-201844.png",
+        "alt": "FisioVida Landing Page - imagem principal"
+      },
+      "gallery": []
     }
   ]
 }
