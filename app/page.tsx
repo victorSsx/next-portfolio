@@ -106,24 +106,34 @@ export default function Home() {
   const selectedChannel = budgetChannels.find((channel) => channel.id === budgetChannel) || budgetChannels[0];
 
   const budgetMessage = useMemo(() => {
-    const serviceLines = selectedItems.length
-      ? selectedItems
-          .map(({ service, quantity }) => {
-            const suffix = service.billing === "monthly" ? "/mês" : "";
-            const quantityText = service.allowQuantity
-              ? `${quantity} ${service.unitLabel || "unidades"}`
-              : "1 serviço";
+    const hasSelectedServices = selectedItems.length > 0;
+    const serviceLines = selectedItems
+      .map(({ service, quantity }) => {
+        const suffix = service.billing === "monthly" ? "/mês" : "";
+        const quantityText = service.allowQuantity
+          ? `${quantity} ${service.unitLabel || "unidades"}`
+          : "1 serviço";
 
-            const priceText = service.startingAt
-              ? `a partir de ${formatCurrency(service.price * quantity)}${suffix}`
-              : `${formatCurrency(service.price * quantity)}${suffix}`;
+        const priceText = service.startingAt
+          ? `a partir de ${formatCurrency(service.price * quantity)}${suffix}`
+          : `${formatCurrency(service.price * quantity)}${suffix}`;
 
-            return `- ${service.title} (${quantityText}): ${priceText}`;
-          })
-          .join("\n")
-      : "- Ainda não selecionei serviços.";
+        return `- ${service.title} (${quantityText}): ${priceText}`;
+      })
+      .join("\n");
 
     if (budgetChannel === "upwork") {
+      if (!hasSelectedServices) {
+        return [
+          "Hi Victor! I'd like to request a quote for my project.",
+          "",
+          "I haven't selected a specific service yet, but I'd like to explain what I need and get your recommendation.",
+          "",
+          "Could you please help me define the best scope and next steps?",
+          "Thank you!",
+        ].join("\n");
+      }
+
       return [
         "Hi Victor! I'd like to request a quote for my project.",
         "",
@@ -141,6 +151,17 @@ export default function Home() {
     }
 
     if (budgetChannel === "workana") {
+      if (!hasSelectedServices) {
+        return [
+          "Olá, Victor! Gostaria de solicitar um orçamento para meu projeto.",
+          "",
+          "Ainda não defini exatamente quais serviços vou precisar, mas gostaria de explicar minha ideia e receber sua recomendação.",
+          "",
+          "Pode me ajudar a definir o melhor escopo e os próximos passos?",
+          "Obrigado!",
+        ].join("\n");
+      }
+
       return [
         "Olá, Victor! Gostaria de solicitar um orçamento para meu projeto.",
         "",
@@ -155,6 +176,17 @@ export default function Home() {
       ]
         .filter(Boolean)
         .join("\n");
+    }
+
+    if (!hasSelectedServices) {
+      return [
+        "Olá, Victor! Gostaria de solicitar um orçamento para meu projeto.",
+        "",
+        "Ainda não defini exatamente quais serviços vou precisar, mas gostaria de explicar minha ideia e receber sua recomendação.",
+        "",
+        "Pode me ajudar a definir o melhor escopo e os próximos passos?",
+        "Obrigado!",
+      ].join("\n");
     }
 
     return [
