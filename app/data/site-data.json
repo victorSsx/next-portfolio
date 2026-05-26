@@ -261,7 +261,14 @@
         "src": "/projects/a-mais-radiologia/demo.mp4",
         "poster": "/projects/a-mais-radiologia/hero-desktop.png",
         "label": "Vídeo demo da Landing Page A Mais Radiologia"
-      }
+      },
+      "videos": [
+        {
+          "src": "/projects/a-mais-radiologia/demo.mp4",
+          "poster": "/projects/a-mais-radiologia/hero-desktop.png",
+          "label": "Vídeo demo da Landing Page A Mais Radiologia"
+        }
+      ]
     },
     {
       "id": "projeto-mplqmvz4",
@@ -279,7 +286,8 @@
         "src": "/projects/admin-uploads/projeto-mplqmvz4/mplw9sze-captura-de-tela-2026-05-25-201844.png",
         "alt": "FisioVida Landing Page - imagem principal"
       },
-      "gallery": []
+      "gallery": [],
+      "videos": []
     }
   ]
 }
