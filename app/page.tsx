@@ -55,7 +55,7 @@ const formatServicePrice = (service: BudgetService, value = service.price) =>
 // Configuração do Logo Personalizado
 // Se você deseja usar uma imagem própria (SVG, PNG, JPG, etc.), salve o arquivo em public/images/
 // e configure o caminho abaixo (ex: "/images/meu-logo.svg"). Se deixar como null, usa o vetor padrão.
-const CUSTOM_LOGO_PATH: string | null = "/images/logo-victor-ai.png";
+const CUSTOM_LOGO_PATH: string | null = "/images/logo-victor-ai-transparent.png";
 
 export default function Home() {
   const [logoStage, setLogoStage] = useState<"custom" | "svg" | "png" | "vector">(
