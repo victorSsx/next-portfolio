@@ -497,12 +497,37 @@ a {
   background: #050606;
 }
 
+.project-modal__videos {
+  display: grid;
+  gap: 12px;
+  background: #050606;
+}
+
+.project-modal__videos .project-modal__video {
+  aspect-ratio: auto;
+  margin: 0;
+}
+
 .project-modal__video video,
 .project-modal__video img {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
+}
+
+.project-modal__videos .project-modal__video video {
+  aspect-ratio: 16 / 9;
+  height: auto;
+  object-fit: contain;
+}
+
+.project-modal__video figcaption {
+  padding: 10px 14px 12px;
+  border-top: 1px solid rgba(245, 242, 236, 0.1);
+  color: rgba(245, 242, 236, 0.68);
+  font-size: 13px;
+  font-weight: 850;
 }
 
 .project-modal__content,
@@ -1308,6 +1333,47 @@ a {
   gap: 10px;
 }
 
+.admin-video-manager {
+  align-content: start;
+}
+
+.admin-video-heading {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.admin-video-heading strong {
+  display: block;
+  color: var(--white);
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.admin-video-heading span {
+  display: block;
+  margin-top: 3px;
+  color: rgba(245, 242, 236, 0.58);
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.admin-video-list {
+  display: grid;
+  gap: 14px;
+}
+
+.admin-video-item {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid rgba(245, 242, 236, 0.1);
+  border-radius: 8px;
+  background: rgba(245, 242, 236, 0.035);
+}
+
 .admin-form .admin-upload-button {
   min-height: 42px;
   display: inline-flex;
@@ -1489,6 +1555,11 @@ a {
 
   .admin-section-heading {
     align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .admin-video-heading {
+    align-items: stretch;
     flex-direction: column;
   }
 

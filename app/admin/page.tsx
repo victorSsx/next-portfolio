@@ -5,6 +5,7 @@ import {
   siteData as defaultSiteData,
   type BudgetService,
   type Project,
+  type ProjectVideo,
   type SiteData,
 } from "../lib/site-data";
 
@@ -29,6 +30,26 @@ const linesToArray = (value: string) =>
 const arrayToLines = (items?: string[]) => (items || []).join("\n");
 
 const makeId = (prefix: string) => `${prefix}-${Date.now().toString(36)}`;
+const maxImageUploadBytes = 8 * 1024 * 1024;
+const maxVideoUploadBytes = 4 * 1024 * 1024;
+const uploadTimeoutMs = 60000;
+
+const formatFileSize = (bytes: number) => {
+  const mb = bytes / 1024 / 1024;
+  return `${mb.toLocaleString("pt-BR", { maximumFractionDigits: mb >= 10 ? 0 : 1 })} MB`;
+};
+
+const getProjectVideos = (project?: Project | null): ProjectVideo[] => {
+  if (!project) {
+    return [];
+  }
+
+  if (project.videos?.length) {
+    return project.videos;
+  }
+
+  return project.video?.src ? [project.video] : [];
+};
 
 const createProject = (): Project => ({
   id: makeId("projeto"),
@@ -66,6 +87,7 @@ export default function AdminPage() {
   const [activeProjectId, setActiveProjectId] = useState(defaultSiteData.projects[0]?.id || "");
   const [activeServiceId, setActiveServiceId] = useState(defaultSiteData.services[0]?.id || "");
   const [uploadingKey, setUploadingKey] = useState("");
+  const [assetPreviews, setAssetPreviews] = useState<Record<string, string>>({});
 
   const activeProject = useMemo(
     () => data.projects.find((project) => project.id === activeProjectId) || data.projects[0],
@@ -76,6 +98,14 @@ export default function AdminPage() {
     () => data.services.find((service) => service.id === activeServiceId) || data.services[0],
     [activeServiceId, data.services]
   );
+  const activeProjectVideos = useMemo(() => getProjectVideos(activeProject), [activeProject]);
+
+  const previewFor = (src?: string) => (src ? assetPreviews[src] || src : "");
+
+  const rememberPreview = (src: string, file: File) => {
+    const previewUrl = URL.createObjectURL(file);
+    setAssetPreviews((current) => ({ ...current, [src]: previewUrl }));
+  };
 
   const updateProject = (id: string, update: Partial<Project>) => {
     setData((current) => ({
@@ -94,6 +124,35 @@ export default function AdminPage() {
   const updateProjectId = (id: string, nextId: string) => {
     updateProject(id, { id: nextId });
     setActiveProjectId(nextId);
+  };
+
+  const updateProjectVideos = (id: string, videos: ProjectVideo[]) => {
+    updateProject(id, {
+      video: videos[0],
+      videos,
+    });
+  };
+
+  const updateVideoItem = (index: number, update: Partial<ProjectVideo>) => {
+    if (!activeProject) {
+      return;
+    }
+
+    updateProjectVideos(
+      activeProject.id,
+      activeProjectVideos.map((video, videoIndex) => (videoIndex === index ? { ...video, ...update } : video))
+    );
+  };
+
+  const removeVideoItem = (index: number) => {
+    if (!activeProject) {
+      return;
+    }
+
+    updateProjectVideos(
+      activeProject.id,
+      activeProjectVideos.filter((_, videoIndex) => videoIndex !== index)
+    );
   };
 
   const updateGalleryItem = (index: number, update: Partial<Project["gallery"][number]>) => {
@@ -117,14 +176,30 @@ export default function AdminPage() {
   };
 
   const uploadFile = async (project: Project, file: File, kind: UploadKind, key: string) => {
+    const isVideo = kind === "video";
+    const maxSize = isVideo ? maxVideoUploadBytes : maxImageUploadBytes;
+
+    if (file.size > maxSize) {
+      setStatus("error");
+      setMessage(
+        isVideo
+          ? `Esse video tem ${formatFileSize(file.size)}. Para upload direto na Vercel, envie um MP4 comprimido de ate ${formatFileSize(maxSize)}.`
+          : `Essa imagem tem ${formatFileSize(file.size)}. Envie uma imagem de ate ${formatFileSize(maxSize)}.`
+      );
+      setUploadingKey("");
+      return null;
+    }
+
     setStatus("uploading");
-    setMessage("");
+    setMessage("Enviando arquivo. Aguarde alguns segundos.");
     setUploadingKey(key);
 
     const formData = new FormData();
     formData.append("file", file);
     formData.append("kind", kind);
     formData.append("projectId", project.id);
+    const controller = new AbortController();
+    const timeout = window.setTimeout(() => controller.abort(), uploadTimeoutMs);
 
     try {
       const response = await fetch("/api/admin/upload", {
@@ -133,21 +208,36 @@ export default function AdminPage() {
           "x-admin-password": password,
         },
         body: formData,
+        signal: controller.signal,
       });
-      const payload = (await response.json()) as UploadPayload;
+      const responseText = await response.text();
+      let payload: UploadPayload = {};
+
+      try {
+        payload = responseText ? (JSON.parse(responseText) as UploadPayload) : {};
+      } catch {
+        payload = {};
+      }
 
       if (!response.ok || !payload.asset?.src) {
-        throw new Error(payload.error || "Nao foi possivel enviar o arquivo.");
+        throw new Error(payload.error || responseText || "Nao foi possivel enviar o arquivo.");
       }
 
       setStatus("saved");
-      setMessage("Arquivo enviado. Revise o projeto e clique em Salvar alteracoes.");
+      setMessage("Arquivo enviado. A previa aparece aqui; clique em Salvar alteracoes para publicar no site.");
       return payload.asset.src;
     } catch (error) {
       setStatus("error");
-      setMessage(error instanceof Error ? error.message : "Nao foi possivel enviar o arquivo.");
+      setMessage(
+        error instanceof DOMException && error.name === "AbortError"
+          ? "O upload demorou demais e foi cancelado. Tente um arquivo menor."
+          : error instanceof Error
+            ? error.message
+            : "Nao foi possivel enviar o arquivo."
+      );
       return null;
     } finally {
+      window.clearTimeout(timeout);
       setUploadingKey("");
     }
   };
@@ -162,6 +252,7 @@ export default function AdminPage() {
     const src = await uploadFile(activeProject, file, "main-image", "main-image");
 
     if (src) {
+      rememberPreview(src, file);
       updateProject(activeProject.id, {
         mainImage: {
           src,
@@ -173,45 +264,49 @@ export default function AdminPage() {
     event.target.value = "";
   };
 
-  const uploadVideo = async (event: ChangeEvent<HTMLInputElement>) => {
+  const uploadVideo = async (event: ChangeEvent<HTMLInputElement>, index?: number) => {
     const file = event.target.files?.[0];
 
     if (!file || !activeProject) {
       return;
     }
 
-    const src = await uploadFile(activeProject, file, "video", "video");
+    const isReplacing = typeof index === "number";
+    const src = await uploadFile(activeProject, file, "video", isReplacing ? `video-${index}` : "video-new");
 
     if (src) {
-      updateProject(activeProject.id, {
-        video: {
-          src,
-          poster: activeProject.video?.poster || activeProject.mainImage.src,
-          label: activeProject.video?.label || `Video demo de ${activeProject.title}`,
-        },
-      });
+      rememberPreview(src, file);
+      const nextVideo: ProjectVideo = {
+        src,
+        poster: activeProject.mainImage.src,
+        label: `Video demo ${isReplacing ? index + 1 : activeProjectVideos.length + 1} de ${activeProject.title}`,
+      };
+
+      updateProjectVideos(
+        activeProject.id,
+        isReplacing
+          ? activeProjectVideos.map((video, videoIndex) =>
+              videoIndex === index ? { ...video, src, label: video.label || nextVideo.label, poster: video.poster || nextVideo.poster } : video
+            )
+          : [...activeProjectVideos, nextVideo]
+      );
     }
 
     event.target.value = "";
   };
 
-  const uploadVideoPoster = async (event: ChangeEvent<HTMLInputElement>) => {
+  const uploadVideoPoster = async (event: ChangeEvent<HTMLInputElement>, index: number) => {
     const file = event.target.files?.[0];
 
     if (!file || !activeProject) {
       return;
     }
 
-    const src = await uploadFile(activeProject, file, "video-poster", "video-poster");
+    const src = await uploadFile(activeProject, file, "video-poster", `video-poster-${index}`);
 
     if (src) {
-      updateProject(activeProject.id, {
-        video: {
-          src: activeProject.video?.src || "",
-          poster: src,
-          label: activeProject.video?.label || `Video demo de ${activeProject.title}`,
-        },
-      });
+      rememberPreview(src, file);
+      updateVideoItem(index, { poster: src });
     }
 
     event.target.value = "";
@@ -228,6 +323,7 @@ export default function AdminPage() {
     const src = await uploadFile(activeProject, file, "gallery", isReplacing ? `gallery-${index}` : "gallery-new");
 
     if (src) {
+      rememberPreview(src, file);
       if (isReplacing) {
         updateProject(activeProject.id, {
           gallery: activeProject.gallery.map((image, imageIndex) => (imageIndex === index ? { ...image, src } : image)),
@@ -473,7 +569,7 @@ export default function AdminPage() {
                   <article className="admin-media-card">
                     <div className="admin-media-preview">
                       {activeProject.mainImage.src ? (
-                        <img src={activeProject.mainImage.src} alt={activeProject.mainImage.alt || activeProject.title} />
+                        <img src={previewFor(activeProject.mainImage.src)} alt={activeProject.mainImage.alt || activeProject.title} />
                       ) : (
                         <span>Sem imagem principal</span>
                       )}
@@ -504,73 +600,93 @@ export default function AdminPage() {
                     </details>
                   </article>
 
-                  <article className="admin-media-card">
-                    <div className="admin-media-preview admin-media-preview--video">
-                      {activeProject.video?.src ? (
-                        <video controls preload="metadata" poster={activeProject.video.poster}>
-                          <source src={activeProject.video.src} />
-                        </video>
-                      ) : (
-                        <span>Sem video demo</span>
-                      )}
-                    </div>
-                    <div className="admin-media-actions">
+                  <article className="admin-media-card admin-video-manager">
+                    <div className="admin-video-heading">
+                      <div>
+                        <strong>Videos demo</strong>
+                        <span>Use videos curtos e comprimidos, ate {formatFileSize(maxVideoUploadBytes)} cada.</span>
+                      </div>
                       <label className="admin-upload-button">
-                        {uploadingKey === "video" ? "Enviando..." : "Enviar video"}
-                        <input accept="video/mp4,video/webm,video/quicktime" disabled={status === "uploading"} onChange={uploadVideo} type="file" />
-                      </label>
-                      <label className="admin-upload-button admin-upload-button--ghost">
-                        {uploadingKey === "video-poster" ? "Enviando..." : "Capa do video"}
-                        <input accept="image/*" disabled={status === "uploading"} onChange={uploadVideoPoster} type="file" />
+                        {uploadingKey === "video-new" ? "Enviando..." : "+ Adicionar video"}
+                        <input
+                          accept="video/mp4,video/webm,video/quicktime"
+                          disabled={status === "uploading"}
+                          onChange={(event) => uploadVideo(event)}
+                          type="file"
+                        />
                       </label>
                     </div>
-                    <label>
-                      Titulo do video
-                      <input
-                        value={activeProject.video?.label || ""}
-                        onChange={(event) =>
-                          updateProject(activeProject.id, {
-                            video: {
-                              src: activeProject.video?.src || "",
-                              poster: activeProject.video?.poster || activeProject.mainImage.src,
-                              label: event.target.value,
-                            },
-                          })
-                        }
-                        placeholder={`Video demo de ${activeProject.title}`}
-                      />
-                    </label>
-                    <details className="admin-path">
-                      <summary>Editar caminhos manualmente</summary>
-                      <input
-                        value={activeProject.video?.src || ""}
-                        onChange={(event) =>
-                          updateProject(activeProject.id, {
-                            video: event.target.value
-                              ? {
-                                  src: event.target.value,
-                                  poster: activeProject.video?.poster || activeProject.mainImage.src,
-                                  label: activeProject.video?.label || `Video demo de ${activeProject.title}`,
-                                }
-                              : undefined,
-                          })
-                        }
-                        placeholder="/projects/meu-projeto/demo.mp4"
-                      />
-                      <input
-                        value={activeProject.video?.poster || ""}
-                        onChange={(event) =>
-                          updateProject(activeProject.id, {
-                            video: {
-                              src: activeProject.video?.src || "",
-                              poster: event.target.value,
-                              label: activeProject.video?.label || `Video demo de ${activeProject.title}`,
-                            },
-                          })
-                        }
-                        placeholder="/projects/meu-projeto/capa.png"
-                      />
-                    </details>
+
+                    {activeProjectVideos.length ? (
+                      <div className="admin-video-list">
+                        {activeProjectVideos.map((video, index) => (
+                          <section className="admin-video-item" key={`${video.src}-${index}`}>
+                            <div className="admin-media-preview admin-media-preview--video">
+                              <video controls preload="metadata" poster={previewFor(video.poster || activeProject.mainImage.src)}>
+                                <source src={previewFor(video.src)} />
+                              </video>
+                            </div>
+                            <div className="admin-media-actions">
+                              <label className="admin-upload-button admin-upload-button--ghost">
+                                {uploadingKey === `video-${index}` ? "Enviando..." : "Trocar video"}
+                                <input
+                                  accept="video/mp4,video/webm,video/quicktime"
+                                  disabled={status === "uploading"}
+                                  onChange={(event) => uploadVideo(event, index)}
+                                  type="file"
+                                />
+                              </label>
+                              <label className="admin-upload-button admin-upload-button--ghost">
+                                {uploadingKey === `video-poster-${index}` ? "Enviando..." : "Capa do video"}
+                                <input
+                                  accept="image/*"
+                                  disabled={status === "uploading"}
+                                  onChange={(event) => uploadVideoPoster(event, index)}
+                                  type="file"
+                                />
+                              </label>
+                            </div>
+                            <label>
+                              Titulo do video
+                              <input
+                                value={video.label || ""}
+                                onChange={(event) => updateVideoItem(index, { label: event.target.value })}
+                                placeholder={`Video demo ${index + 1} de ${activeProject.title}`}
+                              />
+                            </label>
+                            <details className="admin-path">
+                              <summary>Editar caminhos manualmente</summary>
+                              <input
+                                value={video.src}
+                                onChange={(event) => updateVideoItem(index, { src: event.target.value })}
+                                placeholder="/projects/meu-projeto/demo.mp4"
+                              />
+                              <input
+                                value={video.poster || ""}
+                                onChange={(event) => updateVideoItem(index, { poster: event.target.value })}
+                                placeholder="/projects/meu-projeto/capa.png"
+                              />
+                            </details>
+                            <button className="admin-danger" onClick={() => removeVideoItem(index)} type="button">
+                              Remover video
+                            </button>
+                          </section>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="admin-empty">
+                        <p>Nenhum video cadastrado ainda.</p>
+                        <label className="admin-upload-button">
+                          Enviar primeiro video
+                          <input
+                            accept="video/mp4,video/webm,video/quicktime"
+                            disabled={status === "uploading"}
+                            onChange={(event) => uploadVideo(event)}
+                            type="file"
+                          />
+                        </label>
+                      </div>
+                    )}
                   </article>
                 </div>
               </section>
@@ -608,7 +724,7 @@ export default function AdminPage() {
                     {activeProject.gallery.map((image, index) => (
                       <article className="admin-gallery-item" key={`${image.src}-${index}`}>
                         <div className="admin-gallery-thumb">
-                          {image.src ? <img src={image.src} alt={image.alt || image.label || activeProject.title} /> : <span>Sem imagem</span>}
+                          {image.src ? <img src={previewFor(image.src)} alt={image.alt || image.label || activeProject.title} /> : <span>Sem imagem</span>}
                         </div>
                         <label className="admin-upload-button admin-upload-button--ghost">
                           {uploadingKey === `gallery-${index}` ? "Enviando..." : "Trocar imagem"}

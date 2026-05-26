@@ -40,6 +40,7 @@ const budgetChannels: { id: BudgetChannel; label: string; description: string; c
 
 const services: BudgetService[] = siteData.services;
 const projects: Project[] = siteData.projects;
+const getProjectVideos = (project: Project) => (project.videos?.length ? project.videos : project.video?.src ? [project.video] : []);
 
 const formatCurrency = (value: number) =>
   value.toLocaleString("pt-BR", {
@@ -171,6 +172,7 @@ export default function Home() {
       .filter(Boolean)
       .join("\n");
   }, [budgetChannel, monthlyTotal, onceTotal, selectedItems]);
+  const activeProjectVideos = useMemo(() => (activeProject ? getProjectVideos(activeProject) : []), [activeProject]);
 
   function addService(id: string) {
     setSelectedServices((current) => {
@@ -374,12 +376,17 @@ export default function Home() {
               ×
             </button>
 
-            {activeProject.video?.src ? (
-              <div className="project-modal__video">
-                <video controls preload="metadata" poster={activeProject.video.poster} aria-label={activeProject.video.label}>
-                  <source src={activeProject.video.src} type="video/mp4" />
-                  Seu navegador não suporta vídeo HTML5.
-                </video>
+            {activeProjectVideos.length ? (
+              <div className="project-modal__videos" aria-label="Videos demonstrativos do projeto">
+                {activeProjectVideos.map((video, index) => (
+                  <figure className="project-modal__video" key={`${video.src}-${index}`}>
+                    <video controls preload="metadata" poster={video.poster} aria-label={video.label}>
+                      <source src={video.src} />
+                      Seu navegador não suporta vídeo HTML5.
+                    </video>
+                    <figcaption>{video.label || `Video demo ${index + 1}`}</figcaption>
+                  </figure>
+                ))}
               </div>
             ) : (
               <div className="project-modal__video">

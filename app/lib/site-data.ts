@@ -44,6 +44,7 @@ export type Project = {
   mainImage: ProjectImage;
   gallery: ProjectImage[];
   video?: ProjectVideo;
+  videos?: ProjectVideo[];
 };
 
 export type SiteData = {

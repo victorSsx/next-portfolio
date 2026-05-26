@@ -27,6 +27,25 @@ const assertAuthorized = (request: Request) => {
 const normalizeTextArray = (items: unknown) =>
   Array.isArray(items) ? items.map((item) => String(item).trim()).filter(Boolean) : [];
 
+const normalizeVideo = (video: unknown, fallbackPoster: string, fallbackLabel: string) => {
+  if (!video || typeof video !== "object") {
+    return null;
+  }
+
+  const item = video as { src?: unknown; poster?: unknown; label?: unknown };
+  const src = String(item.src || "").trim();
+
+  if (!src) {
+    return null;
+  }
+
+  return {
+    src,
+    poster: String(item.poster || fallbackPoster || "").trim(),
+    label: String(item.label || fallbackLabel || "Video demo").trim(),
+  };
+};
+
 const normalizeSiteData = (data: Partial<SiteData>): SiteData => ({
   serviceCategories: Array.isArray(data.serviceCategories)
     ? data.serviceCategories
@@ -55,35 +74,45 @@ const normalizeSiteData = (data: Partial<SiteData>): SiteData => ({
     : [],
   projects: Array.isArray(data.projects)
     ? data.projects
-        .map((project) => ({
-          id: String(project.id || "").trim(),
-          title: String(project.title || "").trim(),
-          category: String(project.category || "").trim(),
-          status: String(project.status || "").trim(),
-          stack: normalizeTextArray(project.stack),
-          summary: String(project.summary || "").trim(),
-          workDone: normalizeTextArray(project.workDone),
-          mainImage: {
+        .map((project) => {
+          const title = String(project.title || "").trim();
+          const mainImage = {
             src: String(project.mainImage?.src || "").trim(),
             alt: String(project.mainImage?.alt || "").trim(),
-          },
-          gallery: Array.isArray(project.gallery)
-            ? project.gallery
-                .map((image) => ({
-                  src: String(image.src || "").trim(),
-                  alt: String(image.alt || "").trim(),
-                  label: image.label ? String(image.label).trim() : undefined,
-                }))
-                .filter((image) => image.src)
-            : [],
-          video: project.video?.src
-            ? {
-                src: String(project.video.src).trim(),
-                poster: String(project.video.poster || project.mainImage?.src || "").trim(),
-                label: String(project.video.label || project.title || "Vídeo demo").trim(),
-              }
-            : undefined,
-        }))
+          };
+          const videos = (
+            Array.isArray(project.videos)
+              ? project.videos.map((video) => normalizeVideo(video, mainImage.src, `Video demo de ${title}`))
+              : []
+          ).filter(Boolean) as NonNullable<ReturnType<typeof normalizeVideo>>[];
+          const legacyVideo = normalizeVideo(project.video, mainImage.src, `Video demo de ${title}`);
+
+          if (!videos.length && legacyVideo) {
+            videos.push(legacyVideo);
+          }
+
+          return {
+            id: String(project.id || "").trim(),
+            title,
+            category: String(project.category || "").trim(),
+            status: String(project.status || "").trim(),
+            stack: normalizeTextArray(project.stack),
+            summary: String(project.summary || "").trim(),
+            workDone: normalizeTextArray(project.workDone),
+            mainImage,
+            gallery: Array.isArray(project.gallery)
+              ? project.gallery
+                  .map((image) => ({
+                    src: String(image.src || "").trim(),
+                    alt: String(image.alt || "").trim(),
+                    label: image.label ? String(image.label).trim() : undefined,
+                  }))
+                  .filter((image) => image.src)
+              : [],
+            video: videos[0],
+            videos,
+          };
+        })
         .filter((project) => project.id && project.title && project.mainImage.src)
     : [],
 });

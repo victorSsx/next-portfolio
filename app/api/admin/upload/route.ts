@@ -9,6 +9,8 @@ type SaveMode = "local-file" | "github";
 
 const defaultAdminPassword = "371515victor";
 const uploadRoot = path.join(process.cwd(), "public", "projects", "admin-uploads");
+const maxImageSize = 8 * 1024 * 1024;
+const maxVideoSize = 4 * 1024 * 1024;
 
 const allowedMimeTypes = new Set([
   "image/jpeg",
@@ -154,11 +156,15 @@ export async function POST(request: Request) {
   }
 
   const isVideo = file.type.startsWith("video/");
-  const maxSize = isVideo ? 25 * 1024 * 1024 : 10 * 1024 * 1024;
+  const maxSize = isVideo ? maxVideoSize : maxImageSize;
 
   if (file.size > maxSize) {
     return NextResponse.json(
-      { error: isVideo ? "Video muito grande. Envie um arquivo de ate 25 MB." : "Imagem muito grande. Envie uma imagem de ate 10 MB." },
+      {
+        error: isVideo
+          ? "Video muito grande para upload direto na Vercel. Envie um MP4 comprimido de ate 4 MB."
+          : "Imagem muito grande. Envie uma imagem de ate 8 MB.",
+      },
       { status: 400 }
     );
   }
