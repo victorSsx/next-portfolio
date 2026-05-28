@@ -1,10 +1,49 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { siteData, type Project, type ProjectImage } from "../lib/site-data";
 import { useLanguage } from "../lib/LanguageContext";
 
 const projects = siteData.projects;
+
+// ── Word-by-word reveal heading ───────────────────────────────────────────────
+
+function WordRevealTitle({ text }: { text: string }) {
+  const ref = useRef<HTMLHeadingElement>(null);
+  const [revealed, setRevealed] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setRevealed(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.1, rootMargin: "0px 0px -20px 0px" }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+
+  return (
+    <h2
+      ref={ref}
+      className={`projects-heading${revealed ? " is-revealed" : ""}`}
+      aria-label={text}
+    >
+      {text.split(" ").map((word, i) => (
+        <span key={i} className="word-clip" aria-hidden="true">
+          <span className="word" style={{ "--word-i": i } as React.CSSProperties}>
+            {word}
+          </span>
+        </span>
+      ))}
+    </h2>
+  );
+}
 
 type DeviceTab = "desktop" | "tablet" | "mobile";
 
@@ -85,10 +124,10 @@ export function ProjectsSection() {
   return (
     <>
       <section className="section projects" id="projetos">
-        <div className="section__intro" data-animate>
-          <p className="eyebrow">{t.projects.eyebrow}</p>
-          <h2>{t.projects.title}</h2>
-          <p>{t.projects.lead}</p>
+        <div className="section__intro projects__intro">
+          <p className="eyebrow" data-animate>{t.projects.eyebrow}</p>
+          <WordRevealTitle text={t.projects.title} />
+          <p className="projects__lead" data-animate>{t.projects.lead}</p>
         </div>
 
         <div className="project-grid">

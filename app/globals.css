@@ -310,6 +310,70 @@ a {
   line-height: 1.7;
 }
 
+/* ── Projects section intro (word-reveal layout) ──────────────────────────── */
+
+.projects__intro {
+  grid-template-columns: 1fr !important;
+  gap: 0 !important;
+  margin-bottom: 56px;
+  max-width: 860px;
+}
+
+.projects__intro .eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.projects__intro .eyebrow::before {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 2px;
+  background: var(--gold);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+/* Word-reveal heading */
+.projects-heading {
+  font-size: clamp(44px, 5.5vw, 72px);
+  font-weight: 580;
+  line-height: 1.05;
+  color: var(--white);
+  margin: 0 0 24px;
+  letter-spacing: -0.02em;
+}
+
+.word-clip {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  padding-bottom: 0.06em;
+  margin-bottom: -0.06em;
+  margin-right: 0.22em;
+}
+
+.word {
+  display: inline-block;
+  transform: translateY(112%);
+  transition: transform 0.72s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--word-i, 0) * 52ms);
+}
+
+.projects-heading.is-revealed .word {
+  transform: translateY(0);
+}
+
+.projects__intro .projects__lead {
+  max-width: 500px;
+  margin-left: auto !important;
+  font-size: 17px !important;
+  line-height: 1.65 !important;
+  color: rgba(245, 242, 236, 0.62) !important;
+}
+
 .project-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -1864,6 +1928,12 @@ a {
   [data-animate] {
     opacity: 1 !important;
     transform: none !important;
+    transition: none !important;
+  }
+
+  /* Word reveal: show immediately, no animation */
+  .word {
+    transform: translateY(0) !important;
     transition: none !important;
   }
 }
