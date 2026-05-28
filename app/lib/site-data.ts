@@ -33,6 +33,13 @@ export type ProjectVideo = {
   label: string;
 };
 
+export type DeviceView = {
+  device: "tablet" | "mobile";
+  label?: string;
+  images: ProjectImage[];
+  videos?: ProjectVideo[];
+};
+
 export type Project = {
   id: string;
   title: string;
@@ -45,6 +52,7 @@ export type Project = {
   gallery: ProjectImage[];
   video?: ProjectVideo;
   videos?: ProjectVideo[];
+  deviceViews?: DeviceView[];
 };
 
 export type SiteData = {

@@ -4,7 +4,9 @@ import { useMemo, useState, type ChangeEvent } from "react";
 import {
   siteData as defaultSiteData,
   type BudgetService,
+  type DeviceView,
   type Project,
+  type ProjectImage,
   type ProjectVideo,
   type SiteData,
 } from "../lib/site-data";
@@ -12,10 +14,9 @@ import {
 type AdminTab = "projects" | "services" | "categories" | "technologies";
 type SaveStatus = "idle" | "loading" | "saving" | "uploading" | "saved" | "error";
 type UploadKind = "main-image" | "gallery" | "video" | "video-poster";
+type DeviceViewDevice = "tablet" | "mobile";
 type UploadPayload = {
-  asset?: {
-    src: string;
-  };
+  asset?: { src: string };
   error?: string;
 };
 
@@ -40,14 +41,8 @@ const formatFileSize = (bytes: number) => {
 };
 
 const getProjectVideos = (project?: Project | null): ProjectVideo[] => {
-  if (!project) {
-    return [];
-  }
-
-  if (project.videos?.length) {
-    return project.videos;
-  }
-
+  if (!project) return [];
+  if (project.videos?.length) return project.videos;
   return project.video?.src ? [project.video] : [];
 };
 
@@ -59,10 +54,7 @@ const createProject = (): Project => ({
   stack: [],
   summary: "",
   workDone: [],
-  mainImage: {
-    src: "",
-    alt: "",
-  },
+  mainImage: { src: "", alt: "" },
   gallery: [],
 });
 
@@ -90,34 +82,30 @@ export default function AdminPage() {
   const [assetPreviews, setAssetPreviews] = useState<Record<string, string>>({});
 
   const activeProject = useMemo(
-    () => data.projects.find((project) => project.id === activeProjectId) || data.projects[0],
+    () => data.projects.find((p) => p.id === activeProjectId) || data.projects[0],
     [activeProjectId, data.projects]
   );
 
   const activeService = useMemo(
-    () => data.services.find((service) => service.id === activeServiceId) || data.services[0],
+    () => data.services.find((s) => s.id === activeServiceId) || data.services[0],
     [activeServiceId, data.services]
   );
+
   const activeProjectVideos = useMemo(() => getProjectVideos(activeProject), [activeProject]);
 
   const previewFor = (src?: string) => (src ? assetPreviews[src] || src : "");
 
   const rememberPreview = (src: string, file: File) => {
-    const previewUrl = URL.createObjectURL(file);
-    setAssetPreviews((current) => ({ ...current, [src]: previewUrl }));
+    const url = URL.createObjectURL(file);
+    setAssetPreviews((cur) => ({ ...cur, [src]: url }));
   };
+
+  // ── Project helpers ──────────────────────────────────────────────────────────
 
   const updateProject = (id: string, update: Partial<Project>) => {
-    setData((current) => ({
-      ...current,
-      projects: current.projects.map((project) => (project.id === id ? { ...project, ...update } : project)),
-    }));
-  };
-
-  const updateService = (id: string, update: Partial<BudgetService>) => {
-    setData((current) => ({
-      ...current,
-      services: current.services.map((service) => (service.id === id ? { ...service, ...update } : service)),
+    setData((cur) => ({
+      ...cur,
+      projects: cur.projects.map((p) => (p.id === id ? { ...p, ...update } : p)),
     }));
   };
 
@@ -127,53 +115,112 @@ export default function AdminPage() {
   };
 
   const updateProjectVideos = (id: string, videos: ProjectVideo[]) => {
-    updateProject(id, {
-      video: videos[0],
-      videos,
-    });
+    updateProject(id, { video: videos[0], videos });
   };
 
   const updateVideoItem = (index: number, update: Partial<ProjectVideo>) => {
-    if (!activeProject) {
-      return;
-    }
-
+    if (!activeProject) return;
     updateProjectVideos(
       activeProject.id,
-      activeProjectVideos.map((video, videoIndex) => (videoIndex === index ? { ...video, ...update } : video))
+      activeProjectVideos.map((v, i) => (i === index ? { ...v, ...update } : v))
     );
   };
 
   const removeVideoItem = (index: number) => {
-    if (!activeProject) {
-      return;
-    }
-
+    if (!activeProject) return;
     updateProjectVideos(
       activeProject.id,
-      activeProjectVideos.filter((_, videoIndex) => videoIndex !== index)
+      activeProjectVideos.filter((_, i) => i !== index)
     );
   };
 
-  const updateGalleryItem = (index: number, update: Partial<Project["gallery"][number]>) => {
-    if (!activeProject) {
-      return;
-    }
-
+  const updateGalleryItem = (index: number, update: Partial<ProjectImage>) => {
+    if (!activeProject) return;
     updateProject(activeProject.id, {
-      gallery: activeProject.gallery.map((image, imageIndex) => (imageIndex === index ? { ...image, ...update } : image)),
+      gallery: activeProject.gallery.map((img, i) => (i === index ? { ...img, ...update } : img)),
     });
   };
 
   const removeGalleryItem = (index: number) => {
-    if (!activeProject) {
-      return;
-    }
-
+    if (!activeProject) return;
     updateProject(activeProject.id, {
-      gallery: activeProject.gallery.filter((_, imageIndex) => imageIndex !== index),
+      gallery: activeProject.gallery.filter((_, i) => i !== index),
     });
   };
+
+  // ── Device view helpers ──────────────────────────────────────────────────────
+
+  const getDeviceView = (device: DeviceViewDevice): DeviceView | undefined =>
+    activeProject?.deviceViews?.find((dv) => dv.device === device);
+
+  const updateDeviceViews = (id: string, deviceViews: DeviceView[]) => {
+    updateProject(id, { deviceViews: deviceViews.length ? deviceViews : undefined });
+  };
+
+  const addDeviceView = (device: DeviceViewDevice) => {
+    if (!activeProject) return;
+    const existing = activeProject.deviceViews || [];
+    if (existing.some((dv) => dv.device === device)) return;
+    updateDeviceViews(activeProject.id, [...existing, { device, images: [], videos: [] }]);
+  };
+
+  const removeDeviceView = (device: DeviceViewDevice) => {
+    if (!activeProject) return;
+    updateDeviceViews(
+      activeProject.id,
+      (activeProject.deviceViews || []).filter((dv) => dv.device !== device)
+    );
+  };
+
+  const updateDeviceViewImage = (device: DeviceViewDevice, index: number, update: Partial<ProjectImage>) => {
+    if (!activeProject) return;
+    const views = activeProject.deviceViews || [];
+    updateDeviceViews(
+      activeProject.id,
+      views.map((dv) =>
+        dv.device !== device
+          ? dv
+          : { ...dv, images: dv.images.map((img, i) => (i === index ? { ...img, ...update } : img)) }
+      )
+    );
+  };
+
+  const removeDeviceViewImage = (device: DeviceViewDevice, index: number) => {
+    if (!activeProject) return;
+    const views = activeProject.deviceViews || [];
+    updateDeviceViews(
+      activeProject.id,
+      views.map((dv) =>
+        dv.device !== device ? dv : { ...dv, images: dv.images.filter((_, i) => i !== index) }
+      )
+    );
+  };
+
+  const updateDeviceViewVideo = (device: DeviceViewDevice, index: number, update: Partial<ProjectVideo>) => {
+    if (!activeProject) return;
+    const views = activeProject.deviceViews || [];
+    updateDeviceViews(
+      activeProject.id,
+      views.map((dv) =>
+        dv.device !== device
+          ? dv
+          : { ...dv, videos: (dv.videos || []).map((v, i) => (i === index ? { ...v, ...update } : v)) }
+      )
+    );
+  };
+
+  const removeDeviceViewVideo = (device: DeviceViewDevice, index: number) => {
+    if (!activeProject) return;
+    const views = activeProject.deviceViews || [];
+    updateDeviceViews(
+      activeProject.id,
+      views.map((dv) =>
+        dv.device !== device ? dv : { ...dv, videos: (dv.videos || []).filter((_, i) => i !== index) }
+      )
+    );
+  };
+
+  // ── Upload helpers ───────────────────────────────────────────────────────────
 
   const uploadFile = async (project: Project, file: File, kind: UploadKind, key: string) => {
     const isVideo = kind === "video";
@@ -204,27 +251,22 @@ export default function AdminPage() {
     try {
       const response = await fetch("/api/admin/upload", {
         method: "POST",
-        headers: {
-          "x-admin-password": password,
-        },
+        headers: { "x-admin-password": password },
         body: formData,
         signal: controller.signal,
       });
-      const responseText = await response.text();
+      const text = await response.text();
       let payload: UploadPayload = {};
-
       try {
-        payload = responseText ? (JSON.parse(responseText) as UploadPayload) : {};
+        payload = text ? (JSON.parse(text) as UploadPayload) : {};
       } catch {
         payload = {};
       }
-
       if (!response.ok || !payload.asset?.src) {
-        throw new Error(payload.error || responseText || "Nao foi possivel enviar o arquivo.");
+        throw new Error(payload.error || text || "Nao foi possivel enviar o arquivo.");
       }
-
       setStatus("saved");
-      setMessage("Arquivo enviado. A previa aparece aqui; clique em Salvar alteracoes para publicar no site.");
+      setMessage("Arquivo enviado. Clique em Salvar alteracoes para publicar no site.");
       return payload.asset.src;
     } catch (error) {
       setStatus("error");
@@ -244,105 +286,166 @@ export default function AdminPage() {
 
   const uploadMainImage = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-
-    if (!file || !activeProject) {
-      return;
-    }
-
+    if (!file || !activeProject) return;
     const src = await uploadFile(activeProject, file, "main-image", "main-image");
-
     if (src) {
       rememberPreview(src, file);
       updateProject(activeProject.id, {
-        mainImage: {
-          src,
-          alt: activeProject.mainImage.alt || `${activeProject.title} - imagem principal`,
-        },
+        mainImage: { src, alt: activeProject.mainImage.alt || `${activeProject.title} - imagem principal` },
       });
     }
-
     event.target.value = "";
   };
 
   const uploadVideo = async (event: ChangeEvent<HTMLInputElement>, index?: number) => {
     const file = event.target.files?.[0];
-
-    if (!file || !activeProject) {
-      return;
-    }
-
+    if (!file || !activeProject) return;
     const isReplacing = typeof index === "number";
     const src = await uploadFile(activeProject, file, "video", isReplacing ? `video-${index}` : "video-new");
-
     if (src) {
       rememberPreview(src, file);
-      const nextVideo: ProjectVideo = {
+      const next: ProjectVideo = {
         src,
         poster: activeProject.mainImage.src,
         label: `Video demo ${isReplacing ? index + 1 : activeProjectVideos.length + 1} de ${activeProject.title}`,
       };
-
       updateProjectVideos(
         activeProject.id,
         isReplacing
-          ? activeProjectVideos.map((video, videoIndex) =>
-              videoIndex === index ? { ...video, src, label: video.label || nextVideo.label, poster: video.poster || nextVideo.poster } : video
+          ? activeProjectVideos.map((v, i) =>
+              i === index ? { ...v, src, label: v.label || next.label, poster: v.poster || next.poster } : v
             )
-          : [...activeProjectVideos, nextVideo]
+          : [...activeProjectVideos, next]
       );
     }
-
     event.target.value = "";
   };
 
   const uploadVideoPoster = async (event: ChangeEvent<HTMLInputElement>, index: number) => {
     const file = event.target.files?.[0];
-
-    if (!file || !activeProject) {
-      return;
-    }
-
+    if (!file || !activeProject) return;
     const src = await uploadFile(activeProject, file, "video-poster", `video-poster-${index}`);
-
     if (src) {
       rememberPreview(src, file);
       updateVideoItem(index, { poster: src });
     }
-
     event.target.value = "";
   };
 
   const uploadGalleryImage = async (event: ChangeEvent<HTMLInputElement>, index?: number) => {
     const file = event.target.files?.[0];
-
-    if (!file || !activeProject) {
-      return;
-    }
-
+    if (!file || !activeProject) return;
     const isReplacing = typeof index === "number";
     const src = await uploadFile(activeProject, file, "gallery", isReplacing ? `gallery-${index}` : "gallery-new");
-
     if (src) {
       rememberPreview(src, file);
       if (isReplacing) {
         updateProject(activeProject.id, {
-          gallery: activeProject.gallery.map((image, imageIndex) => (imageIndex === index ? { ...image, src } : image)),
+          gallery: activeProject.gallery.map((img, i) => (i === index ? { ...img, src } : img)),
         });
       } else {
         updateProject(activeProject.id, {
           gallery: [
             ...activeProject.gallery,
-            {
-              src,
-              alt: `${activeProject.title} - print do projeto`,
-              label: `Print ${activeProject.gallery.length + 1}`,
-            },
+            { src, alt: `${activeProject.title} - print do projeto`, label: `Print ${activeProject.gallery.length + 1}` },
           ],
         });
       }
     }
-
     event.target.value = "";
+  };
+
+  const uploadDeviceImage = async (
+    event: ChangeEvent<HTMLInputElement>,
+    device: DeviceViewDevice,
+    index?: number
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file || !activeProject) return;
+    const isReplacing = typeof index === "number";
+    const key = isReplacing ? `dv-${device}-img-${index}` : `dv-${device}-img-new`;
+    const src = await uploadFile(activeProject, file, "gallery", key);
+    if (src) {
+      rememberPreview(src, file);
+      const proj = activeProject;
+      const views = proj.deviceViews || [];
+      if (isReplacing) {
+        updateDeviceViews(
+          proj.id,
+          views.map((dv) =>
+            dv.device !== device ? dv : { ...dv, images: dv.images.map((img, i) => (i === index ? { ...img, src } : img)) }
+          )
+        );
+      } else {
+        updateDeviceViews(
+          proj.id,
+          views.map((dv) =>
+            dv.device !== device
+              ? dv
+              : {
+                  ...dv,
+                  images: [
+                    ...dv.images,
+                    { src, alt: `${proj.title} - vista ${device}`, label: `${device} ${dv.images.length + 1}` },
+                  ],
+                }
+          )
+        );
+      }
+    }
+    event.target.value = "";
+  };
+
+  const uploadDeviceVideo = async (
+    event: ChangeEvent<HTMLInputElement>,
+    device: DeviceViewDevice,
+    index?: number
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file || !activeProject) return;
+    const isReplacing = typeof index === "number";
+    const key = isReplacing ? `dv-${device}-vid-${index}` : `dv-${device}-vid-new`;
+    const src = await uploadFile(activeProject, file, "video", key);
+    if (src) {
+      rememberPreview(src, file);
+      const proj = activeProject;
+      const views = proj.deviceViews || [];
+      if (isReplacing) {
+        updateDeviceViews(
+          proj.id,
+          views.map((dv) =>
+            dv.device !== device
+              ? dv
+              : { ...dv, videos: (dv.videos || []).map((v, i) => (i === index ? { ...v, src } : v)) }
+          )
+        );
+      } else {
+        updateDeviceViews(
+          proj.id,
+          views.map((dv) =>
+            dv.device !== device
+              ? dv
+              : {
+                  ...dv,
+                  videos: [
+                    ...(dv.videos || []),
+                    { src, poster: proj.mainImage.src, label: `Video ${device} de ${proj.title}` },
+                  ],
+                }
+          )
+        );
+      }
+    }
+    event.target.value = "";
+  };
+
+  // ── Service helpers ──────────────────────────────────────────────────────────
+
+  const updateService = (id: string, update: Partial<BudgetService>) => {
+    setData((cur) => ({
+      ...cur,
+      services: cur.services.map((s) => (s.id === id ? { ...s, ...update } : s)),
+    }));
   };
 
   const updateServiceId = (id: string, nextId: string) => {
@@ -350,24 +453,18 @@ export default function AdminPage() {
     setActiveServiceId(nextId);
   };
 
+  // ── API calls ────────────────────────────────────────────────────────────────
+
   const loadData = async () => {
     setStatus("loading");
     setMessage("");
-
-    const response = await fetch("/api/admin/data", {
-      headers: {
-        "x-admin-password": password,
-      },
-    });
-
+    const response = await fetch("/api/admin/data", { headers: { "x-admin-password": password } });
     const payload = await response.json();
-
     if (!response.ok) {
       setStatus("error");
       setMessage(payload.error || "Não foi possível entrar.");
       return;
     }
-
     setData(payload.data);
     setActiveProjectId(payload.data.projects[0]?.id || "");
     setActiveServiceId(payload.data.services[0]?.id || "");
@@ -378,27 +475,24 @@ export default function AdminPage() {
   const saveData = async () => {
     setStatus("saving");
     setMessage("");
-
     const response = await fetch("/api/admin/data", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "x-admin-password": password,
-      },
+      headers: { "Content-Type": "application/json", "x-admin-password": password },
       body: JSON.stringify({ data }),
     });
-
     const payload = await response.json();
-
     if (!response.ok) {
       setStatus("error");
       setMessage(payload.error || "Não foi possível salvar.");
       return;
     }
-
     setStatus("saved");
-    setMessage(payload.mode === "github" ? "Salvo no GitHub. A Vercel vai publicar o deploy." : "Salvo no arquivo local.");
+    setMessage(
+      payload.mode === "github" ? "Salvo no GitHub. A Vercel vai publicar o deploy." : "Salvo no arquivo local."
+    );
   };
+
+  // ── Login screen ─────────────────────────────────────────────────────────────
 
   if (!isUnlocked) {
     return (
@@ -434,11 +528,9 @@ export default function AdminPage() {
 
           <form
             className="admin-login__form"
-            onSubmit={(event) => {
-              event.preventDefault();
-              if (password && status !== "loading") {
-                loadData();
-              }
+            onSubmit={(e) => {
+              e.preventDefault();
+              if (password && status !== "loading") loadData();
             }}
           >
             <label htmlFor="admin-password">Senha do admin</label>
@@ -446,15 +538,16 @@ export default function AdminPage() {
               <input
                 autoComplete="current-password"
                 id="admin-password"
-                onChange={(event) => {
-                  setPassword(event.target.value);
-                  setMessage("");
-                }}
+                onChange={(e) => { setPassword(e.target.value); setMessage(""); }}
                 placeholder="Digite a senha"
                 type={showPassword ? "text" : "password"}
                 value={password}
               />
-              <button aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"} onClick={() => setShowPassword((value) => !value)} type="button">
+              <button
+                aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
+                onClick={() => setShowPassword((v) => !v)}
+                type="button"
+              >
                 {showPassword ? "Ocultar" : "Mostrar"}
               </button>
             </div>
@@ -465,13 +558,13 @@ export default function AdminPage() {
           </form>
 
           {message ? <p className="admin-status admin-status--error">{message}</p> : null}
-          <a className="admin-login__back" href="/">
-            Voltar para o site
-          </a>
+          <a className="admin-login__back" href="/">Voltar para o site</a>
         </section>
       </main>
     );
   }
+
+  // ── Main panel ───────────────────────────────────────────────────────────────
 
   return (
     <main className="admin-page">
@@ -481,95 +574,138 @@ export default function AdminPage() {
           <h1>Painel do portfólio</h1>
         </div>
         <div className="admin-header__actions">
-          <a className="admin-link" href="/">
-            Ver site
-          </a>
-          <button className="button button--primary" disabled={status === "saving" || status === "uploading"} onClick={saveData} type="button">
+          <a className="admin-link" href="/">Ver site</a>
+          <button
+            className="button button--primary"
+            disabled={status === "saving" || status === "uploading"}
+            onClick={saveData}
+            type="button"
+          >
             {status === "saving" ? "Salvando..." : status === "uploading" ? "Enviando arquivo..." : "Salvar alterações"}
           </button>
         </div>
       </header>
 
-      {message ? <p className={`admin-status admin-status--${status === "error" ? "error" : "success"}`}>{message}</p> : null}
+      {message ? (
+        <p className={`admin-status admin-status--${status === "error" ? "error" : "success"}`}>{message}</p>
+      ) : null}
 
       <nav className="admin-tabs" aria-label="Seções administrativas">
-        {[
-          ["projects", "Projetos"],
-          ["services", "Serviços e preços"],
-          ["categories", "Categorias"],
-          ["technologies", "Tecnologias"],
-        ].map(([id, label]) => (
-          <button className={activeTab === id ? "is-active" : ""} key={id} onClick={() => setActiveTab(id as AdminTab)} type="button">
-            {label}
+        {(["projects", "services", "categories", "technologies"] as const).map((id) => (
+          <button
+            className={activeTab === id ? "is-active" : ""}
+            key={id}
+            onClick={() => setActiveTab(id)}
+            type="button"
+          >
+            {id === "projects" ? "Projetos" : id === "services" ? "Serviços e preços" : id === "categories" ? "Categorias" : "Tecnologias"}
           </button>
         ))}
       </nav>
 
+      {/* ── Projects tab ─────────────────────────────────────────────────────── */}
       {activeTab === "projects" ? (
         <section className="admin-layout">
           <aside className="admin-list">
             <button
+              className="admin-list__add"
               type="button"
               onClick={() => {
-                const project = createProject();
-                setData((current) => ({ ...current, projects: [...current.projects, project] }));
-                setActiveProjectId(project.id);
+                const p = createProject();
+                setData((cur) => ({ ...cur, projects: [...cur.projects, p] }));
+                setActiveProjectId(p.id);
               }}
             >
               + Novo projeto
             </button>
             {data.projects.map((project) => (
               <button
-                className={activeProject?.id === project.id ? "is-active" : ""}
+                className={`admin-list__item${activeProject?.id === project.id ? " is-active" : ""}`}
                 key={project.id}
                 onClick={() => setActiveProjectId(project.id)}
                 type="button"
               >
-                {project.title}
+                {project.mainImage.src ? (
+                  <img
+                    className="admin-list__thumb"
+                    src={previewFor(project.mainImage.src)}
+                    alt=""
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <span className="admin-list__thumb admin-list__thumb--empty" aria-hidden="true" />
+                )}
+                <span>{project.title}</span>
               </button>
             ))}
           </aside>
 
           {activeProject ? (
             <section className="admin-form">
-              <div className="admin-form__grid">
+
+              {/* Basic info card */}
+              <div className="admin-card">
+                <div className="admin-card__head">
+                  <p className="eyebrow">Identificação</p>
+                  <h2>Informações básicas</h2>
+                </div>
+                <div className="admin-form__grid">
+                  <label>
+                    Nome
+                    <input
+                      value={activeProject.title}
+                      onChange={(e) => updateProject(activeProject.id, { title: e.target.value })}
+                    />
+                  </label>
+                  <label>
+                    ID
+                    <input
+                      value={activeProject.id}
+                      onChange={(e) => updateProjectId(activeProject.id, e.target.value)}
+                    />
+                  </label>
+                  <label>
+                    Categoria
+                    <input
+                      value={activeProject.category}
+                      onChange={(e) => updateProject(activeProject.id, { category: e.target.value })}
+                    />
+                  </label>
+                  <label>
+                    Status
+                    <input
+                      value={activeProject.status}
+                      onChange={(e) => updateProject(activeProject.id, { status: e.target.value })}
+                    />
+                  </label>
+                </div>
                 <label>
-                  Nome
-                  <input value={activeProject.title} onChange={(event) => updateProject(activeProject.id, { title: event.target.value })} />
-                </label>
-                <label>
-                  ID
-                  <input value={activeProject.id} onChange={(event) => updateProjectId(activeProject.id, event.target.value)} />
-                </label>
-                <label>
-                  Categoria
-                  <input value={activeProject.category} onChange={(event) => updateProject(activeProject.id, { category: event.target.value })} />
-                </label>
-                <label>
-                  Status
-                  <input value={activeProject.status} onChange={(event) => updateProject(activeProject.id, { status: event.target.value })} />
+                  Descrição curta
+                  <textarea
+                    value={activeProject.summary}
+                    onChange={(e) => updateProject(activeProject.id, { summary: e.target.value })}
+                  />
                 </label>
               </div>
 
-              <label>
-                Descrição curta
-                <textarea value={activeProject.summary} onChange={(event) => updateProject(activeProject.id, { summary: event.target.value })} />
-              </label>
-
-              <section className="admin-project-section">
-                <div className="admin-section-heading">
-                  <div>
-                    <p className="eyebrow">Midia</p>
-                    <h2>Imagem principal e video</h2>
-                  </div>
-                  <p>Escolha os arquivos do computador. O painel preenche o caminho automaticamente.</p>
+              {/* Media card */}
+              <div className="admin-card">
+                <div className="admin-card__head">
+                  <p className="eyebrow">Mídia</p>
+                  <h2>Imagem principal e vídeos</h2>
                 </div>
+                <p className="admin-card__desc">
+                  Escolha os arquivos do computador. O painel preenche o caminho automaticamente.
+                </p>
 
                 <div className="admin-media-grid">
                   <article className="admin-media-card">
                     <div className="admin-media-preview">
                       {activeProject.mainImage.src ? (
-                        <img src={previewFor(activeProject.mainImage.src)} alt={activeProject.mainImage.alt || activeProject.title} />
+                        <img
+                          src={previewFor(activeProject.mainImage.src)}
+                          alt={activeProject.mainImage.alt || activeProject.title}
+                        />
                       ) : (
                         <span>Sem imagem principal</span>
                       )}
@@ -582,8 +718,8 @@ export default function AdminPage() {
                       Texto alternativo
                       <input
                         value={activeProject.mainImage.alt}
-                        onChange={(event) =>
-                          updateProject(activeProject.id, { mainImage: { ...activeProject.mainImage, alt: event.target.value } })
+                        onChange={(e) =>
+                          updateProject(activeProject.id, { mainImage: { ...activeProject.mainImage, alt: e.target.value } })
                         }
                         placeholder="Descreva a imagem para acessibilidade"
                       />
@@ -592,8 +728,8 @@ export default function AdminPage() {
                       <summary>Editar caminho manualmente</summary>
                       <input
                         value={activeProject.mainImage.src}
-                        onChange={(event) =>
-                          updateProject(activeProject.id, { mainImage: { ...activeProject.mainImage, src: event.target.value } })
+                        onChange={(e) =>
+                          updateProject(activeProject.id, { mainImage: { ...activeProject.mainImage, src: e.target.value } })
                         }
                         placeholder="/projects/meu-projeto/imagem.png"
                       />
@@ -603,15 +739,15 @@ export default function AdminPage() {
                   <article className="admin-media-card admin-video-manager">
                     <div className="admin-video-heading">
                       <div>
-                        <strong>Videos demo</strong>
-                        <span>Use videos curtos e comprimidos, ate {formatFileSize(maxVideoUploadBytes)} cada.</span>
+                        <strong>Vídeos demo</strong>
+                        <span>Use vídeos curtos e comprimidos, até {formatFileSize(maxVideoUploadBytes)} cada.</span>
                       </div>
                       <label className="admin-upload-button">
-                        {uploadingKey === "video-new" ? "Enviando..." : "+ Adicionar video"}
+                        {uploadingKey === "video-new" ? "Enviando..." : "+ Adicionar vídeo"}
                         <input
                           accept="video/mp4,video/webm,video/quicktime"
                           disabled={status === "uploading"}
-                          onChange={(event) => uploadVideo(event)}
+                          onChange={(e) => uploadVideo(e)}
                           type="file"
                         />
                       </label>
@@ -628,29 +764,29 @@ export default function AdminPage() {
                             </div>
                             <div className="admin-media-actions">
                               <label className="admin-upload-button admin-upload-button--ghost">
-                                {uploadingKey === `video-${index}` ? "Enviando..." : "Trocar video"}
+                                {uploadingKey === `video-${index}` ? "Enviando..." : "Trocar vídeo"}
                                 <input
                                   accept="video/mp4,video/webm,video/quicktime"
                                   disabled={status === "uploading"}
-                                  onChange={(event) => uploadVideo(event, index)}
+                                  onChange={(e) => uploadVideo(e, index)}
                                   type="file"
                                 />
                               </label>
                               <label className="admin-upload-button admin-upload-button--ghost">
-                                {uploadingKey === `video-poster-${index}` ? "Enviando..." : "Capa do video"}
+                                {uploadingKey === `video-poster-${index}` ? "Enviando..." : "Capa do vídeo"}
                                 <input
                                   accept="image/*"
                                   disabled={status === "uploading"}
-                                  onChange={(event) => uploadVideoPoster(event, index)}
+                                  onChange={(e) => uploadVideoPoster(e, index)}
                                   type="file"
                                 />
                               </label>
                             </div>
                             <label>
-                              Titulo do video
+                              Título do vídeo
                               <input
                                 value={video.label || ""}
-                                onChange={(event) => updateVideoItem(index, { label: event.target.value })}
+                                onChange={(e) => updateVideoItem(index, { label: e.target.value })}
                                 placeholder={`Video demo ${index + 1} de ${activeProject.title}`}
                               />
                             </label>
@@ -658,30 +794,30 @@ export default function AdminPage() {
                               <summary>Editar caminhos manualmente</summary>
                               <input
                                 value={video.src}
-                                onChange={(event) => updateVideoItem(index, { src: event.target.value })}
+                                onChange={(e) => updateVideoItem(index, { src: e.target.value })}
                                 placeholder="/projects/meu-projeto/demo.mp4"
                               />
                               <input
                                 value={video.poster || ""}
-                                onChange={(event) => updateVideoItem(index, { poster: event.target.value })}
+                                onChange={(e) => updateVideoItem(index, { poster: e.target.value })}
                                 placeholder="/projects/meu-projeto/capa.png"
                               />
                             </details>
                             <button className="admin-danger" onClick={() => removeVideoItem(index)} type="button">
-                              Remover video
+                              Remover vídeo
                             </button>
                           </section>
                         ))}
                       </div>
                     ) : (
                       <div className="admin-empty">
-                        <p>Nenhum video cadastrado ainda.</p>
+                        <p>Nenhum vídeo cadastrado ainda.</p>
                         <label className="admin-upload-button">
-                          Enviar primeiro video
+                          Enviar primeiro vídeo
                           <input
                             accept="video/mp4,video/webm,video/quicktime"
                             disabled={status === "uploading"}
-                            onChange={(event) => uploadVideo(event)}
+                            onChange={(e) => uploadVideo(e)}
                             type="file"
                           />
                         </label>
@@ -689,33 +825,40 @@ export default function AdminPage() {
                     )}
                   </article>
                 </div>
-              </section>
+              </div>
 
-              <label>
-                Tecnologias
-                <textarea
-                  value={arrayToLines(activeProject.stack)}
-                  onChange={(event) => updateProject(activeProject.id, { stack: linesToArray(event.target.value) })}
-                />
-              </label>
+              {/* Content card */}
+              <div className="admin-card">
+                <div className="admin-card__head">
+                  <p className="eyebrow">Conteúdo</p>
+                  <h2>Tecnologias e entregas</h2>
+                </div>
+                <label>
+                  Tecnologias <span className="admin-hint">(uma por linha)</span>
+                  <textarea
+                    value={arrayToLines(activeProject.stack)}
+                    onChange={(e) => updateProject(activeProject.id, { stack: linesToArray(e.target.value) })}
+                    rows={6}
+                  />
+                </label>
+                <label>
+                  O que foi feito <span className="admin-hint">(uma por linha)</span>
+                  <textarea
+                    value={arrayToLines(activeProject.workDone)}
+                    onChange={(e) => updateProject(activeProject.id, { workDone: linesToArray(e.target.value) })}
+                    rows={6}
+                  />
+                </label>
+              </div>
 
-              <label>
-                O que foi feito
-                <textarea
-                  value={arrayToLines(activeProject.workDone)}
-                  onChange={(event) => updateProject(activeProject.id, { workDone: linesToArray(event.target.value) })}
-                />
-              </label>
-
-              <section className="admin-project-section">
-                <div className="admin-section-heading">
-                  <div>
-                    <p className="eyebrow">Galeria</p>
-                    <h2>Prints do projeto</h2>
-                  </div>
-                  <label className="admin-upload-button">
+              {/* Gallery card */}
+              <div className="admin-card">
+                <div className="admin-card__head">
+                  <p className="eyebrow">Galeria</p>
+                  <h2>Prints do projeto</h2>
+                  <label className="admin-upload-button admin-card__action">
                     {uploadingKey === "gallery-new" ? "Enviando..." : "+ Adicionar print"}
-                    <input accept="image/*" disabled={status === "uploading"} onChange={(event) => uploadGalleryImage(event)} type="file" />
+                    <input accept="image/*" disabled={status === "uploading"} onChange={(e) => uploadGalleryImage(e)} type="file" />
                   </label>
                 </div>
 
@@ -724,23 +867,36 @@ export default function AdminPage() {
                     {activeProject.gallery.map((image, index) => (
                       <article className="admin-gallery-item" key={`${image.src}-${index}`}>
                         <div className="admin-gallery-thumb">
-                          {image.src ? <img src={previewFor(image.src)} alt={image.alt || image.label || activeProject.title} /> : <span>Sem imagem</span>}
+                          {image.src ? (
+                            <img src={previewFor(image.src)} alt={image.alt || image.label || activeProject.title} />
+                          ) : (
+                            <span>Sem imagem</span>
+                          )}
                         </div>
                         <label className="admin-upload-button admin-upload-button--ghost">
                           {uploadingKey === `gallery-${index}` ? "Enviando..." : "Trocar imagem"}
-                          <input accept="image/*" disabled={status === "uploading"} onChange={(event) => uploadGalleryImage(event, index)} type="file" />
+                          <input accept="image/*" disabled={status === "uploading"} onChange={(e) => uploadGalleryImage(e, index)} type="file" />
                         </label>
                         <label>
                           Legenda
-                          <input value={image.label || ""} onChange={(event) => updateGalleryItem(index, { label: event.target.value })} />
+                          <input
+                            value={image.label || ""}
+                            onChange={(e) => updateGalleryItem(index, { label: e.target.value })}
+                          />
                         </label>
                         <label>
                           Texto alternativo
-                          <input value={image.alt || ""} onChange={(event) => updateGalleryItem(index, { alt: event.target.value })} />
+                          <input
+                            value={image.alt || ""}
+                            onChange={(e) => updateGalleryItem(index, { alt: e.target.value })}
+                          />
                         </label>
                         <details className="admin-path">
                           <summary>Editar caminho manualmente</summary>
-                          <input value={image.src} onChange={(event) => updateGalleryItem(index, { src: event.target.value })} />
+                          <input
+                            value={image.src}
+                            onChange={(e) => updateGalleryItem(index, { src: e.target.value })}
+                          />
                         </details>
                         <button className="admin-danger" onClick={() => removeGalleryItem(index)} type="button">
                           Remover print
@@ -753,18 +909,171 @@ export default function AdminPage() {
                     <p>Nenhum print cadastrado ainda.</p>
                     <label className="admin-upload-button">
                       Enviar primeiro print
-                      <input accept="image/*" disabled={status === "uploading"} onChange={(event) => uploadGalleryImage(event)} type="file" />
+                      <input accept="image/*" disabled={status === "uploading"} onChange={(e) => uploadGalleryImage(e)} type="file" />
                     </label>
                   </div>
                 )}
-              </section>
+              </div>
+
+              {/* Device views card */}
+              <div className="admin-card">
+                <div className="admin-card__head">
+                  <p className="eyebrow">Dispositivos</p>
+                  <h2>Tablet e Mobile</h2>
+                </div>
+                <p className="admin-card__desc">
+                  Prints e vídeos opcionais por tipo de tela. Aparecem com abas na galeria do modal do projeto.
+                </p>
+
+                <div className="admin-device-views">
+                  {(["tablet", "mobile"] as const).map((device) => {
+                    const dv = getDeviceView(device);
+                    const deviceLabel = device === "tablet" ? "Tablet" : "Mobile";
+
+                    return (
+                      <div className={`admin-device-view${dv ? " is-active" : ""}`} key={device}>
+                        <div className="admin-device-view__header">
+                          <div>
+                            <strong>{deviceLabel}</strong>
+                            <span>
+                              {dv
+                                ? `${dv.images.length} print(s)${dv.videos?.length ? ` · ${dv.videos.length} vídeo(s)` : ""}`
+                                : "Não configurado"}
+                            </span>
+                          </div>
+                          {dv ? (
+                            <button
+                              className="admin-danger admin-danger--small"
+                              onClick={() => removeDeviceView(device)}
+                              type="button"
+                            >
+                              Remover {deviceLabel}
+                            </button>
+                          ) : (
+                            <button
+                              className="admin-inline"
+                              onClick={() => addDeviceView(device)}
+                              type="button"
+                            >
+                              + Adicionar {deviceLabel}
+                            </button>
+                          )}
+                        </div>
+
+                        {dv && (
+                          <div className="admin-device-view__body">
+                            <div className="admin-device-view__actions">
+                              <label className="admin-upload-button">
+                                {uploadingKey === `dv-${device}-img-new` ? "Enviando..." : `+ Print de ${deviceLabel}`}
+                                <input
+                                  accept="image/*"
+                                  disabled={status === "uploading"}
+                                  onChange={(e) => uploadDeviceImage(e, device)}
+                                  type="file"
+                                />
+                              </label>
+                              <label className="admin-upload-button admin-upload-button--ghost">
+                                {uploadingKey === `dv-${device}-vid-new` ? "Enviando..." : `+ Vídeo de ${deviceLabel}`}
+                                <input
+                                  accept="video/mp4,video/webm,video/quicktime"
+                                  disabled={status === "uploading"}
+                                  onChange={(e) => uploadDeviceVideo(e, device)}
+                                  type="file"
+                                />
+                              </label>
+                            </div>
+
+                            {dv.images.length > 0 && (
+                              <div className="admin-gallery-editor">
+                                {dv.images.map((image, index) => (
+                                  <article className="admin-gallery-item" key={`${image.src}-${index}`}>
+                                    <div className="admin-gallery-thumb">
+                                      {image.src ? (
+                                        <img src={previewFor(image.src)} alt={image.alt || ""} />
+                                      ) : (
+                                        <span>Sem imagem</span>
+                                      )}
+                                    </div>
+                                    <label className="admin-upload-button admin-upload-button--ghost">
+                                      {uploadingKey === `dv-${device}-img-${index}` ? "Enviando..." : "Trocar"}
+                                      <input
+                                        accept="image/*"
+                                        disabled={status === "uploading"}
+                                        onChange={(e) => uploadDeviceImage(e, device, index)}
+                                        type="file"
+                                      />
+                                    </label>
+                                    <label>
+                                      Legenda
+                                      <input
+                                        value={image.label || ""}
+                                        onChange={(e) => updateDeviceViewImage(device, index, { label: e.target.value })}
+                                      />
+                                    </label>
+                                    <button
+                                      className="admin-danger"
+                                      onClick={() => removeDeviceViewImage(device, index)}
+                                      type="button"
+                                    >
+                                      Remover
+                                    </button>
+                                  </article>
+                                ))}
+                              </div>
+                            )}
+
+                            {dv.videos && dv.videos.length > 0 && (
+                              <div className="admin-video-list" style={{ marginTop: "16px" }}>
+                                {dv.videos.map((video, index) => (
+                                  <section className="admin-video-item" key={`${video.src}-${index}`}>
+                                    <div className="admin-media-preview admin-media-preview--video">
+                                      <video controls preload="metadata" poster={previewFor(video.poster)}>
+                                        <source src={previewFor(video.src)} />
+                                      </video>
+                                    </div>
+                                    <label>
+                                      Título do vídeo
+                                      <input
+                                        value={video.label || ""}
+                                        onChange={(e) => updateDeviceViewVideo(device, index, { label: e.target.value })}
+                                      />
+                                    </label>
+                                    <div className="admin-media-actions">
+                                      <label className="admin-upload-button admin-upload-button--ghost">
+                                        {uploadingKey === `dv-${device}-vid-${index}` ? "Enviando..." : "Trocar vídeo"}
+                                        <input
+                                          accept="video/mp4,video/webm,video/quicktime"
+                                          disabled={status === "uploading"}
+                                          onChange={(e) => uploadDeviceVideo(e, device, index)}
+                                          type="file"
+                                        />
+                                      </label>
+                                    </div>
+                                    <button
+                                      className="admin-danger"
+                                      onClick={() => removeDeviceViewVideo(device, index)}
+                                      type="button"
+                                    >
+                                      Remover vídeo
+                                    </button>
+                                  </section>
+                                ))}
+                              </div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
 
               <button
                 className="admin-danger"
                 disabled={data.projects.length <= 1}
                 onClick={() => {
-                  setData((current) => ({ ...current, projects: current.projects.filter((project) => project.id !== activeProject.id) }));
-                  setActiveProjectId(data.projects.find((project) => project.id !== activeProject.id)?.id || "");
+                  setData((cur) => ({ ...cur, projects: cur.projects.filter((p) => p.id !== activeProject.id) }));
+                  setActiveProjectId(data.projects.find((p) => p.id !== activeProject.id)?.id || "");
                 }}
                 type="button"
               >
@@ -775,115 +1084,132 @@ export default function AdminPage() {
         </section>
       ) : null}
 
+      {/* ── Services tab ─────────────────────────────────────────────────────── */}
       {activeTab === "services" ? (
         <section className="admin-layout">
           <aside className="admin-list">
             <button
+              className="admin-list__add"
               type="button"
               onClick={() => {
-                const service = createService(data.serviceCategories[0]?.id || "sites");
-                setData((current) => ({ ...current, services: [...current.services, service] }));
-                setActiveServiceId(service.id);
+                const s = createService(data.serviceCategories[0]?.id || "sites");
+                setData((cur) => ({ ...cur, services: [...cur.services, s] }));
+                setActiveServiceId(s.id);
               }}
             >
               + Novo serviço
             </button>
             {data.services.map((service) => (
               <button
-                className={activeService?.id === service.id ? "is-active" : ""}
+                className={`admin-list__item${activeService?.id === service.id ? " is-active" : ""}`}
                 key={service.id}
                 onClick={() => setActiveServiceId(service.id)}
                 type="button"
               >
-                {service.title}
+                <span>{service.title}</span>
               </button>
             ))}
           </aside>
 
           {activeService ? (
             <section className="admin-form">
-              <div className="admin-form__grid">
+              <div className="admin-card">
+                <div className="admin-card__head">
+                  <p className="eyebrow">Serviço</p>
+                  <h2>Informações e preço</h2>
+                </div>
+                <div className="admin-form__grid">
+                  <label>
+                    Serviço
+                    <input value={activeService.title} onChange={(e) => updateService(activeService.id, { title: e.target.value })} />
+                  </label>
+                  <label>
+                    ID
+                    <input value={activeService.id} onChange={(e) => updateServiceId(activeService.id, e.target.value)} />
+                  </label>
+                  <label>
+                    Categoria
+                    <select
+                      value={activeService.category}
+                      onChange={(e) => updateService(activeService.id, { category: e.target.value })}
+                    >
+                      {data.serviceCategories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>{cat.label}</option>
+                      ))}
+                    </select>
+                  </label>
+                  <label>
+                    Valor (R$)
+                    <input
+                      min="0"
+                      type="number"
+                      value={activeService.price}
+                      onChange={(e) => updateService(activeService.id, { price: Number(e.target.value) })}
+                    />
+                  </label>
+                  <label>
+                    Cobrança
+                    <select
+                      value={activeService.billing}
+                      onChange={(e) => updateService(activeService.id, { billing: e.target.value as BudgetService["billing"] })}
+                    >
+                      <option value="once">Única</option>
+                      <option value="monthly">Mensal</option>
+                    </select>
+                  </label>
+                  <label>
+                    Unidade
+                    <input
+                      value={activeService.unitLabel || ""}
+                      onChange={(e) => updateService(activeService.id, { unitLabel: e.target.value })}
+                    />
+                  </label>
+                </div>
+
+                <div className="admin-switches">
+                  <label>
+                    <input
+                      checked={Boolean(activeService.startingAt)}
+                      onChange={(e) => updateService(activeService.id, { startingAt: e.target.checked })}
+                      type="checkbox"
+                    />
+                    A partir de
+                  </label>
+                  <label>
+                    <input
+                      checked={Boolean(activeService.allowQuantity)}
+                      onChange={(e) => updateService(activeService.id, { allowQuantity: e.target.checked })}
+                      type="checkbox"
+                    />
+                    Permitir quantidade
+                  </label>
+                </div>
+              </div>
+
+              <div className="admin-card">
+                <div className="admin-card__head">
+                  <p className="eyebrow">Descrição</p>
+                  <h2>Resumo e detalhes</h2>
+                </div>
                 <label>
-                  Serviço
-                  <input value={activeService.title} onChange={(event) => updateService(activeService.id, { title: event.target.value })} />
+                  Resumo
+                  <textarea value={activeService.summary} onChange={(e) => updateService(activeService.id, { summary: e.target.value })} />
                 </label>
                 <label>
-                  ID
-                  <input value={activeService.id} onChange={(event) => updateServiceId(activeService.id, event.target.value)} />
-                </label>
-                <label>
-                  Categoria
-                  <select value={activeService.category} onChange={(event) => updateService(activeService.id, { category: event.target.value })}>
-                    {data.serviceCategories.map((category) => (
-                      <option key={category.id} value={category.id}>
-                        {category.label}
-                      </option>
-                    ))}
-                  </select>
-                </label>
-                <label>
-                  Valor
-                  <input
-                    min="0"
-                    type="number"
-                    value={activeService.price}
-                    onChange={(event) => updateService(activeService.id, { price: Number(event.target.value) })}
-                  />
-                </label>
-                <label>
-                  Cobrança
-                  <select value={activeService.billing} onChange={(event) => updateService(activeService.id, { billing: event.target.value as BudgetService["billing"] })}>
-                    <option value="once">Única</option>
-                    <option value="monthly">Mensal</option>
-                  </select>
-                </label>
-                <label>
-                  Unidade
-                  <input
-                    value={activeService.unitLabel || ""}
-                    onChange={(event) => updateService(activeService.id, { unitLabel: event.target.value })}
+                  O que inclui <span className="admin-hint">(uma por linha)</span>
+                  <textarea
+                    value={arrayToLines(activeService.details)}
+                    onChange={(e) => updateService(activeService.id, { details: linesToArray(e.target.value) })}
                   />
                 </label>
               </div>
-
-              <div className="admin-switches">
-                <label>
-                  <input
-                    checked={Boolean(activeService.startingAt)}
-                    onChange={(event) => updateService(activeService.id, { startingAt: event.target.checked })}
-                    type="checkbox"
-                  />
-                  A partir de
-                </label>
-                <label>
-                  <input
-                    checked={Boolean(activeService.allowQuantity)}
-                    onChange={(event) => updateService(activeService.id, { allowQuantity: event.target.checked })}
-                    type="checkbox"
-                  />
-                  Permitir quantidade
-                </label>
-              </div>
-
-              <label>
-                Resumo
-                <textarea value={activeService.summary} onChange={(event) => updateService(activeService.id, { summary: event.target.value })} />
-              </label>
-
-              <label>
-                O que inclui
-                <textarea
-                  value={arrayToLines(activeService.details)}
-                  onChange={(event) => updateService(activeService.id, { details: linesToArray(event.target.value) })}
-                />
-              </label>
 
               <button
                 className="admin-danger"
                 disabled={data.services.length <= 1}
                 onClick={() => {
-                  setData((current) => ({ ...current, services: current.services.filter((service) => service.id !== activeService.id) }));
-                  setActiveServiceId(data.services.find((service) => service.id !== activeService.id)?.id || "");
+                  setData((cur) => ({ ...cur, services: cur.services.filter((s) => s.id !== activeService.id) }));
+                  setActiveServiceId(data.services.find((s) => s.id !== activeService.id)?.id || "");
                 }}
                 type="button"
               >
@@ -894,73 +1220,90 @@ export default function AdminPage() {
         </section>
       ) : null}
 
+      {/* ── Categories tab ───────────────────────────────────────────────────── */}
       {activeTab === "categories" ? (
         <section className="admin-form">
-          <button
-            className="admin-inline"
-            onClick={() =>
-              setData((current) => ({
-                ...current,
-                serviceCategories: [...current.serviceCategories, { id: makeId("categoria"), label: "Nova categoria" }],
-              }))
-            }
-            type="button"
-          >
-            + Nova categoria
-          </button>
-          <div className="admin-rows">
-            {data.serviceCategories.map((category, index) => (
-              <div className="admin-row" key={`${category.id}-${index}`}>
-                <input
-                  value={category.id}
-                  onChange={(event) =>
-                    setData((current) => ({
-                      ...current,
-                      serviceCategories: current.serviceCategories.map((item, itemIndex) =>
-                        itemIndex === index ? { ...item, id: event.target.value } : item
-                      ),
-                    }))
-                  }
-                />
-                <input
-                  value={category.label}
-                  onChange={(event) =>
-                    setData((current) => ({
-                      ...current,
-                      serviceCategories: current.serviceCategories.map((item, itemIndex) =>
-                        itemIndex === index ? { ...item, label: event.target.value } : item
-                      ),
-                    }))
-                  }
-                />
-                <button
-                  className="admin-danger"
-                  disabled={data.serviceCategories.length <= 1}
-                  onClick={() =>
-                    setData((current) => ({
-                      ...current,
-                      serviceCategories: current.serviceCategories.filter((_, itemIndex) => itemIndex !== index),
-                    }))
-                  }
-                  type="button"
-                >
-                  Remover
-                </button>
-              </div>
-            ))}
+          <div className="admin-card">
+            <div className="admin-card__head">
+              <p className="eyebrow">Categorias</p>
+              <h2>Categorias de serviços</h2>
+              <button
+                className="admin-inline admin-card__action"
+                onClick={() =>
+                  setData((cur) => ({
+                    ...cur,
+                    serviceCategories: [...cur.serviceCategories, { id: makeId("categoria"), label: "Nova categoria" }],
+                  }))
+                }
+                type="button"
+              >
+                + Nova categoria
+              </button>
+            </div>
+            <div className="admin-rows">
+              {data.serviceCategories.map((category, index) => (
+                <div className="admin-row" key={`${category.id}-${index}`}>
+                  <input
+                    value={category.id}
+                    onChange={(e) =>
+                      setData((cur) => ({
+                        ...cur,
+                        serviceCategories: cur.serviceCategories.map((item, i) =>
+                          i === index ? { ...item, id: e.target.value } : item
+                        ),
+                      }))
+                    }
+                    placeholder="ID"
+                  />
+                  <input
+                    value={category.label}
+                    onChange={(e) =>
+                      setData((cur) => ({
+                        ...cur,
+                        serviceCategories: cur.serviceCategories.map((item, i) =>
+                          i === index ? { ...item, label: e.target.value } : item
+                        ),
+                      }))
+                    }
+                    placeholder="Nome"
+                  />
+                  <button
+                    className="admin-danger"
+                    disabled={data.serviceCategories.length <= 1}
+                    onClick={() =>
+                      setData((cur) => ({
+                        ...cur,
+                        serviceCategories: cur.serviceCategories.filter((_, i) => i !== index),
+                      }))
+                    }
+                    type="button"
+                  >
+                    Remover
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         </section>
       ) : null}
 
+      {/* ── Technologies tab ─────────────────────────────────────────────────── */}
       {activeTab === "technologies" ? (
         <section className="admin-form">
-          <label>
-            Tecnologias cadastradas
-            <textarea
-              value={arrayToLines(data.technologies)}
-              onChange={(event) => setData((current) => ({ ...current, technologies: linesToArray(event.target.value) }))}
-            />
-          </label>
+          <div className="admin-card">
+            <div className="admin-card__head">
+              <p className="eyebrow">Tecnologias</p>
+              <h2>Lista de tecnologias</h2>
+            </div>
+            <label>
+              Tecnologias cadastradas <span className="admin-hint">(uma por linha)</span>
+              <textarea
+                value={arrayToLines(data.technologies)}
+                onChange={(e) => setData((cur) => ({ ...cur, technologies: linesToArray(e.target.value) }))}
+                rows={16}
+              />
+            </label>
+          </div>
         </section>
       ) : null}
     </main>

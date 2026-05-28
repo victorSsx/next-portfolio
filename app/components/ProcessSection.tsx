@@ -1,26 +1,28 @@
+"use client";
+
+import { useLanguage } from "../lib/LanguageContext";
+
 export function ProcessSection() {
+  const { t } = useLanguage();
+
   return (
     <section className="section process">
       <div className="process__header" data-animate>
-        <p className="eyebrow">Como eu construo</p>
-        <h2>Estratégia, interface e entrega em uma experiência só.</h2>
+        <p className="eyebrow">{t.process.eyebrow}</p>
+        <h2>{t.process.title}</h2>
       </div>
       <div className="process__steps">
-        <article data-animate style={{ "--animate-delay": "0ms" } as React.CSSProperties}>
-          <span>01</span>
-          <h3>Diagnóstico</h3>
-          <p>Entendo o objetivo e separo o que é essencial do que pode ser opcional.</p>
-        </article>
-        <article data-animate style={{ "--animate-delay": "120ms" } as React.CSSProperties}>
-          <span>02</span>
-          <h3>Construção</h3>
-          <p>Transformo a solução em interface responsiva, clara e com boa performance.</p>
-        </article>
-        <article data-animate style={{ "--animate-delay": "240ms" } as React.CSSProperties}>
-          <span>03</span>
-          <h3>Apresentação</h3>
-          <p>Organizo o resultado para o cliente entender o valor e aprovar com segurança.</p>
-        </article>
+        {t.process.steps.map((step, i) => (
+          <article
+            key={step.number}
+            data-animate
+            style={{ "--animate-delay": `${i * 120}ms` } as React.CSSProperties}
+          >
+            <span>{step.number}</span>
+            <h3>{step.title}</h3>
+            <p>{step.desc}</p>
+          </article>
+        ))}
       </div>
     </section>
   );

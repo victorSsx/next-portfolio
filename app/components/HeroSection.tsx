@@ -1,10 +1,19 @@
 "use client";
 
 import { useState } from "react";
+import { useLanguage } from "../lib/LanguageContext";
+import type { Language } from "../lib/translations";
 
 const CUSTOM_LOGO_PATH: string | null = "/images/logo-victor-ai-transparent.png";
 
+const FLAG_OPTIONS: { lang: Language; flag: string; label: string }[] = [
+  { lang: "pt", flag: "🇧🇷", label: "Português" },
+  { lang: "en", flag: "🇺🇸", label: "English" },
+  { lang: "es", flag: "🇪🇸", label: "Español" },
+];
+
 export function HeroSection() {
+  const { t, lang, setLang } = useLanguage();
   const [logoStage, setLogoStage] = useState<"custom" | "svg" | "png" | "vector">(
     CUSTOM_LOGO_PATH ? "custom" : "vector"
   );
@@ -67,17 +76,32 @@ export function HeroSection() {
         </a>
         <div className="availability">
           <span aria-hidden="true" />
-          Disponível para novos projetos
+          {t.hero.availability}
         </div>
         <div className="topbar__links">
-          <a href="#projetos">Projetos</a>
-          <a href="#orcamento">Orçamento</a>
-          <a href="#contato">Contato</a>
+          <a href="#projetos">{t.nav.projects}</a>
+          <a href="#orcamento">{t.nav.budget}</a>
+          <a href="#contato">{t.nav.contact}</a>
+        </div>
+        <div className="lang-selector" aria-label="Idioma / Language">
+          {FLAG_OPTIONS.map(({ lang: l, flag, label }) => (
+            <button
+              key={l}
+              className={`lang-btn${lang === l ? " is-active" : ""}`}
+              onClick={() => setLang(l)}
+              type="button"
+              aria-label={label}
+              aria-pressed={lang === l}
+              title={label}
+            >
+              {flag}
+            </button>
+          ))}
         </div>
       </nav>
 
       <div className="hero__content">
-        <p className="eyebrow">Olá, eu sou</p>
+        <p className="eyebrow">{t.hero.greeting}</p>
         <h1>
           Vic<span>tor.</span>
         </h1>
@@ -86,15 +110,14 @@ export function HeroSection() {
           <strong>Freelancer</strong>
         </p>
         <p className="hero__lead">
-          Transformo ideias em soluções digitais <strong>modernas, intuitivas e de alta performance.</strong>
-          Sites, aplicações e experiências que geram resultados reais para o seu negócio.
+          {t.hero.lead}
         </p>
         <div className="hero__actions">
           <a className="button button--primary" href="#projetos">
-            Ver projetos <span aria-hidden="true">-&gt;</span>
+            {t.hero.ctaProjects} <span aria-hidden="true">-&gt;</span>
           </a>
           <a className="button button--ghost" href="#orcamento">
-            Montar orçamento
+            {t.hero.ctaBudget}
           </a>
         </div>
       </div>

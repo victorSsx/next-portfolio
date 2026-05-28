@@ -1,7 +1,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { NextResponse } from "next/server";
-import type { SiteData } from "../../../lib/site-data";
+import type { DeviceView, SiteData } from "../../../lib/site-data";
 import defaultSiteData from "../../../data/site-data.json";
 
 export const runtime = "nodejs";
@@ -91,6 +91,33 @@ const normalizeSiteData = (data: Partial<SiteData>): SiteData => ({
             videos.push(legacyVideo);
           }
 
+          const normalizedDeviceViews: DeviceView[] = Array.isArray(project.deviceViews)
+            ? (project.deviceViews as DeviceView[]).flatMap((dv): DeviceView[] => {
+                const device = dv.device === "tablet" || dv.device === "mobile" ? dv.device : null;
+                if (!device) return [];
+                const normalizedVideos = Array.isArray(dv.videos)
+                  ? (dv.videos
+                      .map((vid) => normalizeVideo(vid, mainImage.src, `Video ${device} demo de ${title}`))
+                      .filter(Boolean) as NonNullable<ReturnType<typeof normalizeVideo>>[])
+                  : undefined;
+                const entry: DeviceView = {
+                  device,
+                  images: Array.isArray(dv.images)
+                    ? dv.images
+                        .map((img) => ({
+                          src: String(img.src || "").trim(),
+                          alt: String(img.alt || "").trim(),
+                          ...(img.label ? { label: String(img.label).trim() } : {}),
+                        }))
+                        .filter((img) => img.src)
+                    : [],
+                  ...(dv.label ? { label: String(dv.label).trim() } : {}),
+                  ...(normalizedVideos?.length ? { videos: normalizedVideos } : {}),
+                };
+                return [entry];
+              })
+            : [];
+
           return {
             id: String(project.id || "").trim(),
             title,
@@ -111,6 +138,7 @@ const normalizeSiteData = (data: Partial<SiteData>): SiteData => ({
               : [],
             video: videos[0],
             videos,
+            ...(normalizedDeviceViews.length > 0 ? { deviceViews: normalizedDeviceViews } : {}),
           };
         })
         .filter((project) => project.id && project.title && project.mainImage.src)

@@ -2,6 +2,8 @@
 
 import { useMemo, useState } from "react";
 import { siteData, type BudgetService, type CategoryId } from "../lib/site-data";
+import { useLanguage } from "../lib/LanguageContext";
+import type { Language } from "../lib/translations";
 
 type BudgetChannel = "workana" | "upwork" | "direto";
 type SendStatus = "idle" | "sending" | "sent" | "error";
@@ -12,49 +14,6 @@ const WHATSAPP_URL = "https://wa.me/5521975990988";
 
 // Update this value when the exchange rate changes significantly
 const USD_TO_BRL = 5.5;
-
-const categories: { id: CategoryId; label: string }[] = [
-  { id: "todos", label: "Todos" },
-  ...siteData.serviceCategories,
-];
-
-const serviceCategoryLabels = siteData.serviceCategories.reduce<Record<string, string>>(
-  (labels, category) => {
-    labels[category.id] = category.label;
-    return labels;
-  },
-  {}
-);
-
-const channelOptions: {
-  id: BudgetChannel;
-  label: string;
-  description: string;
-  badge: string;
-  currencyLabel: string;
-}[] = [
-  {
-    id: "workana",
-    label: "Workana",
-    description: "Plataforma brasileira de freelancers. Mensagem gerada em português.",
-    badge: "R$",
-    currencyLabel: "Reais (BRL)",
-  },
-  {
-    id: "upwork",
-    label: "Upwork",
-    description: "Plataforma global de trabalho freelancer. Mensagem gerada em inglês.",
-    badge: "$",
-    currencyLabel: "Dólar (USD)",
-  },
-  {
-    id: "direto",
-    label: "Indicação direta",
-    description: "Veio por indicação, redes sociais ou contato direto. Moeda detectada pelo seu IP.",
-    badge: "◎",
-    currencyLabel: "Detectado pelo IP",
-  },
-];
 
 const services: BudgetService[] = siteData.services;
 
@@ -94,7 +53,114 @@ function formatServicePrice(service: BudgetService, currency: Currency, qty = 1)
   return `${prefix}${formatted}${suffix}`;
 }
 
+function buildBudgetMessage(
+  msgLang: Language,
+  currency: Currency,
+  selectedItems: { service: BudgetService; quantity: number }[],
+  onceTotal: number,
+  monthlyTotal: number
+): string {
+  const hasSelected = selectedItems.length > 0;
+
+  const perMonth = msgLang === "en" ? "/mo" : msgLang === "es" ? "/mes" : "/mês";
+  const fromInline = msgLang === "en" ? "from " : msgLang === "es" ? "desde " : "a partir de ";
+
+  const serviceLines = selectedItems
+    .map(({ service, quantity }) => {
+      const unitLabel = service.unitLabel || (msgLang === "en" ? "units" : "unidades");
+      const qty = service.allowQuantity
+        ? `${quantity} ${unitLabel}`
+        : msgLang === "en" ? "1 service" : msgLang === "es" ? "1 servicio" : "1 serviço";
+      const price = service.startingAt
+        ? `${fromInline}${formatAmount(service.price * quantity, currency)}${service.billing === "monthly" ? perMonth : ""}`
+        : `${formatAmount(service.price * quantity, currency)}${service.billing === "monthly" ? perMonth : ""}`;
+      return `- ${service.title} (${qty}): ${price}`;
+    })
+    .join("\n");
+
+  if (msgLang === "en") {
+    if (!hasSelected) {
+      return [
+        "Hi Victor! I'd like to request a quote for my project.",
+        "",
+        "I haven't selected a specific service yet, but I'd like to explain what I need and get your recommendation.",
+        "",
+        "Could you please help me define the best scope and next steps?",
+        "Thank you!",
+      ].join("\n");
+    }
+    return [
+      "Hi Victor! I'd like to request a quote for my project.",
+      "",
+      "I'm interested in the following services:",
+      serviceLines,
+      "",
+      `Estimated one-time investment: ${formatAmount(onceTotal, "USD")}`,
+      monthlyTotal ? `Estimated monthly investment: ${formatAmount(monthlyTotal, "USD")}/mo` : "",
+      "",
+      "Could you please review the scope and confirm the next steps?",
+      "Thank you!",
+    ]
+      .filter(Boolean)
+      .join("\n");
+  }
+
+  if (msgLang === "es") {
+    if (!hasSelected) {
+      return [
+        "¡Hola, Victor! Me gustaría solicitar un presupuesto para mi proyecto.",
+        "",
+        "Todavía no definí exactamente qué servicios voy a necesitar, pero me gustaría explicar mi idea y recibir tu recomendación.",
+        "",
+        "¿Puedes ayudarme a definir el mejor alcance y los próximos pasos?",
+        "¡Gracias!",
+      ].join("\n");
+    }
+    return [
+      "¡Hola, Victor! Me gustaría solicitar un presupuesto para mi proyecto.",
+      "",
+      "Estoy interesado en los siguientes servicios:",
+      serviceLines,
+      "",
+      `Inversión única estimada: ${formatAmount(onceTotal, currency)}`,
+      monthlyTotal ? `Inversión mensual estimada: ${formatAmount(monthlyTotal, currency)}/mes` : "",
+      "",
+      "¿Puedes revisar el alcance y orientarme sobre los próximos pasos?",
+      "¡Gracias!",
+    ]
+      .filter(Boolean)
+      .join("\n");
+  }
+
+  // Portuguese (pt)
+  if (!hasSelected) {
+    return [
+      "Olá, Victor! Gostaria de solicitar um orçamento para meu projeto.",
+      "",
+      "Ainda não defini exatamente quais serviços vou precisar, mas gostaria de explicar minha ideia e receber sua recomendação.",
+      "",
+      "Pode me ajudar a definir o melhor escopo e os próximos passos?",
+      "Obrigado!",
+    ].join("\n");
+  }
+  return [
+    "Olá, Victor! Gostaria de solicitar um orçamento para meu projeto.",
+    "",
+    "Tenho interesse nos seguintes serviços:",
+    serviceLines,
+    "",
+    `Investimento único estimado: ${formatAmount(onceTotal, "BRL")}`,
+    monthlyTotal ? `Investimento mensal estimado: ${formatAmount(monthlyTotal, "BRL")}/mês` : "",
+    "",
+    "Pode revisar o escopo e me orientar sobre os próximos passos?",
+    "Obrigado!",
+  ]
+    .filter(Boolean)
+    .join("\n");
+}
+
 export function BudgetSection() {
+  const { t, lang } = useLanguage();
   const [channelStep, setChannelStep] = useState<ChannelStep>("selecting");
   const [budgetChannel, setBudgetChannel] = useState<BudgetChannel>("workana");
   const [detectedCurrency, setDetectedCurrency] = useState<Currency | null>(null);
@@ -104,11 +170,59 @@ export function BudgetSection() {
   const [sendStatus, setSendStatus] = useState<SendStatus>("idle");
   const [selectedServices, setSelectedServices] = useState<Record<string, number>>({});
 
+  const categories = useMemo(
+    () => [{ id: "todos", label: t.budget.allCategory }, ...siteData.serviceCategories],
+    [t]
+  );
+
+  const serviceCategoryLabels = useMemo(
+    () =>
+      siteData.serviceCategories.reduce<Record<string, string>>((acc, c) => {
+        acc[c.id] = c.label;
+        return acc;
+      }, {}),
+    []
+  );
+
+  const channelOptions = useMemo(
+    () => [
+      {
+        id: "workana" as BudgetChannel,
+        label: t.budget.channel.workana.label,
+        description: t.budget.channel.workana.desc,
+        badge: "R$",
+        currencyLabel: t.budget.channel.workana.currency,
+      },
+      {
+        id: "upwork" as BudgetChannel,
+        label: t.budget.channel.upwork.label,
+        description: t.budget.channel.upwork.desc,
+        badge: "$",
+        currencyLabel: t.budget.channel.upwork.currency,
+      },
+      {
+        id: "direto" as BudgetChannel,
+        label: t.budget.channel.direct.label,
+        description: t.budget.channel.direct.desc,
+        badge: "◎",
+        currencyLabel: t.budget.channel.direct.currency,
+      },
+    ],
+    [t]
+  );
+
   const currency: Currency = useMemo(() => {
     if (budgetChannel === "upwork") return "USD";
     if (budgetChannel === "direto") return detectedCurrency ?? "BRL";
     return "BRL";
   }, [budgetChannel, detectedCurrency]);
+
+  // Message language: Workana → always PT, Upwork → always EN, direto → follows UI lang
+  const messageLang: Language = useMemo(() => {
+    if (budgetChannel === "workana") return "pt";
+    if (budgetChannel === "upwork") return "en";
+    return lang;
+  }, [budgetChannel, lang]);
 
   async function selectChannel(channel: BudgetChannel) {
     if (channel === "direto") {
@@ -153,75 +267,10 @@ export function BudgetSection() {
     return service.billing === "once" ? total : total + service.price * quantity;
   }, 0);
 
-  const budgetMessage = useMemo(() => {
-    const isEnglish = currency === "USD";
-    const hasSelected = selectedItems.length > 0;
-
-    const serviceLines = selectedItems
-      .map(({ service, quantity }) => {
-        const qty = service.allowQuantity
-          ? `${quantity} ${service.unitLabel || (isEnglish ? "units" : "unidades")}`
-          : isEnglish ? "1 service" : "1 serviço";
-        const price = service.startingAt
-          ? `${isEnglish ? "from " : "a partir de "}${formatAmount(service.price * quantity, currency)}${service.billing === "monthly" ? (isEnglish ? "/mo" : "/mês") : ""}`
-          : `${formatAmount(service.price * quantity, currency)}${service.billing === "monthly" ? (isEnglish ? "/mo" : "/mês") : ""}`;
-        return `- ${service.title} (${qty}): ${price}`;
-      })
-      .join("\n");
-
-    if (isEnglish) {
-      if (!hasSelected) {
-        return [
-          "Hi Victor! I'd like to request a quote for my project.",
-          "",
-          "I haven't selected a specific service yet, but I'd like to explain what I need and get your recommendation.",
-          "",
-          "Could you please help me define the best scope and next steps?",
-          "Thank you!",
-        ].join("\n");
-      }
-      return [
-        "Hi Victor! I'd like to request a quote for my project.",
-        "",
-        "I'm interested in the following services:",
-        serviceLines,
-        "",
-        `Estimated one-time investment: ${formatAmount(onceTotal, "USD")}`,
-        monthlyTotal ? `Estimated monthly investment: ${formatAmount(monthlyTotal, "USD")}/mo` : "",
-        "",
-        "Could you please review the scope and confirm the next steps?",
-        "Thank you!",
-      ]
-        .filter(Boolean)
-        .join("\n");
-    }
-
-    if (!hasSelected) {
-      return [
-        "Olá, Victor! Gostaria de solicitar um orçamento para meu projeto.",
-        "",
-        "Ainda não defini exatamente quais serviços vou precisar, mas gostaria de explicar minha ideia e receber sua recomendação.",
-        "",
-        "Pode me ajudar a definir o melhor escopo e os próximos passos?",
-        "Obrigado!",
-      ].join("\n");
-    }
-
-    return [
-      "Olá, Victor! Gostaria de solicitar um orçamento para meu projeto.",
-      "",
-      "Tenho interesse nos seguintes serviços:",
-      serviceLines,
-      "",
-      `Investimento único estimado: ${formatAmount(onceTotal, "BRL")}`,
-      monthlyTotal ? `Investimento mensal estimado: ${formatAmount(monthlyTotal, "BRL")}/mês` : "",
-      "",
-      "Pode revisar o escopo e me orientar sobre os próximos passos?",
-      "Obrigado!",
-    ]
-      .filter(Boolean)
-      .join("\n");
-  }, [currency, onceTotal, monthlyTotal, selectedItems]);
+  const budgetMessage = useMemo(
+    () => buildBudgetMessage(messageLang, currency, selectedItems, onceTotal, monthlyTotal),
+    [messageLang, currency, selectedItems, onceTotal, monthlyTotal]
+  );
 
   function addService(id: string) {
     setSelectedServices((current) => {
@@ -254,14 +303,10 @@ export function BudgetSection() {
     let copied = false;
     try {
       await navigator.clipboard.writeText(budgetMessage);
-      setCopyStatus(currency === "USD" ? "Message copied to clipboard." : "Mensagem copiada para colar no chat.");
+      setCopyStatus(t.budget.copyClipboard);
       copied = true;
     } catch {
-      setCopyStatus(
-        currency === "USD"
-          ? "Could not copy automatically. Select the text and copy manually."
-          : "Não consegui copiar automaticamente. Selecione o texto e copie manualmente."
-      );
+      setCopyStatus(t.budget.couldNotCopyShort);
     }
     if (!copied && budgetChannel !== "direto") {
       setSendStatus("error");
@@ -281,9 +326,9 @@ export function BudgetSection() {
       <section className="section budget" id="orcamento">
         <div className="channel-selector">
           <div className="channel-selector__intro" data-animate>
-            <p className="eyebrow">Antes de começar</p>
-            <h2>De onde você veio?</h2>
-            <p>Isso define a moeda dos preços e a mensagem gerada automaticamente.</p>
+            <p className="eyebrow">{t.budget.channel.eyebrow}</p>
+            <h2>{t.budget.channel.title}</h2>
+            <p>{t.budget.channel.lead}</p>
           </div>
 
           <div className="channel-cards">
@@ -307,7 +352,9 @@ export function BudgetSection() {
                 <h3>{channel.label}</h3>
                 <p>{channel.description}</p>
                 <span className="channel-card__currency">
-                  {isDetecting && channel.id === "direto" ? "Detectando localização..." : channel.currencyLabel}
+                  {isDetecting && channel.id === "direto"
+                    ? t.budget.channel.direct.detecting
+                    : channel.currencyLabel}
                 </span>
               </button>
             ))}
@@ -321,16 +368,8 @@ export function BudgetSection() {
   return (
     <section className="section budget" id="orcamento">
       <div className="section__intro section__intro--budget" data-animate>
-        <h2>
-          {currency === "USD"
-            ? "Build your WordPress quote in real time."
-            : "Monte um orçamento WordPress em tempo real."}
-        </h2>
-        <p>
-          {currency === "USD"
-            ? "Website, SEO, performance and support services — with clear explanations."
-            : "Serviços de sites, SEO, performance e suporte com explicação direta para clientes."}
-        </p>
+        <h2>{t.budget.title}</h2>
+        <p>{t.budget.lead}</p>
       </div>
 
       <div className="budget-layout">
@@ -340,7 +379,7 @@ export function BudgetSection() {
             {budgetChannel === "direto" && detectedCurrency
               ? ` · ${detectedCurrency === "USD" ? "USD $" : "BRL R$"}`
               : ""}
-            {" "}— {currency === "USD" ? "Change" : "Mudar"}
+            {" "}— {t.budget.change}
           </button>
 
           <div className="category-tabs" aria-label="Categorias de serviços">
@@ -386,10 +425,10 @@ export function BudgetSection() {
                     onClick={() => addService(service.id)}
                   >
                     {selectedServices[service.id] && !service.allowQuantity
-                      ? currency === "USD" ? "Selected" : "Selecionado"
+                      ? t.budget.selected
                       : service.allowQuantity && selectedServices[service.id]
-                        ? `${currency === "USD" ? "Add more" : "Adicionar mais"} (${selectedServices[service.id]})`
-                        : `+ ${currency === "USD" ? "Add" : "Adicionar"}`}
+                        ? `${t.budget.addMore} (${selectedServices[service.id]})`
+                        : `+ ${t.budget.add}`}
                   </button>
                 </div>
               </article>
@@ -399,13 +438,13 @@ export function BudgetSection() {
 
         <aside
           className="budget-panel"
-          aria-label={currency === "USD" ? "Budget summary" : "Resumo do orçamento"}
+          aria-label={t.budget.panelAriaLabel}
           data-animate
           style={{ "--animate-delay": "150ms" } as React.CSSProperties}
         >
           <div className="budget-panel__header">
-            <p className="eyebrow">{currency === "USD" ? "Summary" : "Resumo"}</p>
-            <h3>{currency === "USD" ? "Current quote" : "Orçamento atual"}</h3>
+            <p className="eyebrow">{t.budget.summary}</p>
+            <h3>{t.budget.currentQuote}</h3>
           </div>
 
           <div className="selected-list">
@@ -416,11 +455,9 @@ export function BudgetSection() {
                     <strong>{service.title}</strong>
                     <span>
                       {service.allowQuantity
-                        ? `${quantity} ${service.unitLabel || (currency === "USD" ? "units" : "unidades")} × ${formatAmount(service.price, currency)}`
+                        ? `${quantity} ${service.unitLabel || t.budget.units} × ${formatAmount(service.price, currency)}`
                         : formatServicePrice(service, currency)}
-                      {service.allowQuantity && service.billing === "monthly"
-                        ? currency === "USD" ? "/mo" : "/mês"
-                        : ""}
+                      {service.allowQuantity && service.billing === "monthly" ? t.budget.perMonth : ""}
                     </span>
                   </div>
                   <div className="selected-item__actions">
@@ -429,14 +466,14 @@ export function BudgetSection() {
                         <button
                           type="button"
                           onClick={() => decreaseService(service.id)}
-                          aria-label={`${currency === "USD" ? "Decrease" : "Diminuir"} ${service.title}`}
+                          aria-label={`${t.budget.decrease} ${service.title}`}
                         >
                           −
                         </button>
                         <button
                           type="button"
                           onClick={() => addService(service.id)}
-                          aria-label={`${currency === "USD" ? "Add" : "Adicionar"} ${service.title}`}
+                          aria-label={`${t.budget.add} ${service.title}`}
                         >
                           +
                         </button>
@@ -447,36 +484,32 @@ export function BudgetSection() {
                       type="button"
                       onClick={() => removeService(service.id)}
                     >
-                      {currency === "USD" ? "Remove" : "Remover"}
+                      {t.budget.remove}
                     </button>
                   </div>
                 </div>
               ))
             ) : (
-              <p className="selected-list__empty">
-                {currency === "USD" ? "No service selected." : "Nenhum serviço selecionado."}
-              </p>
+              <p className="selected-list__empty">{t.budget.noService}</p>
             )}
           </div>
 
           <div className="totals">
             <div>
-              <span>{currency === "USD" ? "One-time total" : "Total único estimado"}</span>
+              <span>{t.budget.onceTotal}</span>
               <strong>{formatAmount(onceTotal, currency)}</strong>
             </div>
             <div>
-              <span>{currency === "USD" ? "Monthly" : "Mensal"}</span>
+              <span>{t.budget.monthly}</span>
               <strong>
                 {formatAmount(monthlyTotal, currency)}
-                {monthlyTotal > 0 ? (currency === "USD" ? "/mo" : "/mês") : ""}
+                {monthlyTotal > 0 ? t.budget.perMonth : ""}
               </strong>
             </div>
           </div>
 
           <div className="budget-message">
-            <label htmlFor="budget-message">
-              {currency === "USD" ? "Generated message" : "Mensagem gerada"}
-            </label>
+            <label htmlFor="budget-message">{t.budget.generatedMessage}</label>
             <textarea id="budget-message" readOnly value={budgetMessage} />
           </div>
 
@@ -489,26 +522,20 @@ export function BudgetSection() {
             type="button"
           >
             {sendStatus === "sending"
-              ? (currency === "USD" ? "Preparing..." : "Preparando...")
+              ? t.budget.preparing
               : budgetChannel === "direto"
-                ? (currency === "USD" ? "Copy & open WhatsApp" : "Copiar e abrir WhatsApp")
-                : (currency === "USD" ? "Copy message" : "Copiar mensagem")}
+                ? t.budget.copyAndWhatsApp
+                : t.budget.copyMessage}
             <span aria-hidden="true">-&gt;</span>
           </button>
 
           {sendStatus === "sent" ? (
             <p className="budget-status">
-              {budgetChannel === "direto"
-                ? (currency === "USD" ? "Message copied and WhatsApp opened." : "Mensagem copiada e WhatsApp aberto.")
-                : (currency === "USD" ? "Message copied to clipboard." : "Mensagem copiada para o chat.")}
+              {budgetChannel === "direto" ? t.budget.copiedWhatsApp : t.budget.copiedMessage}
             </p>
           ) : null}
           {sendStatus === "error" ? (
-            <p className="budget-status budget-status--warning">
-              {currency === "USD"
-                ? "Could not copy automatically. Select the text and copy manually."
-                : "Não consegui copiar automaticamente. Selecione o texto e copie manualmente."}
-            </p>
+            <p className="budget-status budget-status--warning">{t.budget.couldNotCopy}</p>
           ) : null}
         </aside>
       </div>

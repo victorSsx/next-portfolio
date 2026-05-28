@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { AnimationObserver } from "./components/AnimationObserver";
+import { LanguageProvider } from "./lib/LanguageContext";
 
 export const metadata: Metadata = {
   title: "Victor | Desenvolvedor Freelancer",
@@ -16,8 +17,10 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body>
-        <AnimationObserver />
-        {children}
+        <LanguageProvider>
+          <AnimationObserver />
+          {children}
+        </LanguageProvider>
       </body>
     </html>
   );
