@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "../lib/LanguageContext";
+import { siteData } from "../lib/site-data";
 import type { Language } from "../lib/translations";
 
 const CUSTOM_LOGO_PATH: string | null = "/images/logo-victor-ai-transparent.png";
@@ -17,6 +18,22 @@ export function HeroSection() {
   const [logoStage, setLogoStage] = useState<"custom" | "svg" | "png" | "vector">(
     CUSTOM_LOGO_PATH ? "custom" : "vector"
   );
+  const [langOpen, setLangOpen] = useState(false);
+  const langRef = useRef<HTMLDivElement>(null);
+
+  const availability = siteData.availability ?? "available";
+  const currentFlag = FLAG_OPTIONS.find((o) => o.lang === lang)?.flag ?? "🇧🇷";
+
+  useEffect(() => {
+    if (!langOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (langRef.current && !langRef.current.contains(e.target as Node)) {
+        setLangOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [langOpen]);
 
   return (
     <section className="hero" id="inicio">
@@ -74,29 +91,47 @@ export function HeroSection() {
             </svg>
           )}
         </a>
-        <div className="availability">
+
+        <div className={`availability availability--${availability}`}>
           <span aria-hidden="true" />
-          {t.hero.availability}
+          {t.hero.availabilityLabels[availability]}
         </div>
+
         <div className="topbar__links">
           <a href="#projetos">{t.nav.projects}</a>
           <a href="#orcamento">{t.nav.budget}</a>
           <a href="#contato">{t.nav.contact}</a>
-        </div>
-        <div className="lang-selector" aria-label="Idioma / Language">
-          {FLAG_OPTIONS.map(({ lang: l, flag, label }) => (
+
+          <div className="lang-dropdown" ref={langRef}>
             <button
-              key={l}
-              className={`lang-btn${lang === l ? " is-active" : ""}`}
-              onClick={() => setLang(l)}
+              className="lang-dropdown__btn"
               type="button"
-              aria-label={label}
-              aria-pressed={lang === l}
-              title={label}
+              aria-label="Selecionar idioma"
+              aria-expanded={langOpen}
+              aria-haspopup="listbox"
+              onClick={() => setLangOpen((o) => !o)}
             >
-              {flag}
+              <span className="lang-dropdown__flag">{currentFlag}</span>
+              <span className="lang-dropdown__chevron" aria-hidden="true">▾</span>
             </button>
-          ))}
+            {langOpen && (
+              <div className="lang-dropdown__menu" role="listbox" aria-label="Idioma">
+                {FLAG_OPTIONS.map(({ lang: l, flag, label }) => (
+                  <button
+                    key={l}
+                    className={`lang-dropdown__option${lang === l ? " is-active" : ""}`}
+                    onClick={() => { setLang(l); setLangOpen(false); }}
+                    type="button"
+                    role="option"
+                    aria-selected={lang === l}
+                  >
+                    <span className="lang-dropdown__flag">{flag}</span>
+                    {label}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </nav>
 

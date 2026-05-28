@@ -3,6 +3,7 @@
 import { useMemo, useState, type ChangeEvent } from "react";
 import {
   siteData as defaultSiteData,
+  type AvailabilityStatus,
   type BudgetService,
   type DeviceView,
   type Project,
@@ -589,6 +590,28 @@ export default function AdminPage() {
       {message ? (
         <p className={`admin-status admin-status--${status === "error" ? "error" : "success"}`}>{message}</p>
       ) : null}
+
+      <div className="admin-site-settings">
+        <p className="admin-site-settings__label">Disponibilidade</p>
+        <div className="admin-avail-options">
+          {(["available", "busy", "unavailable"] as AvailabilityStatus[]).map((val) => (
+            <label
+              key={val}
+              className={`admin-avail-option admin-avail-option--${val}${(data.availability ?? "available") === val ? " is-active" : ""}`}
+            >
+              <input
+                type="radio"
+                name="availability"
+                value={val}
+                checked={(data.availability ?? "available") === val}
+                onChange={() => setData((cur) => ({ ...cur, availability: val }))}
+              />
+              <span className="admin-avail-dot" />
+              {val === "available" ? "Disponível" : val === "busy" ? "Em projeto" : "Indisponível"}
+            </label>
+          ))}
+        </div>
+      </div>
 
       <nav className="admin-tabs" aria-label="Seções administrativas">
         {(["projects", "services", "categories", "technologies"] as const).map((id) => (

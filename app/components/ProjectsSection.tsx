@@ -1,9 +1,8 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { siteData, type Project } from "../lib/site-data";
+import { useEffect, useMemo, useState } from "react";
+import { siteData, type Project, type ProjectImage } from "../lib/site-data";
 import { useLanguage } from "../lib/LanguageContext";
-import { ImageCarousel, type CarouselItem } from "./ImageCarousel";
 
 const projects = siteData.projects;
 
@@ -20,7 +19,7 @@ function getAvailableTabs(project: Project): DeviceTab[] {
   return tabs;
 }
 
-function getGalleryItems(project: Project, tab: DeviceTab): CarouselItem[] {
+function getGalleryImages(project: Project, tab: DeviceTab): ProjectImage[] {
   if (tab === "desktop") return project.gallery;
   return project.deviceViews?.find((dv) => dv.device === tab)?.images ?? [];
 }
@@ -34,6 +33,7 @@ export function ProjectsSection() {
   const { t } = useLanguage();
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [deviceTab, setDeviceTab] = useState<DeviceTab>("desktop");
+  const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
 
   const activeProjectVideos = useMemo(
     () => (activeProject ? getProjectVideos(activeProject) : []),
@@ -45,8 +45,8 @@ export function ProjectsSection() {
     [activeProject]
   );
 
-  const galleryItems = useMemo(
-    () => (activeProject ? getGalleryItems(activeProject, deviceTab) : []),
+  const galleryImages = useMemo(
+    () => (activeProject ? getGalleryImages(activeProject, deviceTab) : []),
     [activeProject, deviceTab]
   );
 
@@ -58,6 +58,7 @@ export function ProjectsSection() {
   const openProject = (project: Project) => {
     setActiveProject(project);
     setDeviceTab("desktop");
+    setLightboxIdx(null);
   };
 
   const tabLabel = (tab: DeviceTab) => {
@@ -65,6 +66,21 @@ export function ProjectsSection() {
     if (tab === "mobile") return t.projects.modal.mobile;
     return t.projects.modal.desktop;
   };
+
+  useEffect(() => {
+    if (lightboxIdx === null) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setLightboxIdx(null);
+      if (e.key === "ArrowRight") setLightboxIdx((i) => (i !== null ? Math.min(i + 1, galleryImages.length - 1) : i));
+      if (e.key === "ArrowLeft") setLightboxIdx((i) => (i !== null ? Math.max(i - 1, 0) : i));
+    };
+    window.addEventListener("keydown", handler);
+    return () => window.removeEventListener("keydown", handler);
+  }, [lightboxIdx, galleryImages.length]);
+
+  useEffect(() => {
+    setLightboxIdx(null);
+  }, [deviceTab]);
 
   return (
     <>
@@ -194,12 +210,23 @@ export function ProjectsSection() {
                 </div>
               )}
 
-              {galleryItems.length > 0 ? (
-                <ImageCarousel
-                  items={galleryItems}
-                  prevLabel={t.projects.modal.close === "Fechar" ? "Anterior" : t.projects.modal.close === "Cerrar" ? "Anterior" : "Previous"}
-                  nextLabel={t.projects.modal.close === "Fechar" ? "Próximo" : t.projects.modal.close === "Cerrar" ? "Siguiente" : "Next"}
-                />
+              {galleryImages.length > 0 ? (
+                <div className="gallery-grid">
+                  {galleryImages.map((image, idx) => (
+                    <figure
+                      key={`${image.src}-${idx}`}
+                      className="gallery-grid__item"
+                      onClick={() => setLightboxIdx(idx)}
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => e.key === "Enter" && setLightboxIdx(idx)}
+                      aria-label={image.alt || image.label}
+                    >
+                      <img src={image.src} alt={image.alt} loading="lazy" />
+                      {image.label && <figcaption>{image.label}</figcaption>}
+                    </figure>
+                  ))}
+                </div>
               ) : (
                 <p className="modal-gallery-empty">{t.projects.modal.emptyGallery}</p>
               )}
@@ -220,6 +247,47 @@ export function ProjectsSection() {
           </article>
         </div>
       ) : null}
+
+      {lightboxIdx !== null && activeProject && galleryImages[lightboxIdx] && (
+        <div className="lightbox" role="dialog" aria-modal="true" aria-label="Imagem ampliada">
+          <button className="lightbox__backdrop" onClick={() => setLightboxIdx(null)} type="button" aria-label="Fechar" />
+          <div className="lightbox__inner">
+            <button className="lightbox__close" onClick={() => setLightboxIdx(null)} type="button" aria-label="Fechar">
+              ×
+            </button>
+            <img
+              className="lightbox__img"
+              src={galleryImages[lightboxIdx].src}
+              alt={galleryImages[lightboxIdx].alt}
+            />
+            {galleryImages[lightboxIdx].label && (
+              <p className="lightbox__caption">{galleryImages[lightboxIdx].label}</p>
+            )}
+            {galleryImages.length > 1 && (
+              <>
+                <button
+                  className="lightbox__nav lightbox__nav--prev"
+                  type="button"
+                  onClick={() => setLightboxIdx((i) => (i !== null ? Math.max(i - 1, 0) : i))}
+                  disabled={lightboxIdx === 0}
+                  aria-label="Anterior"
+                >
+                  ‹
+                </button>
+                <button
+                  className="lightbox__nav lightbox__nav--next"
+                  type="button"
+                  onClick={() => setLightboxIdx((i) => (i !== null ? Math.min(i + 1, galleryImages.length - 1) : i))}
+                  disabled={lightboxIdx === galleryImages.length - 1}
+                  aria-label="Próximo"
+                >
+                  ›
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+      )}
     </>
   );
 }

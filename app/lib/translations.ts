@@ -2,7 +2,14 @@ export type Language = "pt" | "en" | "es";
 
 export type Translations = {
   nav: { projects: string; budget: string; process: string; contact: string };
-  hero: { availability: string; greeting: string; role: string; lead: string; ctaProjects: string; ctaBudget: string };
+  hero: {
+    availabilityLabels: { available: string; busy: string; unavailable: string };
+    greeting: string;
+    role: string;
+    lead: string;
+    ctaProjects: string;
+    ctaBudget: string;
+  };
   projects: {
     eyebrow: string;
     title: string;
@@ -72,7 +79,11 @@ export const translations: Record<Language, Translations> = {
   pt: {
     nav: { projects: "Projetos", budget: "Orçamento", process: "Processo", contact: "Contato" },
     hero: {
-      availability: "Disponível para novos projetos",
+      availabilityLabels: {
+        available: "Disponível para novos projetos",
+        busy: "Trabalhando em projetos",
+        unavailable: "Indisponível para projetos",
+      },
       greeting: "Olá, eu sou",
       role: "Desenvolvedor Freelancer",
       lead: "Transformo ideias em soluções digitais modernas, intuitivas e de alta performance. Sites, aplicações e experiências que geram resultados reais para o seu negócio.",
@@ -163,7 +174,11 @@ export const translations: Record<Language, Translations> = {
   en: {
     nav: { projects: "Projects", budget: "Quote", process: "Process", contact: "Contact" },
     hero: {
-      availability: "Available for new projects",
+      availabilityLabels: {
+        available: "Available for new projects",
+        busy: "Working on a project",
+        unavailable: "Not available for projects",
+      },
       greeting: "Hi, I'm",
       role: "Freelance Developer",
       lead: "I turn ideas into modern, intuitive, high-performance digital solutions. Websites, apps and experiences that drive real results for your business.",
@@ -254,7 +269,11 @@ export const translations: Record<Language, Translations> = {
   es: {
     nav: { projects: "Proyectos", budget: "Presupuesto", process: "Proceso", contact: "Contacto" },
     hero: {
-      availability: "Disponible para nuevos proyectos",
+      availabilityLabels: {
+        available: "Disponible para nuevos proyectos",
+        busy: "Trabajando en proyectos",
+        unavailable: "No disponible para proyectos",
+      },
       greeting: "Hola, soy",
       role: "Desarrollador Freelance",
       lead: "Convierto ideas en soluciones digitales modernas, intuitivas y de alto rendimiento. Sitios web, aplicaciones y experiencias que generan resultados reales para tu negocio.",

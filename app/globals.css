@@ -2136,9 +2136,7 @@ a {
   animation: modal-enter 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-/* Override gallery from 2-col grid to block (carousel handles layout) */
 .project-modal__gallery {
-  display: block;
   padding: 20px 26px 26px;
 }
 
@@ -2415,4 +2413,307 @@ a {
     transition: none !important;
   }
 }
+
+/* ── Gallery grid ─────────────────────────────────────────────────────────── */
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.gallery-grid__item {
+  margin: 0;
+  border-radius: 6px;
+  overflow: hidden;
+  cursor: pointer;
+  border: 1px solid rgba(245, 242, 236, 0.08);
+  transition: border-color 0.18s, transform 0.18s;
+  position: relative;
+}
+
+.gallery-grid__item:hover {
+  border-color: rgba(255, 213, 107, 0.4);
+  transform: scale(1.02);
+}
+
+.gallery-grid__item img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  display: block;
+}
+
+.gallery-grid__item figcaption {
+  padding: 6px 10px;
+  font-size: 0.7rem;
+  color: var(--gray);
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* ── Lightbox ─────────────────────────────────────────────────────────────── */
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  cursor: default;
+  border: none;
+  width: 100%;
+  height: 100%;
+}
+
+.lightbox__inner {
+  position: relative;
+  z-index: 1;
+  max-width: min(92vw, 1080px);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.lightbox__img {
+  max-width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  border-radius: 6px;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6);
+}
+
+.lightbox__caption {
+  font-size: 0.8rem;
+  color: var(--gray);
+  margin: 0;
+  text-align: center;
+}
+
+.lightbox__close {
+  position: fixed;
+  top: 20px;
+  right: 24px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 1.8rem;
+  line-height: 1;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+
+.lightbox__close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.lightbox__nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-size: 2.4rem;
+  line-height: 1;
+  width: 48px;
+  height: 64px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lightbox__nav:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.lightbox__nav:disabled {
+  opacity: 0.25;
+  cursor: default;
+}
+
+.lightbox__nav--prev { left: 16px; }
+.lightbox__nav--next { right: 16px; }
+
+/* ── Lang dropdown ────────────────────────────────────────────────────────── */
+
+.lang-dropdown {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.lang-dropdown__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 20px;
+  padding: 4px 10px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 0.85rem;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.lang-dropdown__btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+}
+
+.lang-dropdown__flag {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.lang-dropdown__chevron {
+  font-size: 0.7rem;
+  opacity: 0.7;
+}
+
+.lang-dropdown__menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  overflow: hidden;
+  min-width: 150px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.lang-dropdown__option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 0.88rem;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s, color 0.12s;
+}
+
+.lang-dropdown__option:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.lang-dropdown__option.is-active {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* ── Availability dot states ──────────────────────────────────────────────── */
+
+.availability--available span {
+  background: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+}
+
+.availability--busy span {
+  background: #eab308;
+  box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.25);
+  animation: none;
+}
+
+.availability--unavailable span {
+  background: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.25);
+  animation: none;
+}
+
+/* ── Admin availability controls ─────────────────────────────────────────── */
+
+.admin-site-settings {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 14px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.admin-site-settings__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gray);
+  margin: 0;
+  white-space: nowrap;
+}
+
+.admin-avail-options {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-avail-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--gray);
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  user-select: none;
+}
+
+.admin-avail-option input[type="radio"] {
+  display: none;
+}
+
+.admin-avail-option:hover {
+  border-color: rgba(255, 255, 255, 0.25);
+  color: var(--white);
+}
+
+.admin-avail-option.is-active {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: var(--white);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.admin-avail-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.admin-avail-option--available .admin-avail-dot { background: #22c55e; }
+.admin-avail-option--busy .admin-avail-dot      { background: #eab308; }
+.admin-avail-option--unavailable .admin-avail-dot { background: #ef4444; }
 

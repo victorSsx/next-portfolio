@@ -1,7 +1,7 @@
 import { promises as fs } from "node:fs";
 import path from "node:path";
 import { NextResponse } from "next/server";
-import type { DeviceView, SiteData } from "../../../lib/site-data";
+import type { AvailabilityStatus, DeviceView, SiteData } from "../../../lib/site-data";
 import defaultSiteData from "../../../data/site-data.json";
 
 export const runtime = "nodejs";
@@ -46,7 +46,12 @@ const normalizeVideo = (video: unknown, fallbackPoster: string, fallbackLabel: s
   };
 };
 
+const AVAILABILITY_VALUES: AvailabilityStatus[] = ["available", "busy", "unavailable"];
+
 const normalizeSiteData = (data: Partial<SiteData>): SiteData => ({
+  availability: AVAILABILITY_VALUES.includes(data.availability as AvailabilityStatus)
+    ? (data.availability as AvailabilityStatus)
+    : undefined,
   serviceCategories: Array.isArray(data.serviceCategories)
     ? data.serviceCategories
         .map((category) => ({

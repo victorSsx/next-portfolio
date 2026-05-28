@@ -55,11 +55,14 @@ export type Project = {
   deviceViews?: DeviceView[];
 };
 
+export type AvailabilityStatus = "available" | "busy" | "unavailable";
+
 export type SiteData = {
   serviceCategories: ServiceCategory[];
   technologies: string[];
   services: BudgetService[];
   projects: Project[];
+  availability?: AvailabilityStatus;
 };
 
 export const siteData = rawSiteData as SiteData;
