@@ -2,11 +2,15 @@
   "serviceCategories": [
     {
       "id": "sites",
-      "label": "Sites WordPress"
+      "label": "Sites"
+    },
+    {
+      "id": "ecommerce",
+      "label": "E-commerce"
     },
     {
       "id": "seo",
-      "label": "SEO e performance"
+      "label": "SEO e velocidade"
     },
     {
       "id": "suporte",
@@ -27,16 +31,17 @@
     {
       "id": "landing-page",
       "category": "sites",
-      "title": "Landing page",
-      "price": 350,
+      "title": "Página de conversão",
+      "price": 500,
       "billing": "once",
-      "summary": "Página única para apresentar uma oferta, serviço ou campanha com visual profissional.",
+      "summary": "Uma página focada em transformar visitantes em clientes — com estrutura de vendas, proposta de valor clara e chamada para ação forte.",
       "details": [
-        "Seção principal com chamada forte",
-        "Layout responsivo",
-        "Botão para WhatsApp ou contato",
-        "Formulário simples",
-        "SEO básico da página"
+        "Hero com headline e proposta de valor",
+        "Seções de benefícios e prova social",
+        "Formulário de contato ou botão WhatsApp",
+        "Layout responsivo (mobile e desktop)",
+        "SEO básico da página configurado",
+        "Entrega em até 5 dias úteis"
       ],
       "allowQuantity": false,
       "startingAt": true
@@ -45,66 +50,120 @@
       "id": "site-institucional",
       "category": "sites",
       "title": "Site institucional",
-      "price": 550,
+      "price": 900,
       "billing": "once",
-      "summary": "Até 5 páginas para apresentar marca, serviços e contato.",
+      "summary": "Site completo para apresentar seu negócio com profissionalismo, gerar credibilidade e receber contatos de clientes.",
       "details": [
-        "Layout profissional e responsivo",
-        "WordPress + Elementor",
-        "Home, Sobre, Serviços e Contato",
-        "WhatsApp e formulário",
-        "SEO básico e mobile"
+        "Até 5 páginas (Home, Sobre, Serviços, Contato + 1)",
+        "WordPress + Elementor profissional",
+        "WhatsApp fixo e formulário de contato",
+        "Layout responsivo e adaptado para mobile",
+        "SEO básico configurado em todas as páginas",
+        "Google Maps integrado (se necessário)"
       ],
       "allowQuantity": false,
       "startingAt": true
     },
     {
+      "id": "site-com-blog",
+      "category": "sites",
+      "title": "Site com blog",
+      "price": 1200,
+      "billing": "once",
+      "summary": "Site institucional com blog integrado para atrair visitantes pelo Google, construir autoridade no seu nicho e gerar leads de forma contínua.",
+      "details": [
+        "Tudo do site institucional incluso",
+        "Blog com estrutura de categorias e tags",
+        "Template de artigo com boa leitura",
+        "Otimizado para SEO de conteúdo",
+        "Fácil de atualizar sem programador",
+        "Ideal para negócios que querem aparecer no Google"
+      ],
+      "allowQuantity": false,
+      "startingAt": false
+    },
+    {
       "id": "pagina-adicional",
       "category": "sites",
-      "title": "Página adicional",
-      "price": 100,
+      "title": "Página extra",
+      "price": 150,
       "billing": "once",
-      "summary": "Para sites institucionais acima das 5 páginas inclusas no pacote base.",
+      "summary": "Para projetos que precisam de mais páginas além das incluídas no pacote base.",
       "details": [
         "Layout seguindo o visual do site",
-        "Conteúdo organizado na página",
-        "Ajuste para celular",
-        "Botões e links necessários"
+        "Conteúdo organizado por seções",
+        "Responsivo em todos os dispositivos",
+        "Formulário ou CTA se necessário"
       ],
       "allowQuantity": true,
       "unitLabel": "páginas",
       "startingAt": false
     },
     {
-      "id": "blog-wordpress",
-      "category": "sites",
-      "title": "Blog WordPress",
-      "price": 250,
+      "id": "loja-woocommerce",
+      "category": "ecommerce",
+      "title": "Loja WooCommerce",
+      "price": 1800,
       "billing": "once",
-      "summary": "Estrutura de blog organizada para publicar artigos com boa apresentação.",
+      "summary": "Loja virtual completa no WordPress para vender produtos físicos ou digitais — com carrinho, checkout e painel de pedidos fácil de gerenciar.",
       "details": [
-        "Estrutura de blog",
-        "Página de categorias",
-        "Template de post",
-        "Sidebar personalizada",
-        "Organização visual dos artigos"
+        "WooCommerce configurado do zero",
+        "Até 10 produtos cadastrados com fotos e variações",
+        "Página de produto, carrinho e checkout",
+        "Integração com meio de pagamento (PIX, cartão)",
+        "Painel simples para gerenciar pedidos",
+        "Layout responsivo e otimizado para conversão"
       ],
       "allowQuantity": false,
+      "startingAt": true
+    },
+    {
+      "id": "produto-adicional",
+      "category": "ecommerce",
+      "title": "Produtos adicionais",
+      "price": 30,
+      "billing": "once",
+      "summary": "Cadastro de produtos extras além dos 10 incluídos no pacote de loja.",
+      "details": [
+        "Fotos, descrição e preço configurados",
+        "Variações (cor, tamanho, etc.) se necessário",
+        "Categorias organizadas"
+      ],
+      "allowQuantity": true,
+      "unitLabel": "produtos",
       "startingAt": false
     },
     {
       "id": "seo-essencial",
       "category": "seo",
-      "title": "SEO essencial",
-      "price": 200,
+      "title": "Setup Google",
+      "price": 300,
       "billing": "once",
-      "summary": "Configuração inicial para o site ficar mais organizado para mecanismos de busca.",
+      "summary": "Configuração completa para o Google entender, indexar e começar a mostrar seu site nas buscas — base para qualquer estratégia de SEO.",
       "details": [
-        "Titles e meta descriptions",
-        "URLs amigáveis",
-        "Headings H1, H2 e H3",
-        "Sitemap XML",
-        "Plugin SEO configurado"
+        "Titles e meta descriptions otimizados",
+        "URLs amigáveis e estrutura limpa",
+        "Headings H1, H2, H3 revisados",
+        "Sitemap XML e robots.txt configurados",
+        "Google Search Console + Analytics integrados",
+        "Rank Math SEO configurado"
+      ],
+      "allowQuantity": false,
+      "startingAt": false
+    },
+    {
+      "id": "performance",
+      "category": "seo",
+      "title": "Site rápido no mobile",
+      "price": 380,
+      "billing": "once",
+      "summary": "Otimização focada em velocidade real — para o site carregar rápido no celular, melhorar o PageSpeed e parar de perder visitas pela lentidão.",
+      "details": [
+        "Otimização e compressão de imagens",
+        "Configuração avançada de cache (LiteSpeed)",
+        "Remoção de scripts e CSS desnecessários",
+        "Melhoria de Core Web Vitals (LCP, CLS, FID)",
+        "Relatório antes e depois com scores reais"
       ],
       "allowQuantity": false,
       "startingAt": false
@@ -113,64 +172,15 @@
       "id": "seo-tecnico",
       "category": "seo",
       "title": "SEO técnico",
-      "price": 400,
+      "price": 500,
       "billing": "once",
-      "summary": "Ajustes técnicos para melhorar indexação, estrutura e leitura do site.",
+      "summary": "Auditoria e correção dos problemas técnicos que impedem seu site de subir no Google — indexação, estrutura, rastreamento e velocidade.",
       "details": [
-        "Ajustes técnicos de indexação",
-        "Otimização estrutural",
-        "Correção básica de SEO técnico",
-        "Search Console configurado",
-        "Melhorias de performance para SEO"
-      ],
-      "allowQuantity": false,
-      "startingAt": false
-    },
-    {
-      "id": "performance",
-      "category": "seo",
-      "title": "Otimização de performance",
-      "price": 250,
-      "billing": "once",
-      "summary": "Melhorias para reduzir lentidão e deixar o site mais leve no mobile.",
-      "details": [
-        "Otimização de imagens",
-        "Configuração de cache",
-        "Redução de lentidão",
-        "Melhorias básicas no PageSpeed",
-        "Ajustes de carregamento mobile"
-      ],
-      "allowQuantity": false,
-      "startingAt": false
-    },
-    {
-      "id": "analytics",
-      "category": "seo",
-      "title": "Google Analytics + Search Console",
-      "price": 150,
-      "billing": "once",
-      "summary": "Integração das ferramentas do Google para acompanhar acessos e presença na busca.",
-      "details": [
-        "Google Analytics integrado",
-        "Search Console configurado",
-        "Verificação de domínio",
-        "Monitoramento básico de acessos"
-      ],
-      "allowQuantity": false,
-      "startingAt": false
-    },
-    {
-      "id": "suporte-30",
-      "category": "suporte",
-      "title": "Suporte por 30 dias",
-      "price": 150,
-      "billing": "once",
-      "summary": "Acompanhamento pós-entrega para correções leves e dúvidas básicas.",
-      "details": [
-        "Correções leves",
-        "Ajustes simples",
-        "Suporte técnico pós-entrega",
-        "Auxílio em dúvidas básicas"
+        "Auditoria técnica completa do site",
+        "Correção de erros de indexação e crawl",
+        "Estrutura interna de links revisada",
+        "Search Console monitorado e limpo",
+        "Relatório completo com tudo que foi feito"
       ],
       "allowQuantity": false,
       "startingAt": false
@@ -178,16 +188,32 @@
     {
       "id": "manutencao",
       "category": "suporte",
-      "title": "Manutenção mensal",
-      "price": 200,
+      "title": "Plano mensal",
+      "price": 350,
       "billing": "monthly",
-      "summary": "Cuidado mensal para manter WordPress, plugins e backups em dia.",
+      "summary": "Seu site funcionando sempre: atualizações, backups, segurança e pequenos ajustes todo mês — sem precisar chamar ninguém para cada coisa.",
       "details": [
-        "Atualização de plugins",
-        "Atualização do WordPress",
-        "Backup preventivo",
-        "Monitoramento básico",
-        "Pequenos ajustes mensais"
+        "Atualização de plugins e WordPress",
+        "Backup semanal automático",
+        "Monitoramento de segurança e uptime",
+        "Até 2h de ajustes mensais incluídas",
+        "Relatório mensal com status do site"
+      ],
+      "allowQuantity": false,
+      "startingAt": false
+    },
+    {
+      "id": "suporte-30",
+      "category": "suporte",
+      "title": "Suporte pós-entrega",
+      "price": 200,
+      "billing": "once",
+      "summary": "30 dias de acompanhamento após a entrega — para corrigir, ajustar e garantir que tudo está funcionando como esperado.",
+      "details": [
+        "Correções de layout e ajustes finos",
+        "Suporte técnico por mensagem",
+        "Respostas em até 24h úteis",
+        "Pequenas alterações de conteúdo incluídas"
       ],
       "allowQuantity": false,
       "startingAt": false
