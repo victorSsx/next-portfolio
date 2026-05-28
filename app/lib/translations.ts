@@ -13,7 +13,7 @@ export type Translations = {
   projects: {
     eyebrow: string;
     title: string;
-    lead: string;
+    stats: { value: number; suffix: string; label: string }[];
     viewDetails: string;
     modal: {
       workDone: string;
@@ -133,7 +133,11 @@ export const translations: Record<Language, Translations> = {
     projects: {
       eyebrow: "Portfólio em vídeo",
       title: "Projetos prontos para apresentar, vender e validar ideias.",
-      lead: "Demos visuais para clientes entenderem a experiência antes mesmo de abrir o código.",
+      stats: [
+        { value: 10, suffix: "+", label: "Projetos entregues" },
+        { value: 5, suffix: "+", label: "Segmentos atendidos" },
+        { value: 100, suffix: "%", label: "Entregas no prazo" },
+      ],
       viewDetails: "Ver detalhes",
       modal: {
         workDone: "O que foi feito",
@@ -275,7 +279,11 @@ export const translations: Record<Language, Translations> = {
     projects: {
       eyebrow: "Video portfolio",
       title: "Projects ready to present, sell and validate ideas.",
-      lead: "Visual demos for clients to understand the experience before even opening the code.",
+      stats: [
+        { value: 10, suffix: "+", label: "Projects delivered" },
+        { value: 5, suffix: "+", label: "Segments served" },
+        { value: 100, suffix: "%", label: "On-time delivery" },
+      ],
       viewDetails: "View details",
       modal: {
         workDone: "What was done",
@@ -417,7 +425,11 @@ export const translations: Record<Language, Translations> = {
     projects: {
       eyebrow: "Portafolio en video",
       title: "Proyectos listos para presentar, vender y validar ideas.",
-      lead: "Demos visuales para que los clientes entiendan la experiencia antes de abrir el código.",
+      stats: [
+        { value: 10, suffix: "+", label: "Proyectos entregados" },
+        { value: 5, suffix: "+", label: "Segmentos atendidos" },
+        { value: 100, suffix: "%", label: "Entregas a tiempo" },
+      ],
       viewDetails: "Ver detalles",
       modal: {
         workDone: "Lo que se hizo",

@@ -6,6 +6,48 @@ import { useLanguage } from "../lib/LanguageContext";
 
 const projects = siteData.projects;
 
+// ── Animated counter stat ────────────────────────────────────────────────────
+
+function CounterStat({ value, suffix, label }: { value: number; suffix: string; label: string }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        obs.disconnect();
+        let startTs: number | null = null;
+        const duration = 1500;
+        const tick = (ts: number) => {
+          if (!startTs) startTs = ts;
+          const progress = Math.min((ts - startTs) / duration, 1);
+          // Ease-out cubic
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setCount(Math.round(eased * value));
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      },
+      { threshold: 0.4 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [value]);
+
+  return (
+    <div ref={ref} className="projects-stat">
+      <span className="projects-stat__num">
+        {count}
+        <span className="projects-stat__suffix">{suffix}</span>
+      </span>
+      <span className="projects-stat__label">{label}</span>
+    </div>
+  );
+}
+
 // ── Word-by-word reveal heading ───────────────────────────────────────────────
 
 function WordRevealTitle({ text }: { text: string }) {
@@ -127,7 +169,11 @@ export function ProjectsSection() {
         <div className="section__intro projects__intro">
           <p className="eyebrow" data-animate>{t.projects.eyebrow}</p>
           <WordRevealTitle text={t.projects.title} />
-          <p className="projects__lead" data-animate>{t.projects.lead}</p>
+          <div className="projects-stats" data-animate>
+            {t.projects.stats.map((stat, i) => (
+              <CounterStat key={i} value={stat.value} suffix={stat.suffix} label={stat.label} />
+            ))}
+          </div>
         </div>
 
         <div className="project-grid">
