@@ -1711,6 +1711,23 @@ a {
   padding: 0 14px;
   border-color: rgba(246, 121, 121, 0.34);
   color: #ffb2a9;
+  transition: background 0.18s, border-color 0.18s;
+}
+
+.admin-danger:hover {
+  background: rgba(246, 121, 121, 0.08);
+  border-color: rgba(246, 121, 121, 0.6);
+}
+
+.admin-danger--confirm {
+  border-color: rgba(246, 100, 100, 0.7);
+  color: #ff8080;
+  background: rgba(246, 100, 100, 0.12);
+}
+
+.admin-danger--confirm:hover {
+  background: rgba(246, 100, 100, 0.22);
+  border-color: rgba(246, 100, 100, 0.9);
 }
 
 .admin-danger:disabled {

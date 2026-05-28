@@ -83,6 +83,7 @@ export default function AdminPage() {
   const [activeServiceId, setActiveServiceId] = useState(defaultSiteData.services[0]?.id || "");
   const [uploadingKey, setUploadingKey] = useState("");
   const [assetPreviews, setAssetPreviews] = useState<Record<string, string>>({});
+  const [confirmDeleteTestimonialId, setConfirmDeleteTestimonialId] = useState<string | null>(null);
 
   const activeProject = useMemo(
     () => data.projects.find((p) => p.id === activeProjectId) || data.projects[0],
@@ -1454,18 +1455,40 @@ export default function AdminPage() {
                       <p className="admin-pending-card__text">"{item.text}"</p>
                     </div>
                     <div className="admin-pending-card__actions">
-                      <button
-                        className="admin-danger"
-                        type="button"
-                        onClick={() =>
-                          setData((cur) => ({
-                            ...cur,
-                            testimonials: (cur.testimonials ?? []).filter((t) => t.id !== item.id),
-                          }))
-                        }
-                      >
-                        Remover
-                      </button>
+                      {confirmDeleteTestimonialId === item.id ? (
+                        <>
+                          <button
+                            className="admin-danger admin-danger--confirm"
+                            type="button"
+                            onClick={() => {
+                              setData((cur) => ({
+                                ...cur,
+                                testimonials: (cur.testimonials ?? []).filter((t) => t.id !== item.id),
+                              }));
+                              setConfirmDeleteTestimonialId(null);
+                              setStatus("saved");
+                              setMessage("Depoimento removido. Clique em Salvar alterações para publicar.");
+                            }}
+                          >
+                            Confirmar
+                          </button>
+                          <button
+                            className="admin-inline"
+                            type="button"
+                            onClick={() => setConfirmDeleteTestimonialId(null)}
+                          >
+                            Cancelar
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          className="admin-danger"
+                          type="button"
+                          onClick={() => setConfirmDeleteTestimonialId(item.id)}
+                        >
+                          Remover
+                        </button>
+                      )}
                     </div>
                   </div>
                 ))}
