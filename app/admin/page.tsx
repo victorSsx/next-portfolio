@@ -6,13 +6,15 @@ import {
   type AvailabilityStatus,
   type BudgetService,
   type DeviceView,
+  type PendingTestimonial,
   type Project,
   type ProjectImage,
   type ProjectVideo,
   type SiteData,
+  type Testimonial,
 } from "../lib/site-data";
 
-type AdminTab = "projects" | "services" | "categories" | "technologies";
+type AdminTab = "projects" | "services" | "categories" | "technologies" | "testimonials";
 type SaveStatus = "idle" | "loading" | "saving" | "uploading" | "saved" | "error";
 type UploadKind = "main-image" | "gallery" | "video" | "video-poster";
 type DeviceViewDevice = "tablet" | "mobile";
@@ -614,16 +616,28 @@ export default function AdminPage() {
       </div>
 
       <nav className="admin-tabs" aria-label="Seções administrativas">
-        {(["projects", "services", "categories", "technologies"] as const).map((id) => (
-          <button
-            className={activeTab === id ? "is-active" : ""}
-            key={id}
-            onClick={() => setActiveTab(id)}
-            type="button"
-          >
-            {id === "projects" ? "Projetos" : id === "services" ? "Serviços e preços" : id === "categories" ? "Categorias" : "Tecnologias"}
-          </button>
-        ))}
+        {(["projects", "services", "categories", "technologies", "testimonials"] as const).map((id) => {
+          const pendingCount = id === "testimonials" ? (data.pendingTestimonials?.length ?? 0) : 0;
+          return (
+            <button
+              className={activeTab === id ? "is-active" : ""}
+              key={id}
+              onClick={() => setActiveTab(id)}
+              type="button"
+            >
+              {id === "projects"
+                ? "Projetos"
+                : id === "services"
+                  ? "Serviços e preços"
+                  : id === "categories"
+                    ? "Categorias"
+                    : id === "technologies"
+                      ? "Tecnologias"
+                      : "Depoimentos"}
+              {pendingCount > 0 && <span className="admin-tab-badge">{pendingCount}</span>}
+            </button>
+          );
+        })}
       </nav>
 
       {/* ── Projects tab ─────────────────────────────────────────────────────── */}
@@ -1326,6 +1340,137 @@ export default function AdminPage() {
                 rows={16}
               />
             </label>
+          </div>
+        </section>
+      ) : null}
+
+      {/* ── Testimonials tab ─────────────────────────────────────────────────── */}
+      {activeTab === "testimonials" ? (
+        <section className="admin-form">
+
+          {/* Pending queue */}
+          <div className="admin-card">
+            <div className="admin-card__head">
+              <p className="eyebrow">Aguardando aprovação</p>
+              <h2>
+                Depoimentos pendentes
+                {(data.pendingTestimonials?.length ?? 0) > 0 && (
+                  <span className="admin-tab-badge admin-tab-badge--inline">
+                    {data.pendingTestimonials!.length}
+                  </span>
+                )}
+              </h2>
+            </div>
+
+            {!data.pendingTestimonials?.length ? (
+              <p className="admin-empty">Nenhum depoimento pendente.</p>
+            ) : (
+              <div className="admin-pending-list">
+                {data.pendingTestimonials.map((pending: PendingTestimonial) => (
+                  <div className="admin-pending-card" key={pending.id}>
+                    <div className="admin-pending-card__avatar">
+                      {pending.photo ? (
+                        <img src={pending.photo} alt="" />
+                      ) : (
+                        pending.name.charAt(0)
+                      )}
+                    </div>
+                    <div className="admin-pending-card__body">
+                      <div className="admin-pending-card__meta">
+                        <strong>{pending.name}</strong>
+                        {pending.role && <span>{pending.role}{pending.company ? ` · ${pending.company}` : ""}</span>}
+                        <span className="admin-pending-card__date">
+                          {new Date(pending.submittedAt).toLocaleDateString("pt-BR")}
+                        </span>
+                        <span className="admin-pending-card__stars">
+                          {"★".repeat(pending.rating)}{"☆".repeat(5 - pending.rating)}
+                        </span>
+                      </div>
+                      <p className="admin-pending-card__text">"{pending.text}"</p>
+                    </div>
+                    <div className="admin-pending-card__actions">
+                      <button
+                        className="button admin-approve-btn"
+                        type="button"
+                        onClick={() => {
+                          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                          const { submittedAt: _date, ...approved } = pending;
+                          setData((cur) => ({
+                            ...cur,
+                            testimonials: [...(cur.testimonials ?? []), approved as Testimonial],
+                            pendingTestimonials: (cur.pendingTestimonials ?? []).filter((p) => p.id !== pending.id),
+                          }));
+                        }}
+                      >
+                        ✓ Aprovar
+                      </button>
+                      <button
+                        className="admin-danger"
+                        type="button"
+                        onClick={() =>
+                          setData((cur) => ({
+                            ...cur,
+                            pendingTestimonials: (cur.pendingTestimonials ?? []).filter((p) => p.id !== pending.id),
+                          }))
+                        }
+                      >
+                        Rejeitar
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Approved testimonials */}
+          <div className="admin-card">
+            <div className="admin-card__head">
+              <p className="eyebrow">Publicados</p>
+              <h2>Depoimentos aprovados</h2>
+            </div>
+
+            {!data.testimonials?.length ? (
+              <p className="admin-empty">Nenhum depoimento publicado ainda.</p>
+            ) : (
+              <div className="admin-pending-list">
+                {data.testimonials.map((item: Testimonial) => (
+                  <div className="admin-pending-card" key={item.id}>
+                    <div className="admin-pending-card__avatar">
+                      {item.photo ? (
+                        <img src={item.photo} alt="" />
+                      ) : (
+                        item.name.charAt(0)
+                      )}
+                    </div>
+                    <div className="admin-pending-card__body">
+                      <div className="admin-pending-card__meta">
+                        <strong>{item.name}</strong>
+                        {item.role && <span>{item.role}{item.company ? ` · ${item.company}` : ""}</span>}
+                        <span className="admin-pending-card__stars">
+                          {"★".repeat(item.rating)}{"☆".repeat(5 - item.rating)}
+                        </span>
+                      </div>
+                      <p className="admin-pending-card__text">"{item.text}"</p>
+                    </div>
+                    <div className="admin-pending-card__actions">
+                      <button
+                        className="admin-danger"
+                        type="button"
+                        onClick={() =>
+                          setData((cur) => ({
+                            ...cur,
+                            testimonials: (cur.testimonials ?? []).filter((t) => t.id !== item.id),
+                          }))
+                        }
+                      >
+                        Remover
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </section>
       ) : null}

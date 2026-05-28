@@ -54,6 +54,7 @@ const normalizeSiteData = (data: Partial<SiteData>): SiteData => ({
     : undefined,
   packages: Array.isArray(data.packages) ? data.packages : undefined,
   testimonials: Array.isArray(data.testimonials) ? data.testimonials : undefined,
+  pendingTestimonials: Array.isArray(data.pendingTestimonials) ? data.pendingTestimonials : undefined,
   serviceCategories: Array.isArray(data.serviceCategories)
     ? data.serviceCategories
         .map((category) => ({

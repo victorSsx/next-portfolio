@@ -1160,6 +1160,32 @@ a {
 
 .admin-tabs button {
   padding: 0 14px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+/* Badge on tab button (pending count) */
+.admin-tab-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  background: rgba(199, 164, 71, 0.25);
+  color: var(--gold);
+  font-size: 0.7rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* Inline badge next to headings */
+.admin-tab-badge--inline {
+  font-size: 0.75rem;
+  vertical-align: middle;
+  margin-left: 8px;
 }
 
 .admin-tabs button.is-active,
@@ -1490,6 +1516,111 @@ a {
 .admin-danger:disabled {
   cursor: not-allowed;
   opacity: 0.48;
+}
+
+/* Approve button (green) */
+.admin-approve-btn {
+  width: fit-content;
+  padding: 0 14px;
+  border-color: rgba(74, 222, 128, 0.35);
+  color: #4ade80;
+}
+.admin-approve-btn:hover {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: rgba(74, 222, 128, 0.6);
+}
+
+/* Pending testimonials list */
+.admin-pending-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.admin-pending-card {
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+  padding: 16px;
+  border-radius: 10px;
+  border: 1px solid rgba(245, 242, 236, 0.08);
+  background: rgba(245, 242, 236, 0.02);
+}
+
+.admin-pending-card__avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(199, 164, 71, 0.12);
+  border: 1px solid rgba(199, 164, 71, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.admin-pending-card__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.admin-pending-card__body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.admin-pending-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 12px;
+  font-size: 0.82rem;
+}
+.admin-pending-card__meta strong {
+  color: var(--white);
+  font-size: 0.9rem;
+}
+.admin-pending-card__meta span {
+  color: rgba(245, 242, 236, 0.5);
+}
+.admin-pending-card__date {
+  font-size: 0.75rem;
+}
+.admin-pending-card__stars {
+  color: var(--gold);
+  letter-spacing: 1px;
+  font-size: 0.8rem;
+}
+
+.admin-pending-card__text {
+  font-size: 0.85rem;
+  color: rgba(245, 242, 236, 0.7);
+  margin: 0;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+.admin-pending-card__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.admin-empty {
+  color: rgba(245, 242, 236, 0.4);
+  font-size: 0.88rem;
+  font-style: italic;
+  margin: 0;
+  padding: 8px 0;
 }
 
 .admin-status {
@@ -2975,6 +3106,294 @@ a {
   display: block;
   font-size: 0.78rem;
   color: var(--gray);
+}
+
+/* Avatar photo support */
+.testimonial-card__avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* CTA button below grid */
+.testimonials-cta {
+  margin-top: 36px;
+  text-align: center;
+}
+
+/* ── Testimonial submission form modal ───────────────────────────────────── */
+
+.tform-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 1000;
+}
+
+.tform {
+  position: relative;
+  background: #18181a;
+  border: 1px solid rgba(245, 242, 236, 0.12);
+  border-radius: 20px;
+  padding: 40px 36px 36px;
+  width: 100%;
+  max-width: 460px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 32px 64px rgba(0, 0, 0, 0.5);
+}
+
+.tform__close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  color: rgba(245, 242, 236, 0.4);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 6px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.tform__close:hover { color: var(--white); }
+
+.tform__progress {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+
+.tform__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(245, 242, 236, 0.15);
+  transition: background 0.2s;
+}
+.tform__dot.is-on { background: var(--gold); }
+
+.tform__step {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.tform__title {
+  font-size: 1.3rem;
+  font-weight: 680;
+  color: var(--white);
+  margin: 0;
+}
+
+.tform__sub {
+  font-size: 0.875rem;
+  color: rgba(245, 242, 236, 0.55);
+  margin: -10px 0 0;
+  line-height: 1.5;
+}
+
+/* Avatar upload */
+.tform__avatar-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.tform__avatar-btn {
+  position: relative;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  border: 2px dashed rgba(199, 164, 71, 0.35);
+  background: rgba(199, 164, 71, 0.06);
+  cursor: pointer;
+  overflow: hidden;
+  transition: border-color 0.2s, background 0.2s;
+  padding: 0;
+}
+.tform__avatar-btn:hover {
+  border-color: var(--gold);
+  background: rgba(199, 164, 71, 0.1);
+}
+
+.tform__avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+}
+
+.tform__avatar-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  color: rgba(199, 164, 71, 0.5);
+}
+.tform__avatar-placeholder svg {
+  width: 36px;
+  height: 36px;
+}
+
+.tform__avatar-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s;
+  border-radius: 50%;
+}
+.tform__avatar-overlay svg { width: 22px; height: 22px; }
+.tform__avatar-btn:hover .tform__avatar-overlay { opacity: 1; }
+
+.tform__avatar-hint {
+  font-size: 0.75rem;
+  color: rgba(245, 242, 236, 0.35);
+}
+
+.tform__file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Form labels + inputs */
+.tform__label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(245, 242, 236, 0.7);
+  letter-spacing: 0.02em;
+}
+.tform__label input,
+.tform__label textarea {
+  background: rgba(245, 242, 236, 0.05);
+  border: 1px solid rgba(245, 242, 236, 0.12);
+  border-radius: 10px;
+  color: var(--white);
+  font-size: 0.9rem;
+  padding: 10px 14px;
+  transition: border-color 0.15s;
+  width: 100%;
+  outline: none;
+}
+.tform__label input:focus,
+.tform__label textarea:focus {
+  border-color: rgba(199, 164, 71, 0.5);
+}
+.tform__label textarea { resize: vertical; }
+
+.tform__required { color: var(--gold); }
+
+.tform__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Star rating row */
+.tform__rating {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.tform__rating-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(245, 242, 236, 0.7);
+  white-space: nowrap;
+}
+
+.star-picker {
+  display: flex;
+  gap: 4px;
+}
+
+.star-picker__btn {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: rgba(245, 242, 236, 0.2);
+  padding: 0;
+  line-height: 1;
+  transition: color 0.1s, transform 0.1s;
+}
+.star-picker__btn.is-on { color: var(--gold); }
+.star-picker__btn:hover { transform: scale(1.15); }
+
+/* Error */
+.tform__error {
+  font-size: 0.83rem;
+  color: #f87171;
+  margin: 0;
+  padding: 10px 14px;
+  background: rgba(248, 113, 113, 0.08);
+  border-radius: 8px;
+  border: 1px solid rgba(248, 113, 113, 0.2);
+}
+
+/* Actions row (back + send) */
+.tform__actions {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+}
+
+.tform__next-btn { width: 100%; }
+
+/* Success screen */
+.tform__success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+  padding: 16px 0 8px;
+}
+
+.tform__success-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(74, 222, 128, 0.12);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  color: #4ade80;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tform__success h3 {
+  font-size: 1.2rem;
+  color: var(--white);
+  margin: 0;
+}
+
+.tform__success p {
+  font-size: 0.9rem;
+  color: rgba(245, 242, 236, 0.65);
+  margin: 0;
 }
 
 /* ── FAQ accordion ────────────────────────────────────────────────────────── */

@@ -81,6 +81,31 @@ export type Translations = {
     eyebrow: string;
     title: string;
     lead: string;
+    form: {
+      submitBtn: string;
+      step1Title: string;
+      step1Subtitle: string;
+      photoLabel: string;
+      photoHint: string;
+      nameLabel: string;
+      namePlaceholder: string;
+      roleLabel: string;
+      rolePlaceholder: string;
+      companyLabel: string;
+      companyPlaceholder: string;
+      nextBtn: string;
+      step2Title: string;
+      step2Subtitle: string;
+      ratingLabel: string;
+      textLabel: string;
+      textPlaceholder: string;
+      sendBtn: string;
+      sendingBtn: string;
+      successTitle: string;
+      successText: string;
+      closeBtn: string;
+      backBtn: string;
+    };
   };
   process: {
     eyebrow: string;
@@ -196,6 +221,31 @@ export const translations: Record<Language, Translations> = {
       eyebrow: "Depoimentos",
       title: "O que clientes dizem",
       lead: "Resultados reais de quem confiou no trabalho.",
+      form: {
+        submitBtn: "Deixar um depoimento",
+        step1Title: "Quem é você?",
+        step1Subtitle: "Sua identificação aparecerá junto ao depoimento.",
+        photoLabel: "Adicionar foto",
+        photoHint: "Foto opcional",
+        nameLabel: "Nome completo",
+        namePlaceholder: "Seu nome completo",
+        roleLabel: "Cargo",
+        rolePlaceholder: "Ex: Empreendedor, Designer...",
+        companyLabel: "Empresa",
+        companyPlaceholder: "Ex: Minha Empresa (opcional)",
+        nextBtn: "Próximo →",
+        step2Title: "Seu depoimento",
+        step2Subtitle: "Conte como foi a experiência de trabalhar comigo.",
+        ratingLabel: "Avaliação",
+        textLabel: "Depoimento",
+        textPlaceholder: "Descreva sua experiência...",
+        sendBtn: "Enviar depoimento",
+        sendingBtn: "Enviando...",
+        successTitle: "Depoimento enviado!",
+        successText: "Obrigado! Vou revisar e publicar em breve.",
+        closeBtn: "Fechar",
+        backBtn: "← Voltar",
+      },
     },
     process: {
       eyebrow: "Como eu construo",
@@ -313,6 +363,31 @@ export const translations: Record<Language, Translations> = {
       eyebrow: "Testimonials",
       title: "What clients say",
       lead: "Real results from those who trusted the work.",
+      form: {
+        submitBtn: "Leave a testimonial",
+        step1Title: "Who are you?",
+        step1Subtitle: "Your identification will appear alongside the testimonial.",
+        photoLabel: "Add photo",
+        photoHint: "Optional photo",
+        nameLabel: "Full name",
+        namePlaceholder: "Your full name",
+        roleLabel: "Role",
+        rolePlaceholder: "e.g. Entrepreneur, Designer...",
+        companyLabel: "Company",
+        companyPlaceholder: "e.g. My Company (optional)",
+        nextBtn: "Next →",
+        step2Title: "Your testimonial",
+        step2Subtitle: "Tell me about your experience working with me.",
+        ratingLabel: "Rating",
+        textLabel: "Testimonial",
+        textPlaceholder: "Describe your experience...",
+        sendBtn: "Send testimonial",
+        sendingBtn: "Sending...",
+        successTitle: "Testimonial sent!",
+        successText: "Thank you! I'll review and publish it soon.",
+        closeBtn: "Close",
+        backBtn: "← Back",
+      },
     },
     process: {
       eyebrow: "How I build",
@@ -430,6 +505,31 @@ export const translations: Record<Language, Translations> = {
       eyebrow: "Testimonios",
       title: "Lo que dicen los clientes",
       lead: "Resultados reales de quienes confiaron en el trabajo.",
+      form: {
+        submitBtn: "Dejar un testimonio",
+        step1Title: "¿Quién eres?",
+        step1Subtitle: "Tu identificación aparecerá junto al testimonio.",
+        photoLabel: "Añadir foto",
+        photoHint: "Foto opcional",
+        nameLabel: "Nombre completo",
+        namePlaceholder: "Tu nombre completo",
+        roleLabel: "Cargo",
+        rolePlaceholder: "Ej: Emprendedor, Diseñador...",
+        companyLabel: "Empresa",
+        companyPlaceholder: "Ej: Mi Empresa (opcional)",
+        nextBtn: "Siguiente →",
+        step2Title: "Tu testimonio",
+        step2Subtitle: "Cuéntame cómo fue trabajar conmigo.",
+        ratingLabel: "Puntuación",
+        textLabel: "Testimonio",
+        textPlaceholder: "Describe tu experiencia...",
+        sendBtn: "Enviar testimonio",
+        sendingBtn: "Enviando...",
+        successTitle: "¡Testimonio enviado!",
+        successText: "¡Gracias! Lo revisaré y publicaré pronto.",
+        closeBtn: "Cerrar",
+        backBtn: "← Volver",
+      },
     },
     process: {
       eyebrow: "Cómo construyo",

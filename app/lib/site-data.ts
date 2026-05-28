@@ -74,6 +74,11 @@ export type Testimonial = {
   company: string;
   text: string;
   rating: number;
+  photo?: string; // compressed base64 JPEG or image URL
+};
+
+export type PendingTestimonial = Testimonial & {
+  submittedAt: string; // ISO 8601 date string
 };
 
 export type SiteData = {
@@ -83,6 +88,7 @@ export type SiteData = {
   projects: Project[];
   packages?: Package[];
   testimonials?: Testimonial[];
+  pendingTestimonials?: PendingTestimonial[];
   availability?: AvailabilityStatus;
 };
 
