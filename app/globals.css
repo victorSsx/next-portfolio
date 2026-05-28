@@ -2889,6 +2889,17 @@ a {
 
 /* ── Testimonials ─────────────────────────────────────────────────────────── */
 
+.testimonials .section__intro,
+.faq .section__intro {
+  grid-template-columns: 1fr;
+  text-align: center;
+  gap: 10px;
+  max-width: 640px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 48px;
+}
+
 .testimonials-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -3022,7 +3033,6 @@ a {
   display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows 0.25s ease;
-  overflow: hidden;
 }
 
 .faq-item.is-open .faq-item__answer {
@@ -3030,6 +3040,7 @@ a {
 }
 
 .faq-item__answer p {
+  overflow: hidden;
   min-height: 0;
   padding: 0 0 20px;
   font-size: 0.92rem;
