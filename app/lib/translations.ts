@@ -41,6 +41,7 @@ export type Translations = {
     lead: string;
     change: string;
     allCategory: string;
+    packagesTab: string;
     add: string;
     addMore: string;
     selected: string;
@@ -66,6 +67,20 @@ export type Translations = {
     copyClipboard: string;
     couldNotCopyShort: string;
     panelAriaLabel: string;
+    addPackage: string;
+    packageAdded: string;
+    packageSavings: string;
+    packageIncludes: string;
+  };
+  faq: {
+    eyebrow: string;
+    title: string;
+    items: { q: string; a: string }[];
+  };
+  testimonials: {
+    eyebrow: string;
+    title: string;
+    lead: string;
   };
   process: {
     eyebrow: string;
@@ -134,6 +149,7 @@ export const translations: Record<Language, Translations> = {
       lead: "Serviços de sites, SEO, performance e suporte com explicação direta para clientes.",
       change: "Mudar",
       allCategory: "Todos",
+      packagesTab: "Pacotes",
       add: "Adicionar",
       addMore: "Adicionar mais",
       selected: "Selecionado",
@@ -159,6 +175,27 @@ export const translations: Record<Language, Translations> = {
       copyClipboard: "Mensagem copiada para colar no chat.",
       couldNotCopyShort: "Não consegui copiar automaticamente. Selecione o texto e copie manualmente.",
       panelAriaLabel: "Resumo do orçamento",
+      addPackage: "Usar este pacote",
+      packageAdded: "Adicionado ao orçamento!",
+      packageSavings: "Economize",
+      packageIncludes: "O que inclui",
+    },
+    faq: {
+      eyebrow: "Dúvidas frequentes",
+      title: "Tudo que você precisa saber antes de contratar",
+      items: [
+        { q: "Quanto tempo leva para entregar um site?", a: "Depende do projeto. Uma página de conversão sai em 3 a 5 dias úteis. Um site institucional completo leva de 7 a 14 dias. Projetos com funcionalidades especiais podem levar mais — sempre alinhamos o prazo antes de começar." },
+        { q: "Preciso ter domínio e hospedagem?", a: "Não precisa ter nada pronto. Posso cuidar de tudo ou trabalhar com o que você já tem. Recomendo as melhores opções para cada orçamento e objetivo." },
+        { q: "Tem garantia após a entrega?", a: "Sim. Todo projeto inclui 7 dias de ajustes gratuitos após a entrega. Para mais tranquilidade, o Suporte pós-entrega de 30 dias está disponível nos pacotes." },
+        { q: "Como funciona o pagamento?", a: "Normalmente 50% para iniciar e 50% na entrega. Para projetos via Workana ou Upwork, sigo os termos da plataforma." },
+        { q: "Posso pedir alterações durante o projeto?", a: "Sim, dentro do escopo combinado. Ajustes de layout e conteúdo são bem-vindos. Mudanças que ampliam o escopo são orçadas separadamente antes de serem feitas." },
+        { q: "Você trabalha com qualquer tipo de negócio?", a: "Sim. Já trabalhei com clínicas, atletas, e-commerce e prestadores de serviços. Se você tem um negócio, posso criar a presença digital ideal para ele." }
+      ],
+    },
+    testimonials: {
+      eyebrow: "Depoimentos",
+      title: "O que clientes dizem",
+      lead: "Resultados reais de quem confiou no trabalho.",
     },
     process: {
       eyebrow: "Como eu construo",
@@ -229,6 +266,7 @@ export const translations: Record<Language, Translations> = {
       lead: "Website, SEO, performance and support services — with clear explanations.",
       change: "Change",
       allCategory: "All",
+      packagesTab: "Packages",
       add: "Add",
       addMore: "Add more",
       selected: "Selected",
@@ -254,6 +292,27 @@ export const translations: Record<Language, Translations> = {
       copyClipboard: "Message copied to clipboard.",
       couldNotCopyShort: "Could not copy automatically. Select the text and copy manually.",
       panelAriaLabel: "Budget summary",
+      addPackage: "Use this package",
+      packageAdded: "Added to quote!",
+      packageSavings: "Save",
+      packageIncludes: "What's included",
+    },
+    faq: {
+      eyebrow: "FAQ",
+      title: "Everything you need to know before hiring",
+      items: [
+        { q: "How long does it take to deliver a website?", a: "It depends on the project. A conversion page takes 3 to 5 business days. A full institutional site takes 7 to 14 days. Projects with special features may take longer — we always agree on the timeline upfront." },
+        { q: "Do I need a domain and hosting?", a: "No, you don't need anything set up. I can handle everything for you, or work with what you already have. I recommend the best options for your budget and goals." },
+        { q: "Is there a guarantee after delivery?", a: "Yes. Every project includes 7 days of free revisions after delivery. For extra peace of mind, the 30-day post-delivery support is available in the packages." },
+        { q: "How does payment work?", a: "Typically 50% upfront and 50% on delivery. For Upwork or Workana projects, I follow the platform's payment terms." },
+        { q: "Can I request changes during the project?", a: "Yes, within the agreed scope. Layout and content changes are welcome. Changes that expand the scope are quoted separately before any work begins." },
+        { q: "Do you work with any type of business?", a: "Yes. I've worked with clinics, athletes, e-commerce stores, and service providers. If you have a business, I can create the perfect digital presence for it." }
+      ],
+    },
+    testimonials: {
+      eyebrow: "Testimonials",
+      title: "What clients say",
+      lead: "Real results from those who trusted the work.",
     },
     process: {
       eyebrow: "How I build",
@@ -324,6 +383,7 @@ export const translations: Record<Language, Translations> = {
       lead: "Servicios de sitios web, SEO, rendimiento y soporte — con explicaciones claras.",
       change: "Cambiar",
       allCategory: "Todos",
+      packagesTab: "Paquetes",
       add: "Agregar",
       addMore: "Agregar más",
       selected: "Seleccionado",
@@ -349,6 +409,27 @@ export const translations: Record<Language, Translations> = {
       copyClipboard: "Mensaje copiado al portapapeles.",
       couldNotCopyShort: "No pude copiar automáticamente. Selecciona el texto y cópialo manualmente.",
       panelAriaLabel: "Resumen del presupuesto",
+      addPackage: "Usar este paquete",
+      packageAdded: "¡Agregado al presupuesto!",
+      packageSavings: "Ahorra",
+      packageIncludes: "Qué incluye",
+    },
+    faq: {
+      eyebrow: "Preguntas frecuentes",
+      title: "Todo lo que necesitas saber antes de contratar",
+      items: [
+        { q: "¿Cuánto tarda en entregar un sitio web?", a: "Depende del proyecto. Una página de conversión se entrega en 3 a 5 días hábiles. Un sitio institucional completo tarda de 7 a 14 días. Proyectos con funcionalidades especiales pueden tardar más — siempre acordamos el plazo antes de empezar." },
+        { q: "¿Necesito tener dominio y hosting?", a: "No necesitas tener nada listo. Puedo encargarlo todo por ti o trabajar con lo que ya tienes. Recomiendo las mejores opciones para tu presupuesto y objetivos." },
+        { q: "¿Hay garantía después de la entrega?", a: "Sí. Todo proyecto incluye 7 días de ajustes gratuitos después de la entrega. Para mayor tranquilidad, el Soporte post-entrega de 30 días está disponible en los paquetes." },
+        { q: "¿Cómo funciona el pago?", a: "Normalmente 50% para empezar y 50% en la entrega. Para proyectos en Workana o Upwork, sigo los términos de la plataforma." },
+        { q: "¿Puedo pedir cambios durante el proyecto?", a: "Sí, dentro del alcance acordado. Los ajustes de diseño y contenido son bienvenidos. Los cambios que amplían el alcance se presupuestan por separado antes de hacerse." },
+        { q: "¿Trabajas con cualquier tipo de negocio?", a: "Sí. He trabajado con clínicas, atletas, e-commerce y proveedores de servicios. Si tienes un negocio, puedo crear la presencia digital ideal para él." }
+      ],
+    },
+    testimonials: {
+      eyebrow: "Testimonios",
+      title: "Lo que dicen los clientes",
+      lead: "Resultados reales de quienes confiaron en el trabajo.",
     },
     process: {
       eyebrow: "Cómo construyo",

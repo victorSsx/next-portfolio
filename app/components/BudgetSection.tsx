@@ -1,7 +1,7 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { siteData, type BudgetService, type CategoryId } from "../lib/site-data";
+import { useMemo, useRef, useState } from "react";
+import { siteData, type BudgetService, type CategoryId, type Package } from "../lib/site-data";
 import { useLanguage } from "../lib/LanguageContext";
 import type { Language } from "../lib/translations";
 
@@ -16,6 +16,7 @@ const WHATSAPP_URL = "https://wa.me/5521975990988";
 const USD_TO_BRL = 5.5;
 
 const services: BudgetService[] = siteData.services;
+const packages: Package[] = siteData.packages ?? [];
 
 async function detectCountry(): Promise<"BR" | "other"> {
   try {
@@ -165,13 +166,19 @@ export function BudgetSection() {
   const [budgetChannel, setBudgetChannel] = useState<BudgetChannel>("workana");
   const [detectedCurrency, setDetectedCurrency] = useState<Currency | null>(null);
   const [isDetecting, setIsDetecting] = useState(false);
-  const [activeCategory, setActiveCategory] = useState<CategoryId>("todos");
+  const [activeCategory, setActiveCategory] = useState<CategoryId | "pacotes">("pacotes");
+  const [addedPackageId, setAddedPackageId] = useState<string | null>(null);
+  const addedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [copyStatus, setCopyStatus] = useState("");
   const [sendStatus, setSendStatus] = useState<SendStatus>("idle");
   const [selectedServices, setSelectedServices] = useState<Record<string, number>>({});
 
   const categories = useMemo(
-    () => [{ id: "todos", label: t.budget.allCategory }, ...siteData.serviceCategories],
+    () => [
+      { id: "pacotes", label: t.budget.packagesTab },
+      { id: "todos", label: t.budget.allCategory },
+      ...siteData.serviceCategories,
+    ],
     [t]
   );
 
@@ -271,6 +278,25 @@ export function BudgetSection() {
     () => buildBudgetMessage(messageLang, currency, selectedItems, onceTotal, monthlyTotal),
     [messageLang, currency, selectedItems, onceTotal, monthlyTotal]
   );
+
+  function getPackagePrices(pkg: Package) {
+    const pkgServices = pkg.services.map((id) => services.find((s) => s.id === id)).filter(Boolean) as BudgetService[];
+    const once = pkgServices.filter((s) => s.billing === "once").reduce((sum, s) => sum + s.price, 0);
+    const monthly = pkgServices.filter((s) => s.billing === "monthly").reduce((sum, s) => sum + s.price, 0);
+    return { once: once - pkg.discount, monthly, originalOnce: once };
+  }
+
+  function addPackageServices(pkg: Package) {
+    const next: Record<string, number> = { ...selectedServices };
+    pkg.services.forEach((id) => {
+      const svc = services.find((s) => s.id === id);
+      if (svc) next[id] = svc.allowQuantity ? (next[id] || 0) + 1 : 1;
+    });
+    setSelectedServices(next);
+    if (addedTimerRef.current) clearTimeout(addedTimerRef.current);
+    setAddedPackageId(pkg.id);
+    addedTimerRef.current = setTimeout(() => setAddedPackageId(null), 2200);
+  }
 
   function addService(id: string) {
     setSelectedServices((current) => {
@@ -396,44 +422,108 @@ export function BudgetSection() {
             ))}
           </div>
 
-          <div className="service-grid">
-            {filteredServices.map((service, i) => (
-              <article
-                className="service-card"
-                key={service.id}
-                data-animate
-                style={{ "--animate-delay": `${i * 55}ms` } as React.CSSProperties}
-              >
-                <div>
-                  <p>{serviceCategoryLabels[service.category] || service.category}</p>
-                  <h3>{service.title}</h3>
-                  <p>{service.summary}</p>
-                  {service.details ? (
-                    <ul className="service-card__details">
-                      {service.details.map((detail) => (
-                        <li key={detail}>{detail}</li>
-                      ))}
-                    </ul>
-                  ) : null}
-                </div>
-                <div className="service-card__footer">
-                  <strong>{formatServicePrice(service, currency)}</strong>
-                  <button
-                    className={selectedServices[service.id] && !service.allowQuantity ? "is-selected" : ""}
-                    disabled={Boolean(selectedServices[service.id] && !service.allowQuantity)}
-                    type="button"
-                    onClick={() => addService(service.id)}
+          {activeCategory === "pacotes" ? (
+            <div className="package-grid">
+              {packages.map((pkg, i) => {
+                const { once, monthly, originalOnce } = getPackagePrices(pkg);
+                const isAdded = addedPackageId === pkg.id;
+                return (
+                  <article
+                    className={`package-card package-card--${pkg.tagColor}`}
+                    key={pkg.id}
+                    data-animate
+                    style={{ "--animate-delay": `${i * 80}ms` } as React.CSSProperties}
                   >
-                    {selectedServices[service.id] && !service.allowQuantity
-                      ? t.budget.selected
-                      : service.allowQuantity && selectedServices[service.id]
-                        ? `${t.budget.addMore} (${selectedServices[service.id]})`
-                        : `+ ${t.budget.add}`}
-                  </button>
-                </div>
-              </article>
-            ))}
-          </div>
+                    <div className="package-card__tag">{pkg.tag}</div>
+                    <h3>{pkg.title}</h3>
+                    <p className="package-card__desc">{pkg.description}</p>
+
+                    <ul className="package-card__includes">
+                      {pkg.services.map((id) => {
+                        const svc = services.find((s) => s.id === id);
+                        return svc ? (
+                          <li key={id}>
+                            <span aria-hidden="true">✓</span>
+                            {svc.title}
+                            {svc.billing === "monthly" && (
+                              <em>{currency === "USD" ? " /mo" : " /mês"}</em>
+                            )}
+                          </li>
+                        ) : null;
+                      })}
+                    </ul>
+
+                    <div className="package-card__footer">
+                      <div className="package-card__price">
+                        {pkg.discount > 0 && (
+                          <span className="package-card__original">
+                            {formatAmount(originalOnce, currency)}
+                          </span>
+                        )}
+                        <strong>{formatAmount(once, currency)}</strong>
+                        {monthly > 0 && (
+                          <span className="package-card__monthly">
+                            + {formatAmount(monthly, currency)}{currency === "USD" ? "/mo" : "/mês"}
+                          </span>
+                        )}
+                        {pkg.discount > 0 && (
+                          <span className="package-card__savings">
+                            {t.budget.packageSavings} {formatAmount(pkg.discount, currency)}
+                          </span>
+                        )}
+                      </div>
+                      <button
+                        className={`package-card__btn${isAdded ? " is-added" : ""}`}
+                        type="button"
+                        onClick={() => addPackageServices(pkg)}
+                      >
+                        {isAdded ? `✓ ${t.budget.packageAdded}` : t.budget.addPackage}
+                      </button>
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="service-grid">
+              {filteredServices.map((service, i) => (
+                <article
+                  className="service-card"
+                  key={service.id}
+                  data-animate
+                  style={{ "--animate-delay": `${i * 55}ms` } as React.CSSProperties}
+                >
+                  <div>
+                    <p>{serviceCategoryLabels[service.category] || service.category}</p>
+                    <h3>{service.title}</h3>
+                    <p>{service.summary}</p>
+                    {service.details ? (
+                      <ul className="service-card__details">
+                        {service.details.map((detail) => (
+                          <li key={detail}>{detail}</li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </div>
+                  <div className="service-card__footer">
+                    <strong>{formatServicePrice(service, currency)}</strong>
+                    <button
+                      className={selectedServices[service.id] && !service.allowQuantity ? "is-selected" : ""}
+                      disabled={Boolean(selectedServices[service.id] && !service.allowQuantity)}
+                      type="button"
+                      onClick={() => addService(service.id)}
+                    >
+                      {selectedServices[service.id] && !service.allowQuantity
+                        ? t.budget.selected
+                        : service.allowQuantity && selectedServices[service.id]
+                          ? `${t.budget.addMore} (${selectedServices[service.id]})`
+                          : `+ ${t.budget.add}`}
+                    </button>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
         </div>
 
         <aside

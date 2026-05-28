@@ -57,11 +57,32 @@ export type Project = {
 
 export type AvailabilityStatus = "available" | "busy" | "unavailable";
 
+export type Package = {
+  id: string;
+  tag: string;
+  tagColor: "green" | "gold" | "blue" | "purple";
+  title: string;
+  description: string;
+  services: string[];
+  discount: number;
+};
+
+export type Testimonial = {
+  id: string;
+  name: string;
+  role: string;
+  company: string;
+  text: string;
+  rating: number;
+};
+
 export type SiteData = {
   serviceCategories: ServiceCategory[];
   technologies: string[];
   services: BudgetService[];
   projects: Project[];
+  packages?: Package[];
+  testimonials?: Testimonial[];
   availability?: AvailabilityStatus;
 };
 

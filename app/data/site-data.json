@@ -219,6 +219,70 @@
       "startingAt": false
     }
   ],
+  "packages": [
+    {
+      "id": "inicio-online",
+      "tag": "Econômico",
+      "tagColor": "green",
+      "title": "Início online",
+      "description": "O essencial para marcar presença na internet e já aparecer no Google. Ideal para quem está começando.",
+      "services": ["landing-page", "seo-essencial"],
+      "discount": 50
+    },
+    {
+      "id": "presenca-completa",
+      "tag": "Mais popular",
+      "tagColor": "gold",
+      "title": "Presença completa",
+      "description": "Site profissional com tudo configurado e suporte pós-entrega incluso. A escolha mais equilibrada.",
+      "services": ["site-institucional", "seo-essencial", "suporte-30"],
+      "discount": 50
+    },
+    {
+      "id": "autoridade-digital",
+      "tag": "Melhor retorno",
+      "tagColor": "blue",
+      "title": "Autoridade digital",
+      "description": "Site com blog para crescer no Google de forma contínua, com SEO técnico e plano mensal de cuidados.",
+      "services": ["site-com-blog", "seo-tecnico", "manutencao"],
+      "discount": 100
+    },
+    {
+      "id": "loja-pronta",
+      "tag": "E-commerce completo",
+      "tagColor": "purple",
+      "title": "Loja pronta",
+      "description": "Loja virtual completa com visibilidade no Google, site rápido e manutenção mensal incluída.",
+      "services": ["loja-woocommerce", "seo-essencial", "performance", "manutencao"],
+      "discount": 200
+    }
+  ],
+  "testimonials": [
+    {
+      "id": "t1",
+      "name": "Rafael Souza",
+      "role": "Proprietário",
+      "company": "Clínica OdontoVida",
+      "text": "Victor entregou a landing page antes do prazo e com visual muito acima do que eu esperava. Em menos de 2 semanas já estava recebendo contatos pelo formulário.",
+      "rating": 5
+    },
+    {
+      "id": "t2",
+      "name": "Ana Martins",
+      "role": "Gerente de Marketing",
+      "company": "FitStudio SP",
+      "text": "Ótimo profissional, comunicação clara e site entregue no prazo. O resultado ficou exatamente como discutimos no briefing. Recomendo sem hesitar.",
+      "rating": 5
+    },
+    {
+      "id": "t3",
+      "name": "Carlos Ferreira",
+      "role": "Empreendedor",
+      "company": "CF Consultoria",
+      "text": "Precisava de um site rápido e profissional para apresentar minha consultoria. Victor entendeu o objetivo e entregou algo que tenho orgulho de mostrar.",
+      "rating": 5
+    }
+  ],
   "projects": [
     {
       "id": "a-mais-radiologia",

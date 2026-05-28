@@ -1,8 +1,10 @@
 import { BudgetSection } from "./components/BudgetSection";
 import { ContactSection } from "./components/ContactSection";
+import { FAQSection } from "./components/FAQSection";
 import { HeroSection } from "./components/HeroSection";
 import { ProcessSection } from "./components/ProcessSection";
 import { ProjectsSection } from "./components/ProjectsSection";
+import { TestimonialsSection } from "./components/TestimonialsSection";
 
 export default function Home() {
   return (
@@ -10,7 +12,9 @@ export default function Home() {
       <HeroSection />
       <ProjectsSection />
       <BudgetSection />
+      <TestimonialsSection />
       <ProcessSection />
+      <FAQSection />
       <ContactSection />
     </main>
   );
