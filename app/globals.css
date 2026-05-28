@@ -1027,18 +1027,19 @@ a {
 }
 
 .process__header {
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(280px, 0.7fr);
-  gap: 56px;
-  align-items: end;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
   margin-bottom: 48px;
 }
 
 .process__header h2 {
-  margin: 6px 0 0;
+  margin: 12px 0 0;
   font-size: 48px;
   font-weight: 560;
-  line-height: 1.04;
+  line-height: 1.08;
+  max-width: 640px;
 }
 
 .process__steps {
