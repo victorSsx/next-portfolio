@@ -2417,13 +2417,16 @@ a {
 /* ── Gallery grid ─────────────────────────────────────────────────────────── */
 
 .gallery-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   margin-top: 12px;
+  width: 100%;
+  justify-content: center;
 }
 
 .gallery-grid__item {
+  flex: 0 0 calc(50% - 5px);
   margin: 0;
   border-radius: 6px;
   overflow: hidden;
