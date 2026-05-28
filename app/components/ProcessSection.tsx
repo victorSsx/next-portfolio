@@ -6,7 +6,7 @@ export function ProcessSection() {
   const { t } = useLanguage();
 
   return (
-    <section className="section process">
+    <section className="section process" id="processo">
       <div className="process__header" data-animate>
         <p className="eyebrow">{t.process.eyebrow}</p>
         <h2>{t.process.title}</h2>
@@ -15,12 +15,14 @@ export function ProcessSection() {
         {t.process.steps.map((step, i) => (
           <article
             key={step.number}
+            className="process-step"
+            data-number={step.number}
             data-animate
             style={{ "--animate-delay": `${i * 120}ms` } as React.CSSProperties}
           >
-            <span>{step.number}</span>
-            <h3>{step.title}</h3>
-            <p>{step.desc}</p>
+            <span className="process-step__num">{step.number}</span>
+            <h3 className="process-step__title">{step.title}</h3>
+            <p className="process-step__desc">{step.desc}</p>
           </article>
         ))}
       </div>
