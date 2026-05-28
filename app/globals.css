@@ -2137,6 +2137,7 @@ a {
 }
 
 .project-modal__gallery {
+  display: block;
   padding: 20px 26px 26px;
 }
 
