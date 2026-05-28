@@ -68,7 +68,7 @@ const compressToBase64 = (file: File): Promise<string> =>
     img.src = objectUrl;
   });
 
-// ── Types ────────────────────────────────────────────────────────────────────
+// ── Form types ───────────────────────────────────────────────────────────────
 
 type FormState = {
   name: string;
@@ -82,12 +82,23 @@ type FormState = {
 const BLANK: FormState = { name: "", role: "", company: "", photo: "", rating: 5, text: "" };
 type SubmitState = "idle" | "sending" | "ok" | "err";
 
+// Auto-advance when testimonials count exceeds this threshold
+const AUTO_ADVANCE_THRESHOLD = 3;
+
 // ── Section ──────────────────────────────────────────────────────────────────
 
 export function TestimonialsSection() {
   const { t } = useLanguage();
   const f = t.testimonials.form;
 
+  // ── Carousel state ──
+  const total = approvedTestimonials.length;
+  const [idx, setIdx] = useState(0);
+  const [dir, setDir] = useState<"next" | "prev">("next");
+  const [paused, setPaused] = useState(false);
+  const shouldAutoAdvance = total > AUTO_ADVANCE_THRESHOLD;
+
+  // ── Form state ──
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<1 | 2>(1);
   const [form, setForm] = useState<FormState>(BLANK);
@@ -95,7 +106,17 @@ export function TestimonialsSection() {
   const [errMsg, setErrMsg] = useState("");
   const fileRef = useRef<HTMLInputElement>(null);
 
-  // Escape key + body scroll lock
+  // Auto-advance: reset timer on every slide change
+  useEffect(() => {
+    if (!shouldAutoAdvance || paused || !total) return;
+    const timer = setTimeout(() => {
+      setDir("next");
+      setIdx((prev) => (prev + 1) % total);
+    }, 5000);
+    return () => clearTimeout(timer);
+  }, [shouldAutoAdvance, paused, total, idx]);
+
+  // Escape key + body scroll lock for modal
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
@@ -109,6 +130,13 @@ export function TestimonialsSection() {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
+
+  const navigate = (direction: "next" | "prev") => {
+    setDir(direction);
+    setIdx((prev) =>
+      direction === "next" ? (prev + 1) % total : (prev - 1 + total) % total
+    );
+  };
 
   const handleClose = () => {
     setOpen(false);
@@ -126,7 +154,7 @@ export function TestimonialsSection() {
       const b64 = await compressToBase64(file);
       setForm((prev) => ({ ...prev, photo: b64 }));
     } catch {
-      // Photo is optional — skip silently
+      // Photo optional — skip silently
     }
   };
 
@@ -156,24 +184,33 @@ export function TestimonialsSection() {
     }
   };
 
+  const item = approvedTestimonials[idx];
+
   return (
     <>
       <section className="section testimonials" id="depoimentos">
+        {/* Section intro */}
         <div className="section__intro" data-animate>
           <p className="eyebrow">{t.testimonials.eyebrow}</p>
           <h2>{t.testimonials.title}</h2>
           <p>{t.testimonials.lead}</p>
         </div>
 
-        {approvedTestimonials.length > 0 && (
-          <div className="testimonials-grid">
-            {approvedTestimonials.map((item, i) => (
-              <article
-                className="testimonial-card"
-                key={item.id}
-                data-animate
-                style={{ "--animate-delay": `${i * 100}ms` } as React.CSSProperties}
-              >
+        {/* Carousel */}
+        {total > 0 && (
+          <div
+            className="tcarousel"
+            onMouseEnter={() => setPaused(true)}
+            onMouseLeave={() => setPaused(false)}
+          >
+            {/* Slide — key change triggers re-mount + CSS animation */}
+            <div
+              key={idx}
+              className={`tcarousel__slide tcarousel__slide--${dir}`}
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              <article className="testimonial-card testimonial-card--lg">
                 <StarRating rating={item.rating} />
                 <blockquote className="testimonial-card__text">
                   <p>"{item.text}"</p>
@@ -192,10 +229,60 @@ export function TestimonialsSection() {
                   </div>
                 </footer>
               </article>
-            ))}
+            </div>
+
+            {/* Navigation (arrows + dots) */}
+            {total > 1 && (
+              <div className="tcarousel__nav">
+                <button
+                  className="tcarousel__arrow"
+                  type="button"
+                  aria-label="Depoimento anterior"
+                  onClick={() => navigate("prev")}
+                >
+                  ←
+                </button>
+
+                <div className="tcarousel__dots" role="tablist">
+                  {Array.from({ length: total }).map((_, i) => (
+                    <button
+                      key={i}
+                      role="tab"
+                      aria-selected={i === idx}
+                      aria-label={`Depoimento ${i + 1}`}
+                      className={`tcarousel__dot${i === idx ? " is-active" : ""}`}
+                      onClick={() => {
+                        setDir(i > idx ? "next" : "prev");
+                        setIdx(i);
+                      }}
+                    />
+                  ))}
+                </div>
+
+                <button
+                  className="tcarousel__arrow"
+                  type="button"
+                  aria-label="Próximo depoimento"
+                  onClick={() => navigate("next")}
+                >
+                  →
+                </button>
+              </div>
+            )}
+
+            {/* Progress bar — only when auto-advancing and not paused */}
+            {shouldAutoAdvance && (
+              <div className="tcarousel__progress" aria-hidden="true">
+                <div
+                  key={`${idx}-${paused ? "paused" : "playing"}`}
+                  className={`tcarousel__bar${paused ? " is-paused" : ""}`}
+                />
+              </div>
+            )}
           </div>
         )}
 
+        {/* CTA */}
         <div className="testimonials-cta" data-animate>
           <button className="button button--outline" type="button" onClick={() => setOpen(true)}>
             {f.submitBtn}
@@ -203,7 +290,7 @@ export function TestimonialsSection() {
         </div>
       </section>
 
-      {/* ── Modal ─────────────────────────────────────────────────────────────── */}
+      {/* ── Submission modal ─────────────────────────────────────────────────── */}
       {open && (
         <div
           className="tform-overlay"
@@ -220,7 +307,6 @@ export function TestimonialsSection() {
             </button>
 
             {submitState === "ok" ? (
-              /* ── Success screen ── */
               <div className="tform__success">
                 <span className="tform__success-icon" aria-hidden="true">✓</span>
                 <h3>{f.successTitle}</h3>
@@ -231,14 +317,12 @@ export function TestimonialsSection() {
               </div>
             ) : (
               <>
-                {/* Progress indicator */}
                 <div className="tform__progress" aria-hidden="true">
                   <span className={`tform__dot${step >= 1 ? " is-on" : ""}`} />
                   <span className={`tform__dot${step >= 2 ? " is-on" : ""}`} />
                 </div>
 
                 {step === 1 ? (
-                  /* ── Step 1: identification ── */
                   <div className="tform__step">
                     <h3 id="tform-title" className="tform__title">{f.step1Title}</h3>
                     <p className="tform__sub">{f.step1Subtitle}</p>
@@ -256,37 +340,20 @@ export function TestimonialsSection() {
                           <span className="tform__avatar-placeholder" aria-hidden="true">
                             <svg viewBox="0 0 24 24" fill="none">
                               <circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.5" />
-                              <path
-                                d="M4 20c0-4 3.6-7 8-7s8 3 8 7"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                              />
+                              <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                             </svg>
                           </span>
                         )}
                         <span className="tform__avatar-overlay" aria-hidden="true">
                           <svg viewBox="0 0 24 24" fill="none">
-                            <path
-                              d="M12 16V8m-4 4 4-4 4 4"
-                              stroke="white"
-                              strokeWidth="1.8"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
+                            <path d="M12 16V8m-4 4 4-4 4 4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                           </svg>
                         </span>
                       </button>
                       <span className="tform__avatar-hint">{f.photoHint}</span>
                     </div>
 
-                    <input
-                      ref={fileRef}
-                      type="file"
-                      accept="image/*"
-                      className="tform__file-input"
-                      onChange={handlePhotoChange}
-                    />
+                    <input ref={fileRef} type="file" accept="image/*" className="tform__file-input" onChange={handlePhotoChange} />
 
                     <label className="tform__label">
                       {f.nameLabel} <span className="tform__required">*</span>
@@ -332,17 +399,13 @@ export function TestimonialsSection() {
                     </button>
                   </div>
                 ) : (
-                  /* ── Step 2: testimonial ── */
                   <div className="tform__step">
                     <h3 id="tform-title" className="tform__title">{f.step2Title}</h3>
                     <p className="tform__sub">{f.step2Subtitle}</p>
 
                     <div className="tform__rating">
                       <span className="tform__rating-label">{f.ratingLabel}</span>
-                      <StarPicker
-                        value={form.rating}
-                        onChange={(v) => setForm((prev) => ({ ...prev, rating: v }))}
-                      />
+                      <StarPicker value={form.rating} onChange={(v) => setForm((prev) => ({ ...prev, rating: v }))} />
                     </div>
 
                     <label className="tform__label">
@@ -361,11 +424,7 @@ export function TestimonialsSection() {
                       <button
                         className="button button--ghost"
                         type="button"
-                        onClick={() => {
-                          setStep(1);
-                          setSubmitState("idle");
-                          setErrMsg("");
-                        }}
+                        onClick={() => { setStep(1); setSubmitState("idle"); setErrMsg(""); }}
                       >
                         {f.backBtn}
                       </button>
