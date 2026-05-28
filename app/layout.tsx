@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AnimationObserver } from "./components/AnimationObserver";
 
 export const metadata: Metadata = {
   title: "Victor | Desenvolvedor Freelancer",
@@ -14,7 +15,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR">
-      <body>{children}</body>
+      <body>
+        <AnimationObserver />
+        {children}
+      </body>
     </html>
   );
 }
