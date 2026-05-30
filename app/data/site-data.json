@@ -612,9 +612,15 @@
       "category": "E-commerce / Loja Virtual (WordPress + WooCommerce)",
       "status": "Projeto em fase final / ainda não hospedado",
       "stack": [
-        "WordPress · WooCommerce · Astra (tema-pai) + tema-filho 100% customizado · PHP (templates e hooks/filtros) · CSS3 (design system com variáveis, Grid, Flexbox, animações) · JavaScript vanilla (IntersectionObserver, canvas de partículas, filtros client-side, steppers de quantidade, validação de formulário) · MySQL"
+        "WordPress",
+        "WooCommerce",
+        "Astra (tema-pai) + tema-filho 100% customizado",
+        "PHP (templates e hooks/filtros)",
+        "CSS3 (design system com variáveis, Grid, Flexbox, animações)",
+        "JavaScript vanilla (IntersectionObserver, canvas de partículas, filtros client-side, steppers de quantidade, validação de formulário)",
+        "MySQL"
       ],
-      "summary": "Loja virtual de tecnologia com identidade visual dark premium (inspiração Razer/Apple Dark), construída em WordPress + WooCommerce com tema-filho totalmente customizado — da home animada até o checkout, tudo em português e responsivo.",
+      "summary": "Loja virtual de tecnologia com identidade visual dark premium\nconstruída em WordPress + WooCommerce com tema-filho totalmente customizado \nResponsivo",
       "workDone": [
         "Design system dark premium num tema-filho do Astra (tokens de cor, tipografia Inter, sombras, gradientes azul→teal)",
         "Home customizada: hero com canvas de partículas + cards de produto flutuantes (glassmorphism), contadores animados, grade de categorias, produtos em destaque, banner promocional e newsletter",
