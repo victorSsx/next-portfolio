@@ -28,7 +28,10 @@ export function ContactSection() {
           >
             WhatsApp <span aria-hidden="true">-&gt;</span>
           </a>
-          <a className="button button--ghost" href={`mailto:${EMAIL}`}>
+          <a
+            className="button button--ghost"
+            href={`mailto:${EMAIL}?subject=${encodeURIComponent(t.contact.emailSubject)}&body=${encodeURIComponent(t.contact.whatsappGreeting)}`}
+          >
             E-mail <span aria-hidden="true">-&gt;</span>
           </a>
         </div>

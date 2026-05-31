@@ -118,7 +118,7 @@ export type Translations = {
     title: string;
     steps: { number: string; title: string; desc: string }[];
   };
-  contact: { eyebrow: string; title: string; lead: string; whatsappGreeting: string };
+  contact: { eyebrow: string; title: string; lead: string; whatsappGreeting: string; emailSubject: string };
 };
 
 export const translations: Record<Language, Translations> = {
@@ -272,7 +272,7 @@ export const translations: Record<Language, Translations> = {
         { number: "03", title: "Apresentação", desc: "Organizo o resultado para o cliente entender o valor e aprovar com segurança." },
       ],
     },
-    contact: { eyebrow: "Contato", title: "Seu projeto pode ser a próxima história de sucesso.", lead: "Respondo rápido, normalmente em poucas horas. Me chama no WhatsApp ou e-mail e a gente alinha seu projeto sem compromisso.", whatsappGreeting: "Olá Victor! Vim pelo seu portfólio e gostaria de conversar sobre um projeto." },
+    contact: { eyebrow: "Contato", title: "Seu projeto pode ser a próxima história de sucesso.", lead: "Respondo rápido, normalmente em poucas horas. Me chama no WhatsApp ou e-mail e a gente alinha seu projeto sem compromisso.", whatsappGreeting: "Olá Victor! Vim pelo seu portfólio e gostaria de conversar sobre um projeto.", emailSubject: "Contato pelo portfólio" },
   },
   en: {
     nav: { projects: "Projects", budget: "Quote", process: "Process", contact: "Contact" },
@@ -424,7 +424,7 @@ export const translations: Record<Language, Translations> = {
         { number: "03", title: "Presentation", desc: "I organize the result so the client understands the value and approves with confidence." },
       ],
     },
-    contact: { eyebrow: "Contact", title: "Your project could be the next success story.", lead: "I reply fast, usually within a few hours. Message me on WhatsApp or email and we'll scope your project — no commitment.", whatsappGreeting: "Hi Victor! I came from your portfolio and would like to talk about a project." },
+    contact: { eyebrow: "Contact", title: "Your project could be the next success story.", lead: "I reply fast, usually within a few hours. Message me on WhatsApp or email and we'll scope your project — no commitment.", whatsappGreeting: "Hi Victor! I came from your portfolio and would like to talk about a project.", emailSubject: "Contact from your portfolio" },
   },
   es: {
     nav: { projects: "Proyectos", budget: "Presupuesto", process: "Proceso", contact: "Contacto" },
@@ -576,6 +576,6 @@ export const translations: Record<Language, Translations> = {
         { number: "03", title: "Presentación", desc: "Organizo el resultado para que el cliente entienda el valor y apruebe con confianza." },
       ],
     },
-    contact: { eyebrow: "Contacto", title: "Tu proyecto puede ser la próxima historia de éxito.", lead: "Respondo rápido, normalmente en pocas horas. Escríbeme por WhatsApp o correo y planificamos tu proyecto, sin compromiso.", whatsappGreeting: "¡Hola Victor! Vine desde tu portafolio y me gustaría hablar sobre un proyecto." },
+    contact: { eyebrow: "Contacto", title: "Tu proyecto puede ser la próxima historia de éxito.", lead: "Respondo rápido, normalmente en pocas horas. Escríbeme por WhatsApp o correo y planificamos tu proyecto, sin compromiso.", whatsappGreeting: "¡Hola Victor! Vine desde tu portafolio y me gustaría hablar sobre un proyecto.", emailSubject: "Contacto desde tu portafolio" },
   },
 };
