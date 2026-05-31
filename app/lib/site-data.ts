@@ -58,6 +58,11 @@ export type Project = {
 
 export type AvailabilityStatus = "available" | "busy" | "unavailable";
 
+export type ProjectStat = {
+  value: number;
+  suffix: string;
+};
+
 export type Package = {
   id: string;
   tag: string;
@@ -91,6 +96,7 @@ export type SiteData = {
   testimonials?: Testimonial[];
   pendingTestimonials?: PendingTestimonial[];
   availability?: AvailabilityStatus;
+  projectStats?: ProjectStat[];
 };
 
 export const siteData = rawSiteData as SiteData;

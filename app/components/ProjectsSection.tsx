@@ -170,9 +170,17 @@ export function ProjectsSection() {
           <p className="eyebrow" data-animate>{t.projects.eyebrow}</p>
           <WordRevealTitle text={t.projects.title} />
           <div className="projects-stats" data-animate>
-            {t.projects.stats.map((stat, i) => (
-              <CounterStat key={i} value={stat.value} suffix={stat.suffix} label={stat.label} />
-            ))}
+            {t.projects.stats.map((stat, i) => {
+              const override = siteData.projectStats?.[i];
+              return (
+                <CounterStat
+                  key={i}
+                  value={override?.value ?? stat.value}
+                  suffix={override?.suffix ?? stat.suffix}
+                  label={stat.label}
+                />
+              );
+            })}
           </div>
         </div>
 

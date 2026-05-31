@@ -1876,6 +1876,61 @@ a {
   min-height: auto;
 }
 
+.admin-stats-card {
+  margin-bottom: 18px;
+}
+
+.admin-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.admin-stat-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px 16px 18px;
+  border: 1px solid rgba(245, 242, 236, 0.1);
+  border-radius: 10px;
+  background: rgba(245, 242, 236, 0.02);
+}
+
+.admin-stat-card__label {
+  color: rgba(245, 242, 236, 0.6);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.admin-stat-card__fields {
+  display: grid;
+  grid-template-columns: 1fr 0.7fr;
+  gap: 10px;
+}
+
+.admin-stat-card__preview {
+  align-self: flex-start;
+  color: var(--gold);
+  font-size: 1.5rem;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.admin-stat-card__preview strong {
+  font-size: 0.9rem;
+  vertical-align: super;
+  margin-left: 1px;
+}
+
+@media (max-width: 720px) {
+  .admin-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .admin-rows {
   display: grid;
   gap: 10px;

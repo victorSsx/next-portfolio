@@ -71,6 +71,13 @@ const createService = (category: string): BudgetService => ({
   details: [],
 });
 
+const DEFAULT_PROJECT_STATS = [
+  { value: 10, suffix: "+" },
+  { value: 5, suffix: "+" },
+  { value: 100, suffix: "%" },
+];
+const PROJECT_STAT_LABELS = ["Projetos entregues", "Segmentos atendidos", "Entregas no prazo"];
+
 export default function AdminPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -457,6 +464,20 @@ export default function AdminPage() {
     setActiveServiceId(nextId);
   };
 
+  // ── Project stats helpers ──────────────────────────────────────────────────────
+
+  const projectStats = data.projectStats ?? DEFAULT_PROJECT_STATS;
+
+  const updateProjectStat = (index: number, patch: Partial<{ value: number; suffix: string }>) => {
+    setData((cur) => {
+      const base = cur.projectStats ?? DEFAULT_PROJECT_STATS;
+      return {
+        ...cur,
+        projectStats: base.map((s, i) => (i === index ? { ...s, ...patch } : s)),
+      };
+    });
+  };
+
   // ── API calls ────────────────────────────────────────────────────────────────
 
   const loadData = async () => {
@@ -643,7 +664,49 @@ export default function AdminPage() {
 
       {/* ── Projects tab ─────────────────────────────────────────────────────── */}
       {activeTab === "projects" ? (
-        <section className="admin-layout">
+        <>
+          <div className="admin-card admin-stats-card">
+            <div className="admin-card__head">
+              <p className="eyebrow">Seção de Projetos</p>
+              <h2>Números do portfólio</h2>
+            </div>
+            <p className="admin-card__desc">
+              As estatísticas animadas no topo da seção de projetos. Atualize conforme for concluindo trabalhos — o texto de cada número fica traduzido automaticamente.
+            </p>
+            <div className="admin-stats-grid">
+              {PROJECT_STAT_LABELS.map((label, i) => (
+                <div className="admin-stat-card" key={label}>
+                  <span className="admin-stat-card__label">{label}</span>
+                  <div className="admin-stat-card__fields">
+                    <label>
+                      Número
+                      <input
+                        type="number"
+                        min="0"
+                        value={projectStats[i]?.value ?? 0}
+                        onChange={(e) => updateProjectStat(i, { value: Number(e.target.value) })}
+                      />
+                    </label>
+                    <label>
+                      Símbolo
+                      <input
+                        value={projectStats[i]?.suffix ?? ""}
+                        onChange={(e) => updateProjectStat(i, { suffix: e.target.value })}
+                        placeholder="+ ou %"
+                        maxLength={4}
+                      />
+                    </label>
+                  </div>
+                  <span className="admin-stat-card__preview" aria-hidden="true">
+                    {projectStats[i]?.value ?? 0}
+                    <strong>{projectStats[i]?.suffix ?? ""}</strong>
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <section className="admin-layout">
           <aside className="admin-list">
             <button
               className="admin-list__add"
@@ -1145,7 +1208,8 @@ export default function AdminPage() {
               </button>
             </section>
           ) : null}
-        </section>
+          </section>
+        </>
       ) : null}
 
       {/* ── Services tab ─────────────────────────────────────────────────────── */}
