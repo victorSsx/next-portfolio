@@ -892,7 +892,7 @@
         "leadlovers (automação de marketing)",
         "Webhook / Integração de dados"
       ],
-      "summary": "Reconstrução do blog de um site WordPress no tema Salient: layout de duas colunas com sidebar fixa de autor e newsletter, e formulário de captação ao final dos posts integrado ao leadlovers — tudo sem tocar no restante do site.",
+      "summary": "Reconstrução do blog de um site WordPress no tema Salient: layout de duas colunas com sidebar fixa de autor e newsletter\nformulário de captação ao final dos posts integrado ao leadlovers — tudo sem tocar no restante do site.",
       "workDone": [
         "Limpeza de resíduos de edições antigas em Elementor e restauração do template nativo do tema Salient",
         "Layout de duas colunas no blog e nos posts: 70% para o conteúdo e 30% para a sidebar",
