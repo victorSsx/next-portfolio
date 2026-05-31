@@ -1,10 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLanguage } from "../lib/LanguageContext";
 
 const WHATSAPP_URL = "https://wa.me/5521975990988";
 
 export function FloatingWhatsApp() {
+  const { t } = useLanguage();
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -17,7 +19,7 @@ export function FloatingWhatsApp() {
   return (
     <a
       className={`fab-whatsapp${visible ? " is-visible" : ""}`}
-      href={WHATSAPP_URL}
+      href={`${WHATSAPP_URL}?text=${encodeURIComponent(t.contact.whatsappGreeting)}`}
       target="_blank"
       rel="noreferrer"
       aria-label="Falar no WhatsApp"

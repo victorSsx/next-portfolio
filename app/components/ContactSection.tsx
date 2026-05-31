@@ -3,7 +3,6 @@
 import { useLanguage } from "../lib/LanguageContext";
 
 const WHATSAPP_URL = "https://wa.me/5521975990988";
-const INSTAGRAM_URL = "https://www.instagram.com/__devictor";
 const EMAIL = "victorspires.dev@gmail.com";
 
 // Preencha com as URLs dos seus perfis para os botões aparecerem automaticamente.
@@ -21,14 +20,16 @@ export function ContactSection() {
         <p className="contact__lead">{t.contact.lead}</p>
 
         <div className="hero__actions contact__actions">
-          <a className="button button--primary" href={WHATSAPP_URL} target="_blank" rel="noreferrer">
+          <a
+            className="button button--primary"
+            href={`${WHATSAPP_URL}?text=${encodeURIComponent(t.contact.whatsappGreeting)}`}
+            target="_blank"
+            rel="noreferrer"
+          >
             WhatsApp <span aria-hidden="true">-&gt;</span>
           </a>
           <a className="button button--ghost" href={`mailto:${EMAIL}`}>
             E-mail <span aria-hidden="true">-&gt;</span>
-          </a>
-          <a className="button button--ghost" href={INSTAGRAM_URL} target="_blank" rel="noreferrer">
-            Instagram <span aria-hidden="true">-&gt;</span>
           </a>
         </div>
 
