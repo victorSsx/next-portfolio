@@ -280,7 +280,7 @@
       "id": "a-mais-radiologia",
       "title": "Landing Page A Mais Radiologia",
       "category": "Landing Page / Saúde / Radiologia Odontológica / Geração de Leads",
-      "status": "Projeto demonstrativo",
+      "status": "Demonstração",
       "stack": [
         "WordPress",
         "Elementor",
@@ -356,7 +356,7 @@
       "id": "projeto-mplqmvz4",
       "title": "FisioVida Landing Page",
       "category": "Site institucional / Landing page / Saúde e fisioterapia",
-      "status": "Projeto Protótipo",
+      "status": "Demonstração",
       "stack": [
         "WordPress",
         "Hello Elementor Child Theme",
@@ -436,7 +436,7 @@
       "id": "projeto-mpm51gww",
       "title": "Pedro Alexandre BJJ",
       "category": "Site institucional / Portfólio esportivo",
-      "status": "Publicado / Semi-Concluído",
+      "status": "Publicado",
       "stack": [
         "WordPress",
         "PHP",
@@ -500,7 +500,7 @@
       "id": "projeto-mpm6sgsu",
       "title": "Apex Core Labs",
       "category": "Website institucional com catálogo de produtos e sistema de autenticação",
-      "status": "Em produção, com ajustes finais e melhorias contínuas",
+      "status": "Em produção",
       "stack": [
         "WordPress",
         "PHP",
@@ -586,7 +586,7 @@
       "id": "projeto-mps409br",
       "title": "TechVibe — Loja de Tecnologia (E-commerce Dark Premium)",
       "category": "E-commerce / Loja Virtual (WordPress + WooCommerce)",
-      "status": "Projeto em fase final / ainda não hospedado",
+      "status": "Concluído",
       "stack": [
         "WordPress",
         "WooCommerce",
@@ -692,7 +692,8 @@
       "id": "projeto-mpt48ust",
       "title": "Minhas Finanças — Rastreador de Despesas Pessoais",
       "category": "Aplicação Web · Front-end · Finanças (Fintech)",
-      "status": "Projeto em fase final / ainda não hospedado",
+      "status": "No ar",
+      "link": "https://rastreador-de-despesas-pessoais.vercel.app/",
       "stack": [
         "JavaScript (vanilla, ES6+)",
         "HTML5",

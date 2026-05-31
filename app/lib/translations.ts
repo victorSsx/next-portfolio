@@ -7,6 +7,7 @@ export type Translations = {
     greeting: string;
     role: string;
     lead: string;
+    guarantee: string;
     ctaProjects: string;
     ctaBudget: string;
   };
@@ -112,7 +113,7 @@ export type Translations = {
     title: string;
     steps: { number: string; title: string; desc: string }[];
   };
-  contact: { eyebrow: string; title: string };
+  contact: { eyebrow: string; title: string; lead: string };
 };
 
 export const translations: Record<Language, Translations> = {
@@ -126,7 +127,8 @@ export const translations: Record<Language, Translations> = {
       },
       greeting: "Olá, eu sou",
       role: "Desenvolvedor Freelancer",
-      lead: "Transformo ideias em soluções digitais modernas, intuitivas e de alta performance. Sites, aplicações e experiências que geram resultados reais para o seu negócio.",
+      lead: "Crio sites, landing pages e lojas que carregam rápido e transformam visitantes em clientes — entregues no prazo combinado e com acompanhamento depois do ar.",
+      guarantee: "7 dias de ajustes grátis · Comunicação direta · Entrega no prazo",
       ctaProjects: "Ver projetos",
       ctaBudget: "Montar orçamento",
     },
@@ -260,7 +262,7 @@ export const translations: Record<Language, Translations> = {
         { number: "03", title: "Apresentação", desc: "Organizo o resultado para o cliente entender o valor e aprovar com segurança." },
       ],
     },
-    contact: { eyebrow: "Contato", title: "Seu projeto pode ser a próxima história de sucesso." },
+    contact: { eyebrow: "Contato", title: "Seu projeto pode ser a próxima história de sucesso.", lead: "Respondo rápido, normalmente em poucas horas. Me chama no WhatsApp ou e-mail e a gente alinha seu projeto sem compromisso." },
   },
   en: {
     nav: { projects: "Projects", budget: "Quote", process: "Process", contact: "Contact" },
@@ -272,7 +274,8 @@ export const translations: Record<Language, Translations> = {
       },
       greeting: "Hi, I'm",
       role: "Freelance Developer",
-      lead: "I turn ideas into modern, intuitive, high-performance digital solutions. Websites, apps and experiences that drive real results for your business.",
+      lead: "I build websites, landing pages and online stores that load fast and turn visitors into customers — delivered on the agreed deadline, with support after launch.",
+      guarantee: "7 days of free tweaks · Direct communication · Delivered on time",
       ctaProjects: "View projects",
       ctaBudget: "Build a quote",
     },
@@ -406,7 +409,7 @@ export const translations: Record<Language, Translations> = {
         { number: "03", title: "Presentation", desc: "I organize the result so the client understands the value and approves with confidence." },
       ],
     },
-    contact: { eyebrow: "Contact", title: "Your project could be the next success story." },
+    contact: { eyebrow: "Contact", title: "Your project could be the next success story.", lead: "I reply fast, usually within a few hours. Message me on WhatsApp or email and we'll scope your project — no commitment." },
   },
   es: {
     nav: { projects: "Proyectos", budget: "Presupuesto", process: "Proceso", contact: "Contacto" },
@@ -418,7 +421,8 @@ export const translations: Record<Language, Translations> = {
       },
       greeting: "Hola, soy",
       role: "Desarrollador Freelance",
-      lead: "Convierto ideas en soluciones digitales modernas, intuitivas y de alto rendimiento. Sitios web, aplicaciones y experiencias que generan resultados reales para tu negocio.",
+      lead: "Creo sitios web, landing pages y tiendas que cargan rápido y convierten visitantes en clientes — entregados en el plazo acordado y con soporte después del lanzamiento.",
+      guarantee: "7 días de ajustes gratis · Comunicación directa · Entrega a tiempo",
       ctaProjects: "Ver proyectos",
       ctaBudget: "Armar presupuesto",
     },
@@ -552,6 +556,6 @@ export const translations: Record<Language, Translations> = {
         { number: "03", title: "Presentación", desc: "Organizo el resultado para que el cliente entienda el valor y apruebe con confianza." },
       ],
     },
-    contact: { eyebrow: "Contacto", title: "Tu proyecto puede ser la próxima historia de éxito." },
+    contact: { eyebrow: "Contacto", title: "Tu proyecto puede ser la próxima historia de éxito.", lead: "Respondo rápido, normalmente en pocas horas. Escríbeme por WhatsApp o correo y planificamos tu proyecto, sin compromiso." },
   },
 };

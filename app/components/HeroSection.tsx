@@ -155,6 +155,7 @@ export function HeroSection() {
             {t.hero.ctaBudget}
           </a>
         </div>
+        <p className="hero__guarantee">{t.hero.guarantee}</p>
       </div>
     </section>
   );

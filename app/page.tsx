@@ -1,6 +1,7 @@
 import { BudgetSection } from "./components/BudgetSection";
 import { ContactSection } from "./components/ContactSection";
 import { FAQSection } from "./components/FAQSection";
+import { FloatingWhatsApp } from "./components/FloatingWhatsApp";
 import { HeroSection } from "./components/HeroSection";
 import { ProcessSection } from "./components/ProcessSection";
 import { ProjectsSection } from "./components/ProjectsSection";
@@ -16,6 +17,7 @@ export default function Home() {
       <ProcessSection />
       <FAQSection />
       <ContactSection />
+      <FloatingWhatsApp />
     </main>
   );
 }
