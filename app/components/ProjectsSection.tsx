@@ -110,8 +110,20 @@ function getDeviceVideos(project: Project, tab: DeviceTab) {
   return project.deviceViews?.find((dv) => dv.device === tab)?.videos ?? [];
 }
 
-export function ProjectsSection() {
+type ProjectsSectionProps = {
+  limit?: number;
+  showAllLink?: boolean;
+};
+
+export function ProjectsSection({ limit, showAllLink }: ProjectsSectionProps = {}) {
   const { t } = useLanguage();
+  // Newest first, so recently added projects surface automatically
+  const orderedProjects = useMemo(() => [...projects].reverse(), []);
+  const displayedProjects = useMemo(
+    () => (typeof limit === "number" ? orderedProjects.slice(0, limit) : orderedProjects),
+    [orderedProjects, limit]
+  );
+  const hasMore = Boolean(showAllLink) && projects.length > (limit ?? projects.length);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [deviceTab, setDeviceTab] = useState<DeviceTab>("desktop");
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
@@ -185,7 +197,7 @@ export function ProjectsSection() {
         </div>
 
         <div className="project-grid">
-          {projects.map((project, i) => (
+          {displayedProjects.map((project, i) => (
             <article
               className="project-card"
               key={project.title}
@@ -222,6 +234,14 @@ export function ProjectsSection() {
             </article>
           ))}
         </div>
+
+        {hasMore && (
+          <div className="projects-viewall" data-animate>
+            <a className="button button--ghost" href="/projetos">
+              {t.projects.viewAll} <span aria-hidden="true">→</span>
+            </a>
+          </div>
+        )}
       </section>
 
       {activeProject ? (

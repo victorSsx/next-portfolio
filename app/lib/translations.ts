@@ -16,6 +16,9 @@ export type Translations = {
     title: string;
     stats: { value: number; suffix: string; label: string }[];
     viewDetails: string;
+    viewAll: string;
+    backHome: string;
+    allTitle: string;
     modal: {
       workDone: string;
       technologies: string;
@@ -142,6 +145,9 @@ export const translations: Record<Language, Translations> = {
         { value: 100, suffix: "%", label: "Entregas no prazo" },
       ],
       viewDetails: "Ver detalhes",
+      viewAll: "Ver todos os projetos",
+      backHome: "Voltar ao início",
+      allTitle: "Todos os projetos",
       modal: {
         workDone: "O que foi feito",
         technologies: "Tecnologias usadas",
@@ -290,6 +296,9 @@ export const translations: Record<Language, Translations> = {
         { value: 100, suffix: "%", label: "On-time delivery" },
       ],
       viewDetails: "View details",
+      viewAll: "View all projects",
+      backHome: "Back to home",
+      allTitle: "All projects",
       modal: {
         workDone: "What was done",
         technologies: "Technologies used",
@@ -438,6 +447,9 @@ export const translations: Record<Language, Translations> = {
         { value: 100, suffix: "%", label: "Entregas a tiempo" },
       ],
       viewDetails: "Ver detalles",
+      viewAll: "Ver todos los proyectos",
+      backHome: "Volver al inicio",
+      allTitle: "Todos los proyectos",
       modal: {
         workDone: "Lo que se hizo",
         technologies: "Tecnologías utilizadas",
