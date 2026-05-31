@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none" role="img" aria-label="Prévia em breve">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="800" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#101111"/>
+      <stop offset="1" stop-color="#0a0b0b"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="520" y1="300" x2="680" y2="470" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffd56b"/>
+      <stop offset="0.5" stop-color="#c7a447"/>
+      <stop offset="1" stop-color="#9f741f"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="800" fill="url(#bg)"/>
+  <rect x="24.5" y="24.5" width="1151" height="751" rx="10" stroke="#c7a447" stroke-opacity="0.18"/>
+  <g transform="translate(600 360)">
+    <rect x="-90" y="-66" width="180" height="132" rx="14" stroke="url(#gold)" stroke-width="4" fill="none" opacity="0.9"/>
+    <circle cx="-44" cy="-22" r="17" fill="url(#gold)" opacity="0.9"/>
+    <path d="M-78 50 L-24 -6 L18 36 L46 12 L78 50 Z" fill="url(#gold)" opacity="0.85"/>
+  </g>
+  <text x="600" y="488" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="30" font-weight="700" letter-spacing="2" fill="#c7a447" fill-opacity="0.85">PRÉVIA EM BREVE</text>
+  <text x="600" y="528" text-anchor="middle" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="19" font-weight="500" letter-spacing="1" fill="#f5f2ec" fill-opacity="0.4">Prints e vídeo serão adicionados</text>
+</svg>

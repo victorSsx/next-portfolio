@@ -878,6 +878,35 @@
         }
       ],
       "link": "https://rastreador-de-despesas-pessoais.vercel.app/"
+    },
+    {
+      "id": "projeto-blog-salient",
+      "title": "Blog Profissional com Captação de Leads",
+      "category": "WordPress / Tema Salient / Blog e Automação de Leads",
+      "status": "Concluído",
+      "stack": [
+        "WordPress",
+        "Tema Salient",
+        "WPBakery Page Builder",
+        "PHP",
+        "CSS personalizado",
+        "leadlovers (automação de marketing)",
+        "Webhook / Integração de dados"
+      ],
+      "summary": "Reconstrução do blog de um site WordPress no tema Salient: layout de duas colunas com sidebar fixa de autor e newsletter, e formulário de captação ao final dos posts integrado ao leadlovers — tudo sem tocar no restante do site.",
+      "workDone": [
+        "Limpeza de resíduos de edições antigas em Elementor e restauração do template nativo do tema Salient",
+        "Layout de duas colunas no blog e nos posts: 70% para o conteúdo e 30% para a sidebar",
+        "Sidebar fixa (sticky) com foto e nome do autor, chamada para a newsletter e botão de inscrição",
+        "Formulário de inscrição ao final de cada post com campos de nome, e-mail e telefone",
+        "Integração automática dos leads com o leadlovers para nutrição e e-mail marketing",
+        "Escopo focado exclusivamente no blog, preservando header, footer e demais páginas do site"
+      ],
+      "mainImage": {
+        "src": "/projects/placeholder.svg",
+        "alt": "Blog Profissional com Captação de Leads"
+      },
+      "gallery": []
     }
   ]
 }
