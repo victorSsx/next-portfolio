@@ -3456,6 +3456,97 @@ a {
   margin-bottom: 48px;
 }
 
+/* ── Verified Workana rating badge ─────────────────────────────────────────── */
+
+.workana-badge {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto 40px;
+  padding: 18px 26px;
+  border: 1px solid rgba(199, 164, 71, 0.28);
+  border-radius: 12px;
+  background:
+    linear-gradient(135deg, rgba(199, 164, 71, 0.1), rgba(199, 164, 71, 0.02));
+  text-decoration: none;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+
+.workana-badge:hover {
+  border-color: rgba(199, 164, 71, 0.55);
+  transform: translateY(-3px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+.workana-badge__score {
+  font-size: 46px;
+  font-weight: 850;
+  line-height: 1;
+  color: var(--gold);
+  letter-spacing: -1px;
+}
+
+.workana-badge__main {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  text-align: left;
+  border-left: 1px solid rgba(199, 164, 71, 0.25);
+  padding-left: 20px;
+}
+
+.workana-badge__stars {
+  color: var(--gold);
+  font-size: 15px;
+  letter-spacing: 2px;
+}
+
+.workana-badge__label {
+  color: var(--white);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.workana-badge__reviews {
+  color: rgba(245, 242, 236, 0.55);
+  font-size: 13px;
+}
+
+.workana-badge__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 8px;
+  color: var(--gold);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+@media (max-width: 560px) {
+  .workana-badge {
+    flex-direction: column;
+    gap: 14px;
+    text-align: center;
+    padding: 22px;
+  }
+  .workana-badge__main {
+    border-left: 0;
+    border-top: 1px solid rgba(199, 164, 71, 0.25);
+    padding-left: 0;
+    padding-top: 14px;
+    align-items: center;
+    text-align: center;
+  }
+  .workana-badge__link {
+    margin-left: 0;
+  }
+}
+
 /* ── Testimonials carousel ─────────────────────────────────────────────────── */
 
 .tcarousel {

@@ -82,6 +82,7 @@ export type Translations = {
     eyebrow: string;
     title: string;
     lead: string;
+    workana: { label: string; reviewsSuffix: string; linkLabel: string };
     form: {
       submitBtn: string;
       step1Title: string;
@@ -227,6 +228,7 @@ export const translations: Record<Language, Translations> = {
       eyebrow: "Depoimentos",
       title: "O que clientes dizem",
       lead: "Resultados reais de quem confiou no trabalho.",
+      workana: { label: "Avaliação máxima na Workana", reviewsSuffix: "clientes avaliaram com 5 estrelas", linkLabel: "Ver perfil na Workana" },
       form: {
         submitBtn: "Deixar um depoimento",
         step1Title: "Quem é você?",
@@ -374,6 +376,7 @@ export const translations: Record<Language, Translations> = {
       eyebrow: "Testimonials",
       title: "What clients say",
       lead: "Real results from those who trusted the work.",
+      workana: { label: "Top rating on Workana", reviewsSuffix: "clients rated 5 stars", linkLabel: "View Workana profile" },
       form: {
         submitBtn: "Leave a testimonial",
         step1Title: "Who are you?",
@@ -521,6 +524,7 @@ export const translations: Record<Language, Translations> = {
       eyebrow: "Testimonios",
       title: "Lo que dicen los clientes",
       lead: "Resultados reales de quienes confiaron en el trabajo.",
+      workana: { label: "Calificación máxima en Workana", reviewsSuffix: "clientes calificaron con 5 estrellas", linkLabel: "Ver perfil en Workana" },
       form: {
         submitBtn: "Dejar un testimonio",
         step1Title: "¿Quién eres?",
