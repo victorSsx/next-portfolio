@@ -196,9 +196,21 @@ export function ProjectsSection() {
                   <li key={item}>{item}</li>
                 ))}
               </ul>
-              <button className="project-card__button" onClick={() => openProject(project)} type="button">
-                {t.projects.viewDetails} <span aria-hidden="true">-&gt;</span>
-              </button>
+              <div className="project-card__actions">
+                <button className="project-card__button" onClick={() => openProject(project)} type="button">
+                  {t.projects.viewDetails} <span aria-hidden="true">→</span>
+                </button>
+                {project.link && (
+                  <a
+                    className="project-card__live"
+                    href={project.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Ver ao vivo <span aria-hidden="true">↗</span>
+                  </a>
+                )}
+              </div>
             </article>
           ))}
         </div>
@@ -254,7 +266,19 @@ export function ProjectsSection() {
                 <h2 id="project-modal-title">{activeProject.title}</h2>
                 <p>{activeProject.summary}</p>
               </div>
-              <div className="project-modal__status">{activeProject.status}</div>
+              <div className="project-modal__meta">
+                <div className="project-modal__status">{activeProject.status}</div>
+                {activeProject.link && (
+                  <a
+                    className="project-modal__live-btn"
+                    href={activeProject.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Ver projeto ao vivo <span aria-hidden="true">↗</span>
+                  </a>
+                )}
+              </div>
             </div>
 
             <div className="project-modal__details">

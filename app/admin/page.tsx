@@ -718,6 +718,32 @@ export default function AdminPage() {
                   </label>
                 </div>
                 <label>
+                  Link em produção <span className="admin-hint">(opcional — só preencha se o projeto estiver no ar)</span>
+                  <div className="admin-link-input">
+                    <input
+                      type="url"
+                      value={activeProject.link ?? ""}
+                      onChange={(e) =>
+                        updateProject(activeProject.id, {
+                          link: e.target.value.trim() || undefined,
+                        })
+                      }
+                      placeholder="https://cliente.com.br"
+                    />
+                    {activeProject.link && (
+                      <a
+                        href={activeProject.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="admin-link-preview"
+                        title="Abrir link"
+                      >
+                        ↗
+                      </a>
+                    )}
+                  </div>
+                </label>
+                <label>
                   Descrição curta
                   <textarea
                     value={activeProject.summary}
