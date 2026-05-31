@@ -711,6 +711,96 @@
           "label": "Video demo 1 de Novo projeto"
         }
       ]
+    },
+    {
+      "id": "projeto-mpt48ust",
+      "title": "Minhas Finanças — Rastreador de Despesas Pessoais",
+      "category": "Aplicação Web · Front-end · Finanças (Fintech)",
+      "status": "Projeto em fase final / ainda não hospedado",
+      "stack": [
+        "JavaScript (vanilla, ES6+)",
+        "HTML5",
+        "CSS3",
+        "Chart.js",
+        "localStorage",
+        "Fetch API/REST",
+        "BrasilAPI Banco Central (BCB)",
+        "Intl (pt-BR/BRL)",
+        "Vercel"
+      ],
+      "summary": "App de finanças pessoais (pt-BR) para registrar receitas e despesas\n controlar orçamentos por categoria e planejar metas de compra com projeção de rendimento e simulação de parcelamento\n Funciona 100% no navegador\n sem backend",
+      "workDone": [
+        "- Receitas/despesas com categorização, busca e filtros",
+        "- Resumos mensais com gráficos (rosca, barras, projeção, comparação)",
+        "- Orçamentos por categoria com alertas (dentro/atenção/estourou)",
+        "- Metas de compra com projeção de juros compostos",
+        "- Estratégia entrada + parcelamento (Tabela Price) com comparação à vista × parcelado",
+        "- Integração com APIs de juros (BrasilAPI/Banco Central) com fallback",
+        "- Tema claro/escuro, responsivo, exportar/importar backup, deploy na Vercel"
+      ],
+      "mainImage": {
+        "src": "/projects/admin-uploads/projeto-mpt48ust/mpt4km9w-captura-de-tela-2026-05-30-224044.png",
+        "alt": "Minhas Finanças — Rastreador de Despesas Pessoais - imagem principal"
+      },
+      "gallery": [
+        {
+          "src": "/projects/admin-uploads/projeto-mpt48ust/mpt4jiev-captura-de-tela-2026-05-30-224319.png",
+          "alt": "Minhas Finanças — Rastreador de Despesas Pessoais - print do projeto",
+          "label": "Print 1"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mpt48ust/mpt4jmvj-captura-de-tela-2026-05-30-224044.png",
+          "alt": "Minhas Finanças — Rastreador de Despesas Pessoais - print do projeto",
+          "label": "Print 2"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mpt48ust/mpt4jtss-captura-de-tela-2026-05-30-224119.png",
+          "alt": "Minhas Finanças — Rastreador de Despesas Pessoais - print do projeto",
+          "label": "Print 3"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mpt48ust/mpt4k1k5-captura-de-tela-2026-05-30-224136.png",
+          "alt": "Minhas Finanças — Rastreador de Despesas Pessoais - print do projeto",
+          "label": "Print 4"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mpt48ust/mpt4k677-captura-de-tela-2026-05-30-224216.png",
+          "alt": "Minhas Finanças — Rastreador de Despesas Pessoais - print do projeto",
+          "label": "Print 5"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mpt48ust/mpt4k9sh-captura-de-tela-2026-05-30-224236.png",
+          "alt": "Minhas Finanças — Rastreador de Despesas Pessoais - print do projeto",
+          "label": "Print 6"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mpt48ust/mpt4kdf6-captura-de-tela-2026-05-30-224301.png",
+          "alt": "Minhas Finanças — Rastreador de Despesas Pessoais - print do projeto",
+          "label": "Print 7"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mpt48ust/mpt5ilt0-captura-de-tela-2026-05-30-231702.png",
+          "alt": "Minhas Finanças — Rastreador de Despesas Pessoais - print do projeto",
+          "label": "Print 8"
+        }
+      ],
+      "video": {
+        "src": "/projects/admin-uploads/projeto-mpt48ust/mpt5hnrz-video-project-prototipo-loja-comprimido.mp4",
+        "poster": "/projects/admin-uploads/projeto-mpt48ust/mpt4km9w-captura-de-tela-2026-05-30-224044.png",
+        "label": "Video demo 1 de Minhas Finanças — Rastreador de Despesas Pessoais"
+      },
+      "videos": [
+        {
+          "src": "/projects/admin-uploads/projeto-mpt48ust/mpt5hnrz-video-project-prototipo-loja-comprimido.mp4",
+          "poster": "/projects/admin-uploads/projeto-mpt48ust/mpt4km9w-captura-de-tela-2026-05-30-224044.png",
+          "label": "Video demo 1 de Minhas Finanças — Rastreador de Despesas Pessoais"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mpt48ust/mpt5hue9-video-project-gestao-pessoal-2-comprimido.mp4",
+          "poster": "/projects/admin-uploads/projeto-mpt48ust/mpt4km9w-captura-de-tela-2026-05-30-224044.png",
+          "label": "Video demo 2 de Minhas Finanças — Rastreador de Despesas Pessoais"
+        }
+      ]
     }
   ]
 }
