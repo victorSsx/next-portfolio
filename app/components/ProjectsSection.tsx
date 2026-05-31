@@ -113,17 +113,37 @@ function getDeviceVideos(project: Project, tab: DeviceTab) {
 type ProjectsSectionProps = {
   limit?: number;
   showAllLink?: boolean;
+  showFilter?: boolean;
 };
 
-export function ProjectsSection({ limit, showAllLink }: ProjectsSectionProps = {}) {
+export function ProjectsSection({ limit, showAllLink, showFilter }: ProjectsSectionProps = {}) {
   const { t } = useLanguage();
   // Newest first, so recently added projects surface automatically
   const orderedProjects = useMemo(() => [...projects].reverse(), []);
-  const displayedProjects = useMemo(
-    () => (typeof limit === "number" ? orderedProjects.slice(0, limit) : orderedProjects),
-    [orderedProjects, limit]
+
+  // Unique filter tags across all projects (stable order by first appearance)
+  const allTags = useMemo(() => {
+    const tags: string[] = [];
+    projects.forEach((p) => (p.tags ?? []).forEach((tag) => {
+      if (tag && !tags.includes(tag)) tags.push(tag);
+    }));
+    return tags;
+  }, []);
+
+  const [activeTag, setActiveTag] = useState<string | null>(null);
+
+  const filteredProjects = useMemo(
+    () => (activeTag ? orderedProjects.filter((p) => p.tags?.includes(activeTag)) : orderedProjects),
+    [orderedProjects, activeTag]
   );
-  const hasMore = Boolean(showAllLink) && projects.length > (limit ?? projects.length);
+
+  // Limit only applies on the unfiltered (recent) view
+  const displayedProjects = useMemo(
+    () => (typeof limit === "number" && !activeTag ? filteredProjects.slice(0, limit) : filteredProjects),
+    [filteredProjects, limit, activeTag]
+  );
+
+  const hasMore = Boolean(showAllLink) && !activeTag && projects.length > (limit ?? projects.length);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [deviceTab, setDeviceTab] = useState<DeviceTab>("desktop");
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
@@ -195,6 +215,30 @@ export function ProjectsSection({ limit, showAllLink }: ProjectsSectionProps = {
             })}
           </div>
         </div>
+
+        {showFilter && allTags.length > 1 && (
+          <div className="projects-filter" role="group" aria-label="Filtrar projetos por tipo" data-animate>
+            <button
+              type="button"
+              className={`projects-filter__chip${activeTag === null ? " is-active" : ""}`}
+              aria-pressed={activeTag === null}
+              onClick={() => setActiveTag(null)}
+            >
+              {t.projects.filterAll}
+            </button>
+            {allTags.map((tag) => (
+              <button
+                key={tag}
+                type="button"
+                className={`projects-filter__chip${activeTag === tag ? " is-active" : ""}`}
+                aria-pressed={activeTag === tag}
+                onClick={() => setActiveTag(tag)}
+              >
+                {tag}
+              </button>
+            ))}
+          </div>
+        )}
 
         <div className="project-grid">
           {displayedProjects.map((project, i) => (

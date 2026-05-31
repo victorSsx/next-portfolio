@@ -463,6 +463,9 @@
           "poster": "/projects/a-mais-radiologia/hero-desktop.png",
           "label": "Vídeo demo da Landing Page A Mais Radiologia"
         }
+      ],
+      "tags": [
+        "Landing pages"
       ]
     },
     {
@@ -543,6 +546,9 @@
           "poster": "/projects/admin-uploads/projeto-mplqmvz4/mplw9sze-captura-de-tela-2026-05-25-201844.png",
           "label": "Video demo 1 de FisioVida Landing Page"
         }
+      ],
+      "tags": [
+        "Landing pages"
       ]
     },
     {
@@ -607,6 +613,9 @@
           "poster": "/projects/admin-uploads/projeto-mpm51gww/mpm62mqw-captura-de-tela-2026-05-26-014303.png",
           "label": "Video demo 1 de Pedro Alexandre BJJ"
         }
+      ],
+      "tags": [
+        "Sites institucionais"
       ]
     },
     {
@@ -693,7 +702,10 @@
           "label": "Video demo 1 de Apex Core Labs"
         }
       ],
-      "link": "https://apexcore-labs.com/"
+      "link": "https://apexcore-labs.com/",
+      "tags": [
+        "Sites institucionais"
+      ]
     },
     {
       "id": "projeto-mps409br",
@@ -799,6 +811,9 @@
           "poster": "/projects/admin-uploads/projeto-mps409br/mps45c20-captura-de-tela-2026-05-30-043657.png",
           "label": "Video demo 1 de Novo projeto"
         }
+      ],
+      "tags": [
+        "Lojas / E-commerce"
       ]
     },
     {
@@ -890,7 +905,10 @@
           "label": "Video demo 2 de Minhas Finanças — Rastreador de Despesas Pessoais"
         }
       ],
-      "link": "https://rastreador-de-despesas-pessoais.vercel.app/"
+      "link": "https://rastreador-de-despesas-pessoais.vercel.app/",
+      "tags": [
+        "Web apps"
+      ]
     },
     {
       "id": "projeto-blog-salient",
@@ -931,7 +949,10 @@
           "label": "Print 2"
         }
       ],
-      "videos": []
+      "videos": [],
+      "tags": [
+        "Blog"
+      ]
     }
   ]
 }

@@ -54,6 +54,7 @@ export type Project = {
   videos?: ProjectVideo[];
   deviceViews?: DeviceView[];
   link?: string;
+  tags?: string[];
 };
 
 export type AvailabilityStatus = "available" | "busy" | "unavailable";

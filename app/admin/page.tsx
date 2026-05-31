@@ -813,6 +813,21 @@ export default function AdminPage() {
                     onChange={(e) => updateProject(activeProject.id, { summary: e.target.value })}
                   />
                 </label>
+                <label>
+                  Tags de filtro <span className="admin-hint">(separadas por vírgula — usadas no filtro de projetos. Ex: Lojas / E-commerce, Saúde)</span>
+                  <input
+                    value={(activeProject.tags ?? []).join(", ")}
+                    onChange={(e) =>
+                      updateProject(activeProject.id, {
+                        tags: e.target.value
+                          .split(",")
+                          .map((tag) => tag.trim())
+                          .filter(Boolean),
+                      })
+                    }
+                    placeholder="Ex: Lojas / E-commerce"
+                  />
+                </label>
               </div>
 
               {/* Media card */}

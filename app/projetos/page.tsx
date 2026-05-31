@@ -23,7 +23,7 @@ export default function ProjetosPage() {
         </Link>
       </nav>
 
-      <ProjectsSection />
+      <ProjectsSection showFilter />
       <ContactSection />
     </main>
   );

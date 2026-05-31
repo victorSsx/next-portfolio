@@ -439,6 +439,40 @@ a {
   min-width: 280px;
 }
 
+/* ── Discreet project filter ───────────────────────────────────────────────── */
+
+.projects-filter {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 22px;
+}
+
+.projects-filter__chip {
+  padding: 7px 15px;
+  border: 1px solid rgba(245, 242, 236, 0.14);
+  border-radius: 999px;
+  background: transparent;
+  color: rgba(245, 242, 236, 0.6);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.projects-filter__chip:hover {
+  color: var(--white);
+  border-color: rgba(199, 164, 71, 0.4);
+}
+
+.projects-filter__chip.is-active {
+  color: var(--black);
+  background: var(--gold);
+  border-color: var(--gold);
+  font-weight: 800;
+}
+
 /* ── Dedicated /projetos page ──────────────────────────────────────────────── */
 
 .projetos-page {

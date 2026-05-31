@@ -11,7 +11,7 @@ export default function Home() {
   return (
     <main className="next-portfolio">
       <HeroSection />
-      <ProjectsSection limit={7} showAllLink />
+      <ProjectsSection limit={7} showAllLink showFilter />
       <BudgetSection />
       <TestimonialsSection />
       <ProcessSection />

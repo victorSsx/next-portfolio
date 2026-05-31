@@ -19,6 +19,7 @@ export type Translations = {
     viewAll: string;
     backHome: string;
     allTitle: string;
+    filterAll: string;
     modal: {
       workDone: string;
       technologies: string;
@@ -148,6 +149,7 @@ export const translations: Record<Language, Translations> = {
       viewAll: "Ver todos os projetos",
       backHome: "Voltar ao início",
       allTitle: "Todos os projetos",
+      filterAll: "Todos",
       modal: {
         workDone: "O que foi feito",
         technologies: "Tecnologias usadas",
@@ -299,6 +301,7 @@ export const translations: Record<Language, Translations> = {
       viewAll: "View all projects",
       backHome: "Back to home",
       allTitle: "All projects",
+      filterAll: "All",
       modal: {
         workDone: "What was done",
         technologies: "Technologies used",
@@ -450,6 +453,7 @@ export const translations: Record<Language, Translations> = {
       viewAll: "Ver todos los proyectos",
       backHome: "Volver al inicio",
       allTitle: "Todos los proyectos",
+      filterAll: "Todos",
       modal: {
         workDone: "Lo que se hizo",
         technologies: "Tecnologías utilizadas",
