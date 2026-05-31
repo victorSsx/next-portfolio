@@ -147,6 +147,7 @@ const normalizeSiteData = (data: Partial<SiteData>): SiteData => ({
             video: videos[0],
             videos,
             ...(normalizedDeviceViews.length > 0 ? { deviceViews: normalizedDeviceViews } : {}),
+            ...(project.link ? { link: String(project.link).trim() } : {}),
           };
         })
         .filter((project) => project.id && project.title && project.mainImage.src)
