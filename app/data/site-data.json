@@ -52,60 +52,9 @@
         "manutencao"
       ],
       "discount": 200
-    },
-    {
-      "id": "pacote-resgate",
-      "tag": "Para urgências",
-      "tagColor": "gold",
-      "title": "Resgate de site",
-      "description": "Site com problemas, lento ou cheio de erros? Diagnostico tudo, corrijo até 5 bugs e ainda deixo rápido — entrega em até uma semana.",
-      "services": [
-        "diagnostico-site",
-        "correcao-pack",
-        "performance"
-      ],
-      "discount": 130
-    },
-    {
-      "id": "pacote-manutencao-pro",
-      "tag": "Recorrente",
-      "tagColor": "blue",
-      "title": "Manutenção Pro",
-      "description": "Plano mensal completo com diagnóstico inicial incluso e 30 dias de suporte após o setup — ideal para quem quer o site sempre funcionando sem preocupação.",
-      "services": [
-        "diagnostico-site",
-        "manutencao",
-        "suporte-30"
-      ],
-      "discount": 100
     }
   ],
-  "testimonials": [
-    {
-      "id": "t1",
-      "name": "Rafael Souza",
-      "role": "Proprietário",
-      "company": "Clínica OdontoVida",
-      "text": "Victor entregou a landing page antes do prazo e com visual muito acima do que eu esperava. Em menos de 2 semanas já estava recebendo contatos pelo formulário.",
-      "rating": 5
-    },
-    {
-      "id": "t2",
-      "name": "Ana Martins",
-      "role": "Gerente de Marketing",
-      "company": "FitStudio SP",
-      "text": "Ótimo profissional, comunicação clara e site entregue no prazo. O resultado ficou exatamente como discutimos no briefing. Recomendo sem hesitar.",
-      "rating": 5
-    },
-    {
-      "id": "t3",
-      "name": "Carlos Ferreira",
-      "role": "Empreendedor",
-      "company": "CF Consultoria",
-      "text": "Precisava de um site rápido e profissional para apresentar minha consultoria. Victor entendeu o objetivo e entregou algo que tenho orgulho de mostrar.",
-      "rating": 5
-    }
-  ],
+  "testimonials": [],
   "serviceCategories": [
     {
       "id": "sites",
@@ -122,10 +71,6 @@
     {
       "id": "suporte",
       "label": "Suporte"
-    },
-    {
-      "id": "diagnostico",
-      "label": "Diagnóstico e correções"
     }
   ],
   "technologies": [
@@ -325,75 +270,6 @@
         "Suporte técnico por mensagem",
         "Respostas em até 24h úteis",
         "Pequenas alterações de conteúdo incluídas"
-      ],
-      "allowQuantity": false,
-      "startingAt": false
-    },
-    {
-      "id": "atualizacao-site",
-      "category": "suporte",
-      "title": "Atualização de site antigo",
-      "price": 400,
-      "billing": "once",
-      "summary": "Para sites desatualizados, lentos ou com visual ultrapassado — atualizo plugins, modernizo o layout e corrijo os problemas acumulados.",
-      "details": [
-        "Atualização de WordPress e todos os plugins",
-        "Correção de conflitos pós-atualização",
-        "Ajustes de layout e responsividade",
-        "Otimização básica de velocidade inclusa",
-        "Backup completo antes de qualquer alteração"
-      ],
-      "allowQuantity": false,
-      "startingAt": true
-    },
-    {
-      "id": "diagnostico-site",
-      "category": "diagnostico",
-      "title": "Diagnóstico de site",
-      "price": 200,
-      "billing": "once",
-      "summary": "Análise técnica completa do seu site — velocidade, SEO, erros, usabilidade e segurança — com relatório detalhado e lista priorizada do que corrigir.",
-      "details": [
-        "Relatório completo entregue em até 48h",
-        "Análise de velocidade e Core Web Vitals",
-        "Erros de SEO técnico identificados",
-        "Problemas de layout e usabilidade apontados",
-        "Verificação de segurança e links quebrados",
-        "Lista priorizada de melhorias com estimativas"
-      ],
-      "allowQuantity": false,
-      "startingAt": false
-    },
-    {
-      "id": "correcao-bug",
-      "category": "diagnostico",
-      "title": "Correção de bug pontual",
-      "price": 150,
-      "billing": "once",
-      "summary": "Resolução de um problema específico no seu site — erro de exibição, funcionalidade quebrada, bug em formulário ou comportamento inesperado.",
-      "details": [
-        "Diagnóstico do problema incluso",
-        "Correção com prazo de 24 a 48h",
-        "Testado em mobile e desktop após a correção",
-        "Sem cobrança se não conseguir resolver"
-      ],
-      "allowQuantity": true,
-      "unitLabel": "correções",
-      "startingAt": false
-    },
-    {
-      "id": "correcao-pack",
-      "category": "diagnostico",
-      "title": "Pacote de correções",
-      "price": 400,
-      "billing": "once",
-      "summary": "Para quem acumulou vários problemas — resolve até 5 bugs ou ajustes por um preço fixo, sem surpresas no final.",
-      "details": [
-        "Até 5 correções ou ajustes incluídos",
-        "Bugs de layout, formulários, velocidade e funcionalidades",
-        "Entrega em até 5 dias úteis",
-        "Relatório do que foi feito em cada item",
-        "Mais econômico que contratar por hora"
       ],
       "allowQuantity": false,
       "startingAt": false
