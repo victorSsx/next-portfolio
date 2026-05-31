@@ -792,7 +792,6 @@
       "title": "Minhas Finanças — Rastreador de Despesas Pessoais",
       "category": "Aplicação Web · Front-end · Finanças (Fintech)",
       "status": "No ar",
-      "link": "https://rastreador-de-despesas-pessoais.vercel.app/",
       "stack": [
         "JavaScript (vanilla, ES6+)",
         "HTML5",
@@ -903,10 +902,22 @@
         "Escopo focado exclusivamente no blog, preservando header, footer e demais páginas do site"
       ],
       "mainImage": {
-        "src": "/projects/placeholder.svg",
+        "src": "/projects/admin-uploads/projeto-blog-salient/mptbw2bl-captura-de-tela-2026-05-31-021430.png",
         "alt": "Blog Profissional com Captação de Leads"
       },
-      "gallery": []
+      "gallery": [
+        {
+          "src": "/projects/admin-uploads/projeto-blog-salient/mptbwcd2-captura-de-tela-2026-05-31-015057.png",
+          "alt": "Blog Profissional com Captação de Leads - print do projeto",
+          "label": "Print 1"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-blog-salient/mptbwl2i-captura-de-tela-2026-05-31-015243.png",
+          "alt": "Blog Profissional com Captação de Leads - print do projeto",
+          "label": "Print 2"
+        }
+      ],
+      "videos": []
     }
   ]
 }
