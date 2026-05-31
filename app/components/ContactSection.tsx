@@ -7,7 +7,7 @@ const INSTAGRAM_URL = "https://www.instagram.com/__devictor";
 const EMAIL = "victorspires.dev@gmail.com";
 
 // Preencha com as URLs dos seus perfis para os botões aparecerem automaticamente.
-const WORKANA_URL = "";
+const WORKANA_URL = "https://www.workana.com/freelancer/d6e8a59b03761470ce1e4c7707997550";
 const UPWORK_URL = "";
 
 export function ContactSection() {
