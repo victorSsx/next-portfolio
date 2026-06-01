@@ -1099,6 +1099,27 @@ a {
   font-size: 24px;
 }
 
+.totals__discount {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(74, 222, 128, 0.08) !important;
+  border-color: rgba(74, 222, 128, 0.28) !important;
+}
+
+.totals__discount span {
+  color: rgba(245, 242, 236, 0.72);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.totals__discount strong {
+  margin-top: 0;
+  color: #4ade80;
+  font-size: 18px;
+}
+
 .budget-panel__cta {
   width: 100%;
   margin-top: 18px;

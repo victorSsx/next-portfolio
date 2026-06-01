@@ -59,7 +59,8 @@ function buildBudgetMessage(
   currency: Currency,
   selectedItems: { service: BudgetService; quantity: number }[],
   onceTotal: number,
-  monthlyTotal: number
+  monthlyTotal: number,
+  packageDiscount: number
 ): string {
   const hasSelected = selectedItems.length > 0;
 
@@ -95,6 +96,7 @@ function buildBudgetMessage(
       "",
       "I'm interested in the following services:",
       serviceLines,
+      packageDiscount > 0 ? `Package discount: -${formatAmount(packageDiscount, "USD")}` : "",
       "",
       `Estimated one-time investment: ${formatAmount(onceTotal, "USD")}`,
       monthlyTotal ? `Estimated monthly investment: ${formatAmount(monthlyTotal, "USD")}/mo` : "",
@@ -122,6 +124,7 @@ function buildBudgetMessage(
       "",
       "Estoy interesado en los siguientes servicios:",
       serviceLines,
+      packageDiscount > 0 ? `Descuento de paquete: -${formatAmount(packageDiscount, currency)}` : "",
       "",
       `Inversión única estimada: ${formatAmount(onceTotal, currency)}`,
       monthlyTotal ? `Inversión mensual estimada: ${formatAmount(monthlyTotal, currency)}/mes` : "",
@@ -149,6 +152,7 @@ function buildBudgetMessage(
     "",
     "Tenho interesse nos seguintes serviços:",
     serviceLines,
+    packageDiscount > 0 ? `Desconto de pacote: -${formatAmount(packageDiscount, "BRL")}` : "",
     "",
     `Investimento único estimado: ${formatAmount(onceTotal, "BRL")}`,
     monthlyTotal ? `Investimento mensal estimado: ${formatAmount(monthlyTotal, "BRL")}/mês` : "",
@@ -266,7 +270,7 @@ export function BudgetSection() {
     [selectedServices]
   );
 
-  const onceTotal = selectedItems.reduce((total, { service, quantity }) => {
+  const onceSubtotal = selectedItems.reduce((total, { service, quantity }) => {
     return service.billing === "monthly" ? total : total + service.price * quantity;
   }, 0);
 
@@ -274,9 +278,25 @@ export function BudgetSection() {
     return service.billing === "once" ? total : total + service.price * quantity;
   }, 0);
 
+  // Apply a package's discount when all of its services are currently selected.
+  // Self-correcting: removing a service from the cart drops the discount automatically.
+  const packageDiscount = useMemo(
+    () =>
+      packages.reduce(
+        (sum, pkg) =>
+          pkg.discount > 0 && pkg.services.every((id) => selectedServices[id])
+            ? sum + pkg.discount
+            : sum,
+        0
+      ),
+    [selectedServices]
+  );
+
+  const onceTotal = Math.max(0, onceSubtotal - packageDiscount);
+
   const budgetMessage = useMemo(
-    () => buildBudgetMessage(messageLang, currency, selectedItems, onceTotal, monthlyTotal),
-    [messageLang, currency, selectedItems, onceTotal, monthlyTotal]
+    () => buildBudgetMessage(messageLang, currency, selectedItems, onceTotal, monthlyTotal, packageDiscount),
+    [messageLang, currency, selectedItems, onceTotal, monthlyTotal, packageDiscount]
   );
 
   function getPackagePrices(pkg: Package) {
@@ -585,6 +605,12 @@ export function BudgetSection() {
           </div>
 
           <div className="totals">
+            {packageDiscount > 0 && (
+              <div className="totals__discount">
+                <span>{t.budget.packageDiscount}</span>
+                <strong>− {formatAmount(packageDiscount, currency)}</strong>
+              </div>
+            )}
             <div>
               <span>{t.budget.onceTotal}</span>
               <strong>{formatAmount(onceTotal, currency)}</strong>

@@ -76,6 +76,7 @@ export type Translations = {
     packageAdded: string;
     packageSavings: string;
     packageIncludes: string;
+    packageDiscount: string;
   };
   faq: {
     eyebrow: string;
@@ -219,6 +220,7 @@ export const translations: Record<Language, Translations> = {
       packageAdded: "Adicionado ao orçamento!",
       packageSavings: "Economize",
       packageIncludes: "O que inclui",
+      packageDiscount: "Desconto de pacote",
     },
     faq: {
       eyebrow: "Dúvidas frequentes",
@@ -371,6 +373,7 @@ export const translations: Record<Language, Translations> = {
       packageAdded: "Added to quote!",
       packageSavings: "Save",
       packageIncludes: "What's included",
+      packageDiscount: "Package discount",
     },
     faq: {
       eyebrow: "FAQ",
@@ -523,6 +526,7 @@ export const translations: Record<Language, Translations> = {
       packageAdded: "¡Agregado al presupuesto!",
       packageSavings: "Ahorra",
       packageIncludes: "Qué incluye",
+      packageDiscount: "Descuento de paquete",
     },
     faq: {
       eyebrow: "Preguntas frecuentes",
