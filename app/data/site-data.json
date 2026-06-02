@@ -953,6 +953,87 @@
       "tags": [
         "Blog"
       ]
+    },
+    {
+      "id": "projeto-mpx8pccm",
+      "title": "Encanto de Laço — Loja Virtual de Laços Infantis",
+      "category": "E-commerce / Loja Virtual (WordPress + WooCommerce)",
+      "status": "Concluído (demonstração)",
+      "stack": [
+        "WordPress",
+        "WooCommerce",
+        "PHP",
+        "Storefront (tema-filho sob medida)",
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "WP-CLI",
+        "Mercado Pago",
+        "Figma-free (design system próprio)"
+      ],
+      "summary": "Loja virtual completa para a marca Encanto de Laço, especializada em laços infantis artesanais.\n Do protótipo navegável ao tema WooCommerce sob medida, com identidade delicada (rosa, bege e tons pastel), catálogo com variações, frete e meios de pagamento brasileiros — responsiva e otimizada para conversão.",
+      "workDone": [
+        "Protótipo de alta fidelidade e responsivo das telas principais (Home, Loja, Produto, Carrinho e Checkout) em HTML/CSS/JS",
+        "Design system próprio: paleta rosa/bege/pastel, tipografia Playfair Display + Quicksand + Dancing Script e um laço SVG autoral como elemento de marca",
+        "Instalação e configuração do WooCommerce para o Brasil (moeda BRL, idioma pt-BR, permalinks amigáveis, SEO-friendly)",
+        "Tema-filho do Storefront sob medida, portando a identidade para a loja real (homepage com hero, categorias e destaques; página de produto; carrinho; checkout redesenhado em 2 colunas)",
+        "Catálogo: 12 produtos em 4 categorias, incluindo produto variável (cor × tamanho) e avaliações de clientes",
+        "Frete: zona Brasil com frete grátis acima de R$150, Sedex e PAC",
+        "E-mails transacionais com a identidade visual da marca",
+        "Pagamento: gateway Mercado Pago (PIX, cartão e boleto) integrado",
+        "Material de apresentação: vídeos de demonstração (desktop e mobile) e prints em alta resolução"
+      ],
+      "mainImage": {
+        "src": "/projects/admin-uploads/projeto-mpx8pccm/mpx8r19x-desktop-01-home.png",
+        "alt": "Novo projeto - imagem principal"
+      },
+      "gallery": [
+        {
+          "src": "/projects/admin-uploads/projeto-mpx8pccm/mpx8zdvo-desktop-01-home.png",
+          "alt": "Encanto de Laço — Loja Virtual de Laços Infantis - print do projeto",
+          "label": "Print 1"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mpx8pccm/mpx8zi7h-desktop-02-loja.png",
+          "alt": "Encanto de Laço — Loja Virtual de Laços Infantis - print do projeto",
+          "label": "Print 2"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mpx8pccm/mpx8zmg2-desktop-03-produto.png",
+          "alt": "Encanto de Laço — Loja Virtual de Laços Infantis - print do projeto",
+          "label": "Print 3"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mpx8pccm/mpx8zqs8-desktop-04-carrinho.png",
+          "alt": "Encanto de Laço — Loja Virtual de Laços Infantis - print do projeto",
+          "label": "Print 4"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mpx8pccm/mpx8zuyw-desktop-05-checkout.png",
+          "alt": "Encanto de Laço — Loja Virtual de Laços Infantis - print do projeto",
+          "label": "Print 5"
+        }
+      ],
+      "video": {
+        "src": "/projects/admin-uploads/projeto-mpx8pccm/mpx8rshs-demonstracao-encanto-desktop-parte1.mp4",
+        "poster": "/projects/admin-uploads/projeto-mpx8pccm/mpx8r19x-desktop-01-home.png",
+        "label": "Video demo 1 de Novo projeto"
+      },
+      "videos": [
+        {
+          "src": "/projects/admin-uploads/projeto-mpx8pccm/mpx8rshs-demonstracao-encanto-desktop-parte1.mp4",
+          "poster": "/projects/admin-uploads/projeto-mpx8pccm/mpx8r19x-desktop-01-home.png",
+          "label": "Video demo 1 de Novo projeto"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mpx8pccm/mpx8s2bu-demonstracao-encanto-desktop-parte2.mp4",
+          "poster": "/projects/admin-uploads/projeto-mpx8pccm/mpx8r19x-desktop-01-home.png",
+          "label": "Video demo 2 de Novo projeto"
+        }
+      ],
+      "tags": [
+        "E-commerce / Loja Virtual"
+      ]
     }
   ]
 }
