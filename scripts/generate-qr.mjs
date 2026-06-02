@@ -1,5 +1,5 @@
 // Gera QR Codes personalizados (módulos arredondados + moldura dourada + logo
-// no centro) apontando para o portfólio, nas versões CLARA e ESCURA.
+// no centro) apontando para o portfólio: versões CLARA, ESCURA e RELÓGIO.
 // Uso:  node scripts/generate-qr.mjs [url]
 import QRCode from "qrcode";
 import sharp from "sharp";
@@ -36,8 +36,8 @@ const ls = Math.floor((size - logoMods) / 2);
 const le = ls + logoMods;
 const inLogo = (r, c) => r >= ls && r < le && c >= ls && c < le;
 
-function buildSvg(t) {
-  // Módulos de dados (quadrados levemente arredondados = leitura confiável)
+// Conteúdo do QR (sem o fundo — o fundo é desenhado pelo container)
+function qrInner(t) {
   let mods = "";
   for (let r = 0; r < size; r++) {
     for (let c = 0; c < size; c++) {
@@ -48,7 +48,6 @@ function buildSvg(t) {
     }
   }
 
-  // Olhos arredondados (3 camadas)
   const eye = (fr, fc) => {
     const x = off + fc * MODULE;
     const y = off + fr * MODULE;
@@ -60,7 +59,6 @@ function buildSvg(t) {
     );
   };
 
-  // Selo central com a logo
   const logoPx = logoMods * MODULE;
   const lx = off + ls * MODULE;
   const pad = MODULE * 0.6;
@@ -72,29 +70,44 @@ function buildSvg(t) {
     `<rect x="${panelX}" y="${panelX}" width="${panelW}" height="${panelW}" rx="${MODULE * 1.8}" fill="${t.panel}" stroke="${t.frame}" stroke-width="2.5"/>` +
     `<image x="${imgPos}" y="${imgPos}" width="${imgSize}" height="${imgSize}" href="data:image/png;base64,${logoB64}" preserveAspectRatio="xMidYMid meet"/>`;
 
-  // Moldura dourada externa
   const fi = MODULE * 1.2;
   const frame = `<rect x="${fi}" y="${fi}" width="${dim - fi * 2}" height="${dim - fi * 2}" rx="${MODULE * 2.4}" fill="none" stroke="${t.frame}" stroke-width="3"/>`;
 
+  return `${frame}<g fill="${t.module}">${mods}</g>${eye(0, 0)}${eye(0, size - 7)}${eye(size - 7, 0)}${center}`;
+}
+
+// QR quadrado normal (clara/escura)
+function buildSvg(t) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${dim}" height="${dim}" viewBox="0 0 ${dim} ${dim}">
   <rect width="${dim}" height="${dim}" rx="${MODULE * 2.8}" fill="${t.bg}"/>
-  ${frame}
-  <g fill="${t.module}">${mods}</g>
-  ${eye(finders[0].r, finders[0].c)}${eye(finders[1].r, finders[1].c)}${eye(finders[2].r, finders[2].c)}
-  ${center}
+  ${qrInner(t)}
 </svg>
 `;
 }
 
-const THEMES = [
-  { name: "clara", file: "qr-portfolio", bg: "#ffffff", module: "#111314", panel: "#0e0f10", frame: "#c7a447" },
-  { name: "escura", file: "qr-portfolio-dark", bg: "#0e0f10", module: "#f5f2ec", panel: "#16181a", frame: "#c7a447" },
-];
-
-for (const t of THEMES) {
-  const svg = buildSvg(t);
-  writeFileSync(join(root, "public", `${t.file}.svg`), svg);
-  await sharp(Buffer.from(svg), { density: 300 }).resize(1080, 1080).png().toFile(join(root, "public", `${t.file}.png`));
-  console.log(`✓ versão ${t.name}: public/${t.file}.svg + .png`);
+// Versão relógio: QR centralizado num quadrado preto maior, com margem preta
+// em volta para o horário do mostrador não cobrir os módulos.
+function buildWatchSvg(t) {
+  const SQ = Math.round(dim / 0.66); // QR ocupa ~66% → ~17% de margem preta de cada lado
+  const o = Math.round((SQ - dim) / 2);
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${SQ}" height="${SQ}" viewBox="0 0 ${SQ} ${SQ}">
+  <rect width="${SQ}" height="${SQ}" fill="#000000"/>
+  <g transform="translate(${o} ${o})">${qrInner(t)}</g>
+</svg>
+`;
 }
+
+const lightT = { bg: "#ffffff", module: "#111314", panel: "#0e0f10", frame: "#c7a447" };
+const darkT = { bg: "#0e0f10", module: "#f5f2ec", panel: "#16181a", frame: "#c7a447" };
+const watchT = { bg: "#000000", module: "#f5f2ec", panel: "#0e0f10", frame: "#c7a447" };
+
+async function emit(name, svg, px) {
+  writeFileSync(join(root, "public", `${name}.svg`), svg);
+  await sharp(Buffer.from(svg), { density: 300 }).resize(px, px).png().toFile(join(root, "public", `${name}.png`));
+  console.log(`✓ ${name}.svg + .png`);
+}
+
+await emit("qr-portfolio", buildSvg(lightT), 1080);
+await emit("qr-portfolio-dark", buildSvg(darkT), 1080);
+await emit("qr-portfolio-watch", buildWatchSvg(watchT), 1080);
 console.log(`  URL: ${URL} · ${size}x${size} módulos · correção de erro: H`);
