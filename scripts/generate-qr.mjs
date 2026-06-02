@@ -37,7 +37,7 @@ const le = ls + logoMods;
 const inLogo = (r, c) => r >= ls && r < le && c >= ls && c < le;
 
 // Conteúdo do QR (sem o fundo — o fundo é desenhado pelo container)
-function qrInner(t) {
+function qrInner(t, { frame = true } = {}) {
   let mods = "";
   for (let r = 0; r < size; r++) {
     for (let c = 0; c < size; c++) {
@@ -71,9 +71,11 @@ function qrInner(t) {
     `<image x="${imgPos}" y="${imgPos}" width="${imgSize}" height="${imgSize}" href="data:image/png;base64,${logoB64}" preserveAspectRatio="xMidYMid meet"/>`;
 
   const fi = MODULE * 1.2;
-  const frame = `<rect x="${fi}" y="${fi}" width="${dim - fi * 2}" height="${dim - fi * 2}" rx="${MODULE * 2.4}" fill="none" stroke="${t.frame}" stroke-width="3"/>`;
+  const frameRect = frame
+    ? `<rect x="${fi}" y="${fi}" width="${dim - fi * 2}" height="${dim - fi * 2}" rx="${MODULE * 2.4}" fill="none" stroke="${t.frame}" stroke-width="3"/>`
+    : "";
 
-  return `${frame}<g fill="${t.module}">${mods}</g>${eye(0, 0)}${eye(0, size - 7)}${eye(size - 7, 0)}${center}`;
+  return `${frameRect}<g fill="${t.module}">${mods}</g>${eye(0, 0)}${eye(0, size - 7)}${eye(size - 7, 0)}${center}`;
 }
 
 // QR quadrado normal (clara/escura)
@@ -85,14 +87,15 @@ function buildSvg(t) {
 `;
 }
 
-// Versão relógio: QR centralizado num quadrado preto maior, com margem preta
-// em volta para o horário do mostrador não cobrir os módulos.
+// Versão relógio: QR ocupa a largura inteira da tela (a zona de silêncio preta
+// some no fundo preto do relógio) + uma barrinha preta embaixo para o horário.
+const WATCH_BAR = Math.round(dim * 0.16); // altura da barrinha do horário
+const WATCH_W = dim;
+const WATCH_H = dim + WATCH_BAR;
 function buildWatchSvg(t) {
-  const SQ = Math.round(dim / 0.66); // QR ocupa ~66% → ~17% de margem preta de cada lado
-  const o = Math.round((SQ - dim) / 2);
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${SQ}" height="${SQ}" viewBox="0 0 ${SQ} ${SQ}">
-  <rect width="${SQ}" height="${SQ}" fill="#000000"/>
-  <g transform="translate(${o} ${o})">${qrInner(t)}</g>
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${WATCH_W}" height="${WATCH_H}" viewBox="0 0 ${WATCH_W} ${WATCH_H}">
+  <rect width="${WATCH_W}" height="${WATCH_H}" fill="#000000"/>
+  ${qrInner(t, { frame: false })}
 </svg>
 `;
 }
@@ -101,13 +104,13 @@ const lightT = { bg: "#ffffff", module: "#111314", panel: "#0e0f10", frame: "#c7
 const darkT = { bg: "#0e0f10", module: "#f5f2ec", panel: "#16181a", frame: "#c7a447" };
 const watchT = { bg: "#000000", module: "#f5f2ec", panel: "#0e0f10", frame: "#c7a447" };
 
-async function emit(name, svg, px) {
+async function emit(name, svg, w, h) {
   writeFileSync(join(root, "public", `${name}.svg`), svg);
-  await sharp(Buffer.from(svg), { density: 300 }).resize(px, px).png().toFile(join(root, "public", `${name}.png`));
+  await sharp(Buffer.from(svg), { density: 300 }).resize(w, h).png().toFile(join(root, "public", `${name}.png`));
   console.log(`✓ ${name}.svg + .png`);
 }
 
-await emit("qr-portfolio", buildSvg(lightT), 1080);
-await emit("qr-portfolio-dark", buildSvg(darkT), 1080);
-await emit("qr-portfolio-watch", buildWatchSvg(watchT), 1080);
+await emit("qr-portfolio", buildSvg(lightT), 1080, 1080);
+await emit("qr-portfolio-dark", buildSvg(darkT), 1080, 1080);
+await emit("qr-portfolio-watch", buildWatchSvg(watchT), 1080, Math.round((1080 * WATCH_H) / WATCH_W));
 console.log(`  URL: ${URL} · ${size}x${size} módulos · correção de erro: H`);
