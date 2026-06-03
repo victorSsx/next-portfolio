@@ -6,6 +6,7 @@ import {
   type AvailabilityStatus,
   type BudgetService,
   type DeviceView,
+  type FreeTool,
   type PendingTestimonial,
   type Project,
   type ProjectImage,
@@ -14,7 +15,7 @@ import {
   type Testimonial,
 } from "../lib/site-data";
 
-type AdminTab = "projects" | "services" | "categories" | "technologies" | "testimonials";
+type AdminTab = "projects" | "services" | "categories" | "technologies" | "testimonials" | "freetools";
 type SaveStatus = "idle" | "loading" | "saving" | "uploading" | "saved" | "error";
 type UploadKind = "main-image" | "gallery" | "video" | "video-poster";
 type DeviceViewDevice = "tablet" | "mobile";
@@ -77,6 +78,15 @@ const DEFAULT_PROJECT_STATS = [
   { value: 100, suffix: "%" },
 ];
 const PROJECT_STAT_LABELS = ["Projetos entregues", "Segmentos atendidos", "Entregas no prazo"];
+
+const createFreeTool = (): FreeTool => ({
+  id: makeId("sistema"),
+  name: "Novo sistema",
+  description: "",
+  url: "",
+  icon: "✦",
+  tag: "",
+});
 
 export default function AdminPage() {
   const [password, setPassword] = useState("");
@@ -478,6 +488,26 @@ export default function AdminPage() {
     });
   };
 
+  // ── Free tools helpers ─────────────────────────────────────────────────────────
+
+  const updateFreeTool = (id: string, patch: Partial<FreeTool>) => {
+    setData((cur) => ({
+      ...cur,
+      freeTools: (cur.freeTools ?? []).map((tool) => (tool.id === id ? { ...tool, ...patch } : tool)),
+    }));
+  };
+
+  const removeFreeTool = (id: string) => {
+    setData((cur) => ({
+      ...cur,
+      freeTools: (cur.freeTools ?? []).filter((tool) => tool.id !== id),
+    }));
+  };
+
+  const addFreeTool = () => {
+    setData((cur) => ({ ...cur, freeTools: [...(cur.freeTools ?? []), createFreeTool()] }));
+  };
+
   // ── API calls ────────────────────────────────────────────────────────────────
 
   const loadData = async () => {
@@ -638,7 +668,7 @@ export default function AdminPage() {
       </div>
 
       <nav className="admin-tabs" aria-label="Seções administrativas">
-        {(["projects", "services", "categories", "technologies", "testimonials"] as const).map((id) => {
+        {(["projects", "services", "categories", "technologies", "testimonials", "freetools"] as const).map((id) => {
           const pendingCount = id === "testimonials" ? (data.pendingTestimonials?.length ?? 0) : 0;
           return (
             <button
@@ -655,7 +685,9 @@ export default function AdminPage() {
                     ? "Categorias"
                     : id === "technologies"
                       ? "Tecnologias"
-                      : "Depoimentos"}
+                      : id === "testimonials"
+                        ? "Depoimentos"
+                        : "Sistemas grátis"}
               {pendingCount > 0 && <span className="admin-tab-badge">{pendingCount}</span>}
             </button>
           );
@@ -1595,6 +1627,78 @@ export default function AdminPage() {
                         </button>
                       )}
                     </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      ) : null}
+
+      {/* ── Free tools tab ───────────────────────────────────────────────────── */}
+      {activeTab === "freetools" ? (
+        <section className="admin-form">
+          <div className="admin-card">
+            <div className="admin-card__head">
+              <p className="eyebrow">Sistemas grátis</p>
+              <h2>Ferramentas para os visitantes usarem</h2>
+              <button className="admin-inline admin-card__action" type="button" onClick={addFreeTool}>
+                + Adicionar sistema
+              </button>
+            </div>
+            <p className="admin-card__desc">
+              Sistemas seus que aparecem na seção &quot;Ferramentas gratuitas&quot; do site. Cada um vira um card com botão &quot;Usar grátis&quot;.
+            </p>
+
+            {!data.freeTools?.length ? (
+              <p className="admin-empty">Nenhum sistema cadastrado ainda.</p>
+            ) : (
+              <div className="admin-freetools">
+                {data.freeTools.map((tool: FreeTool) => (
+                  <div className="admin-freetool" key={tool.id}>
+                    <div className="admin-freetool__grid">
+                      <label className="admin-freetool__icon-field">
+                        Ícone
+                        <input
+                          value={tool.icon ?? ""}
+                          onChange={(e) => updateFreeTool(tool.id, { icon: e.target.value })}
+                          placeholder="💰"
+                          maxLength={4}
+                        />
+                      </label>
+                      <label>
+                        Nome
+                        <input value={tool.name} onChange={(e) => updateFreeTool(tool.id, { name: e.target.value })} />
+                      </label>
+                      <label>
+                        Tag <span className="admin-hint">(opcional)</span>
+                        <input
+                          value={tool.tag ?? ""}
+                          onChange={(e) => updateFreeTool(tool.id, { tag: e.target.value })}
+                          placeholder="Ex: Finanças"
+                        />
+                      </label>
+                    </div>
+                    <label>
+                      Link do sistema
+                      <input
+                        type="url"
+                        value={tool.url}
+                        onChange={(e) => updateFreeTool(tool.id, { url: e.target.value })}
+                        placeholder="https://meu-sistema.vercel.app"
+                      />
+                    </label>
+                    <label>
+                      Descrição
+                      <textarea
+                        value={tool.description}
+                        onChange={(e) => updateFreeTool(tool.id, { description: e.target.value })}
+                        rows={3}
+                      />
+                    </label>
+                    <button className="admin-danger" type="button" onClick={() => removeFreeTool(tool.id)}>
+                      Remover sistema
+                    </button>
                   </div>
                 ))}
               </div>

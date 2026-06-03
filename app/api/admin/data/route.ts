@@ -61,6 +61,18 @@ const normalizeSiteData = (data: Partial<SiteData>): SiteData => ({
         suffix: String(stat?.suffix ?? "").trim().slice(0, 4),
       }))
     : undefined,
+  freeTools: Array.isArray(data.freeTools)
+    ? data.freeTools
+        .map((tool) => ({
+          id: String(tool?.id || "").trim(),
+          name: String(tool?.name || "").trim(),
+          description: String(tool?.description || "").trim(),
+          url: String(tool?.url || "").trim(),
+          ...(tool?.icon ? { icon: String(tool.icon).trim().slice(0, 8) } : {}),
+          ...(tool?.tag ? { tag: String(tool.tag).trim() } : {}),
+        }))
+        .filter((tool) => tool.id && tool.name && tool.url)
+    : undefined,
   serviceCategories: Array.isArray(data.serviceCategories)
     ? data.serviceCategories
         .map((category) => ({

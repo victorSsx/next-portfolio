@@ -64,6 +64,15 @@ export type ProjectStat = {
   suffix: string;
 };
 
+export type FreeTool = {
+  id: string;
+  name: string;
+  description: string;
+  url: string;
+  icon?: string; // emoji opcional
+  tag?: string; // categoria opcional, ex: "Finanças"
+};
+
 export type Package = {
   id: string;
   tag: string;
@@ -98,6 +107,7 @@ export type SiteData = {
   pendingTestimonials?: PendingTestimonial[];
   availability?: AvailabilityStatus;
   projectStats?: ProjectStat[];
+  freeTools?: FreeTool[];
 };
 
 export const siteData = rawSiteData as SiteData;

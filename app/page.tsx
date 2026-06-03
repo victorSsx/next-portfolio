@@ -2,6 +2,7 @@ import { BudgetSection } from "./components/BudgetSection";
 import { ContactSection } from "./components/ContactSection";
 import { FAQSection } from "./components/FAQSection";
 import { FloatingWhatsApp } from "./components/FloatingWhatsApp";
+import { FreeToolsSection } from "./components/FreeToolsSection";
 import { HeroSection } from "./components/HeroSection";
 import { ProcessSection } from "./components/ProcessSection";
 import { ProjectsSection } from "./components/ProjectsSection";
@@ -12,6 +13,7 @@ export default function Home() {
     <main className="next-portfolio">
       <HeroSection />
       <ProjectsSection limit={7} showAllLink showFilter />
+      <FreeToolsSection />
       <BudgetSection />
       <TestimonialsSection />
       <ProcessSection />

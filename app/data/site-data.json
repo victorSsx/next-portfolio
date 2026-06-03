@@ -1083,5 +1083,15 @@
         "E-commerce / Loja Virtual"
       ]
     }
+  ],
+  "freeTools": [
+    {
+      "id": "rastreador-despesas",
+      "name": "Rastreador de Despesas Pessoais",
+      "description": "Registre receitas e despesas, controle orçamentos por categoria e planeje metas de compra. Funciona 100% no navegador, sem cadastro.",
+      "url": "https://rastreador-de-despesas-pessoais.vercel.app/",
+      "icon": "💰",
+      "tag": "Finanças"
+    }
   ]
 }
