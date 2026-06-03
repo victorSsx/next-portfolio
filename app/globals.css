@@ -2262,6 +2262,68 @@ a {
   }
 }
 
+.scope-services {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.scope-service {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border: 1px solid rgba(245, 242, 236, 0.08);
+  border-radius: 8px;
+  background: rgba(245, 242, 236, 0.015);
+}
+
+.scope-service.is-on {
+  border-color: rgba(199, 164, 71, 0.4);
+  background: rgba(199, 164, 71, 0.06);
+}
+
+.scope-service__check {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 0;
+  cursor: pointer;
+  color: rgba(245, 242, 236, 0.85);
+  font-size: 0.92rem;
+}
+
+.scope-service__check input {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  cursor: pointer;
+  accent-color: var(--gold);
+}
+
+.scope-service__qty {
+  width: 66px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.scope-service__price {
+  color: var(--gold-strong);
+  font-weight: 700;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.scope-proposal {
+  width: 100%;
+  font-family: inherit;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
 .admin-rows {
   display: grid;
   gap: 10px;

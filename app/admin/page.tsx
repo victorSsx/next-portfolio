@@ -14,8 +14,16 @@ import {
   type SiteData,
   type Testimonial,
 } from "../lib/site-data";
+import { analyzeScope, buildProposal, computeTotals, formatBRL } from "../lib/scope-analyzer";
 
-type AdminTab = "projects" | "services" | "categories" | "technologies" | "testimonials" | "freetools";
+type AdminTab =
+  | "projects"
+  | "services"
+  | "categories"
+  | "technologies"
+  | "testimonials"
+  | "freetools"
+  | "analise";
 type SaveStatus = "idle" | "loading" | "saving" | "uploading" | "saved" | "error";
 type UploadKind = "main-image" | "gallery" | "video" | "video-poster";
 type DeviceViewDevice = "tablet" | "mobile";
@@ -101,6 +109,10 @@ export default function AdminPage() {
   const [uploadingKey, setUploadingKey] = useState("");
   const [assetPreviews, setAssetPreviews] = useState<Record<string, string>>({});
   const [confirmDeleteTestimonialId, setConfirmDeleteTestimonialId] = useState<string | null>(null);
+  const [scopeText, setScopeText] = useState("");
+  const [scopeSelection, setScopeSelection] = useState<Record<string, number>>({});
+  const [scopeAnalyzed, setScopeAnalyzed] = useState(false);
+  const [scopeCopied, setScopeCopied] = useState(false);
 
   const activeProject = useMemo(
     () => data.projects.find((p) => p.id === activeProjectId) || data.projects[0],
@@ -508,6 +520,43 @@ export default function AdminPage() {
     setData((cur) => ({ ...cur, freeTools: [...(cur.freeTools ?? []), createFreeTool()] }));
   };
 
+  // ── Scope analyzer helpers ─────────────────────────────────────────────────────
+
+  const scopeResult = useMemo(
+    () => computeTotals(scopeSelection, data.services, data.packages ?? []),
+    [scopeSelection, data.services, data.packages]
+  );
+  const scopeProposal = useMemo(() => buildProposal(scopeResult), [scopeResult]);
+
+  const runScopeAnalysis = () => {
+    setScopeSelection(analyzeScope(scopeText, data.services));
+    setScopeAnalyzed(true);
+    setScopeCopied(false);
+  };
+
+  const toggleScopeService = (id: string) => {
+    setScopeSelection((cur) => {
+      const next = { ...cur };
+      if (next[id]) delete next[id];
+      else next[id] = 1;
+      return next;
+    });
+  };
+
+  const setScopeQty = (id: string, qty: number) => {
+    setScopeSelection((cur) => ({ ...cur, [id]: Math.max(1, qty || 1) }));
+  };
+
+  const copyProposal = async () => {
+    try {
+      await navigator.clipboard.writeText(scopeProposal);
+      setScopeCopied(true);
+      setTimeout(() => setScopeCopied(false), 2000);
+    } catch {
+      // clipboard indisponível — ignore
+    }
+  };
+
   // ── API calls ────────────────────────────────────────────────────────────────
 
   const loadData = async () => {
@@ -668,7 +717,7 @@ export default function AdminPage() {
       </div>
 
       <nav className="admin-tabs" aria-label="Seções administrativas">
-        {(["projects", "services", "categories", "technologies", "testimonials", "freetools"] as const).map((id) => {
+        {(["projects", "services", "categories", "technologies", "testimonials", "freetools", "analise"] as const).map((id) => {
           const pendingCount = id === "testimonials" ? (data.pendingTestimonials?.length ?? 0) : 0;
           return (
             <button
@@ -687,7 +736,9 @@ export default function AdminPage() {
                       ? "Tecnologias"
                       : id === "testimonials"
                         ? "Depoimentos"
-                        : "Sistemas grátis"}
+                        : id === "freetools"
+                          ? "Sistemas grátis"
+                          : "Análise de escopo"}
               {pendingCount > 0 && <span className="admin-tab-badge">{pendingCount}</span>}
             </button>
           );
@@ -1704,6 +1755,116 @@ export default function AdminPage() {
               </div>
             )}
           </div>
+        </section>
+      ) : null}
+
+      {/* ── Scope analyzer tab ───────────────────────────────────────────────── */}
+      {activeTab === "analise" ? (
+        <section className="admin-form">
+          <div className="admin-card">
+            <div className="admin-card__head">
+              <p className="eyebrow">Só pra você</p>
+              <h2>Análise de escopo</h2>
+            </div>
+            <p className="admin-card__desc">
+              Cole o escopo de um projeto (Workana, e-mail, etc.). Eu comparo com seus serviços e monto a
+              proposta com preço. Tudo roda no seu navegador — nada é enviado.
+            </p>
+            <label>
+              Escopo do projeto
+              <textarea
+                value={scopeText}
+                onChange={(e) => setScopeText(e.target.value)}
+                rows={9}
+                placeholder="Cole aqui o escopo do projeto..."
+              />
+            </label>
+            <button
+              className="button button--primary"
+              type="button"
+              disabled={!scopeText.trim()}
+              onClick={runScopeAnalysis}
+            >
+              Analisar escopo
+            </button>
+          </div>
+
+          {scopeAnalyzed ? (
+            <>
+              <div className="admin-card">
+                <div className="admin-card__head">
+                  <p className="eyebrow">Resultado</p>
+                  <h2>Serviços identificados</h2>
+                </div>
+                {Object.keys(scopeSelection).length === 0 ? (
+                  <p className="admin-empty">Nenhum serviço casou automaticamente. Marque manualmente abaixo.</p>
+                ) : null}
+                <div className="scope-services">
+                  {data.services.map((s) => {
+                    const selected = Boolean(scopeSelection[s.id]);
+                    return (
+                      <div className={`scope-service${selected ? " is-on" : ""}`} key={s.id}>
+                        <label className="scope-service__check">
+                          <input type="checkbox" checked={selected} onChange={() => toggleScopeService(s.id)} />
+                          <span>{s.title}</span>
+                        </label>
+                        {selected && s.allowQuantity ? (
+                          <input
+                            className="scope-service__qty"
+                            type="number"
+                            min="1"
+                            value={scopeSelection[s.id]}
+                            onChange={(e) => setScopeQty(s.id, Number(e.target.value))}
+                          />
+                        ) : null}
+                        <span className="scope-service__price">
+                          {formatBRL(s.price)}
+                          {s.billing === "monthly" ? "/mês" : ""}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <div className="totals">
+                  {scopeResult.discount > 0 ? (
+                    <div className="totals__discount">
+                      <span>Desconto de pacote</span>
+                      <strong>− {formatBRL(scopeResult.discount)}</strong>
+                    </div>
+                  ) : null}
+                  <div>
+                    <span>Total único</span>
+                    <strong>{formatBRL(scopeResult.onceTotal)}</strong>
+                  </div>
+                  <div>
+                    <span>Mensal</span>
+                    <strong>
+                      {formatBRL(scopeResult.monthlyTotal)}
+                      {scopeResult.monthlyTotal > 0 ? "/mês" : ""}
+                    </strong>
+                  </div>
+                </div>
+              </div>
+
+              <div className="admin-card">
+                <div className="admin-card__head">
+                  <p className="eyebrow">Pronta pra enviar</p>
+                  <h2>Proposta gerada</h2>
+                </div>
+                {scopeResult.items.length === 0 ? (
+                  <p className="admin-empty">Selecione ao menos um serviço para gerar a proposta.</p>
+                ) : (
+                  <>
+                    <textarea className="scope-proposal" readOnly rows={16} value={scopeProposal} />
+                    <button className="button button--primary" type="button" onClick={copyProposal}>
+                      {scopeCopied ? "✓ Copiado!" : "Copiar proposta"}
+                    </button>
+                  </>
+                )}
+              </div>
+            </>
+          ) : null}
         </section>
       ) : null}
     </main>
