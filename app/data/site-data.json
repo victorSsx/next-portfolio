@@ -141,6 +141,7 @@
         "Formulário de contato ou botão WhatsApp",
         "Layout responsivo (mobile e desktop)",
         "SEO básico da página configurado",
+        "Google Analytics (GA4) configurado",
         "Entrega em até 5 dias úteis"
       ],
       "allowQuantity": false,
@@ -159,6 +160,7 @@
         "WhatsApp fixo e formulário de contato",
         "Layout responsivo e adaptado para mobile",
         "SEO básico configurado em todas as páginas",
+        "Google Analytics (GA4) configurado",
         "Google Maps integrado (se necessário)"
       ],
       "allowQuantity": false,
@@ -177,6 +179,7 @@
         "Template de artigo com boa leitura",
         "Otimizado para SEO de conteúdo",
         "Fácil de atualizar sem programador",
+        "Google Analytics (GA4) configurado",
         "Ideal para negócios que querem aparecer no Google"
       ],
       "allowQuantity": false,
@@ -245,7 +248,8 @@
         "URLs amigáveis e estrutura limpa",
         "Headings H1, H2, H3 revisados",
         "Sitemap XML e robots.txt configurados",
-        "Google Search Console + Analytics integrados",
+        "Google Search Console: indexação e monitoramento de buscas",
+        "Analytics avançado: eventos e conversões rastreados",
         "Rank Math SEO configurado"
       ],
       "allowQuantity": false,
