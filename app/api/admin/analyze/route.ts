@@ -28,10 +28,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Senha administrativa inválida." }, { status: 401 });
   }
 
-  const key = process.env.GEMINI_API_KEY?.trim();
+  // Aceita o nome canônico ou o que o usuário configurou na Vercel.
+  const key = (process.env.GEMINI_API_KEY || process.env.V_API_Key)?.trim();
   if (!key) {
     return NextResponse.json(
-      { error: "IA não configurada. Adicione a variável GEMINI_API_KEY nas configurações da Vercel." },
+      { error: "IA não configurada. Adicione a variável GEMINI_API_KEY (ou V_API_Key) nas configurações da Vercel." },
       { status: 501 }
     );
   }
