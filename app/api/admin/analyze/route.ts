@@ -4,7 +4,8 @@ import defaultSiteData from "../../../data/site-data.json";
 export const runtime = "nodejs";
 
 const defaultAdminPassword = "371515victor";
-const MODEL = "gemini-2.0-flash";
+// Modelo configurável por variável de ambiente (GEMINI_MODEL); padrão 2.5-flash.
+const MODEL = process.env.GEMINI_MODEL?.trim() || "gemini-2.5-flash";
 
 function authorized(request: Request) {
   const submitted = request.headers.get("x-admin-password") || "";
