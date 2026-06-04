@@ -1094,5 +1094,14 @@
         "E-commerce / Loja Virtual"
       ]
     }
+  ],
+  "leads": [
+    {
+      "id": "lead-mpz7sd7e",
+      "name": "Victor de Sousa Pires",
+      "contact": "Vs469963@gmail.com",
+      "message": "Olá preciso de uma loja WooCommerce, 40 produtos cadastro e setup Google",
+      "createdAt": "2026-06-04T08:09:25.467Z"
+    }
   ]
 }
