@@ -129,7 +129,16 @@ export type Translations = {
     send: string;
     fallback: string;
     openLabel: string;
-    bubble: string;
+    bubbles: string[];
+    leadBtn: string;
+    leadTitle: string;
+    leadName: string;
+    leadContact: string;
+    leadMessage: string;
+    leadSend: string;
+    leadSending: string;
+    leadSuccess: string;
+    leadCancel: string;
   };
 };
 
@@ -295,7 +304,22 @@ export const translations: Record<Language, Translations> = {
       send: "Enviar",
       fallback: "Tive um probleminha agora. Fala comigo direto no WhatsApp que te respondo rápido!",
       openLabel: "Abrir chat com o assistente",
-      bubble: "Precisa de ajuda com seu projeto? 😊",
+      bubbles: [
+        "Precisa de ajuda com seu projeto? 😊",
+        "Posso recomendar o pacote ideal pro seu negócio 👀",
+        "Tem um escopo pronto? Eu monto seu orçamento na hora ⚡",
+        "Quer um site que aparece no Google? Me pergunta 🔍",
+        "Dúvida sobre preços ou prazos? É só falar 💬",
+      ],
+      leadBtn: "Deixar um pedido",
+      leadTitle: "Deixe seu pedido que o Victor avalia",
+      leadName: "Seu nome",
+      leadContact: "E-mail ou WhatsApp",
+      leadMessage: "O que você precisa?",
+      leadSend: "Enviar pedido",
+      leadSending: "Enviando...",
+      leadSuccess: "Pedido enviado! O Victor vai te retornar em breve. 🙌",
+      leadCancel: "Cancelar",
     },
   },
   en: {
@@ -459,7 +483,22 @@ export const translations: Record<Language, Translations> = {
       send: "Send",
       fallback: "I hit a little snag. Message me directly on WhatsApp and I'll reply fast!",
       openLabel: "Open chat with the assistant",
-      bubble: "Need help with your project? 😊",
+      bubbles: [
+        "Need help with your project? 😊",
+        "I can recommend the perfect package for your business 👀",
+        "Got a scope ready? I'll build your quote on the spot ⚡",
+        "Want a site that shows up on Google? Just ask 🔍",
+        "Questions about pricing or timelines? Go ahead 💬",
+      ],
+      leadBtn: "Leave a request",
+      leadTitle: "Leave your request and Victor will review it",
+      leadName: "Your name",
+      leadContact: "Email or WhatsApp",
+      leadMessage: "What do you need?",
+      leadSend: "Send request",
+      leadSending: "Sending...",
+      leadSuccess: "Request sent! Victor will get back to you soon. 🙌",
+      leadCancel: "Cancel",
     },
   },
   es: {
@@ -623,7 +662,22 @@ export const translations: Record<Language, Translations> = {
       send: "Enviar",
       fallback: "Tuve un pequeño problema. ¡Escríbeme directo por WhatsApp y te respondo rápido!",
       openLabel: "Abrir chat con el asistente",
-      bubble: "¿Necesitas ayuda con tu proyecto? 😊",
+      bubbles: [
+        "¿Necesitas ayuda con tu proyecto? 😊",
+        "Puedo recomendarte el paquete ideal para tu negocio 👀",
+        "¿Tienes un alcance listo? Armo tu presupuesto al instante ⚡",
+        "¿Quieres un sitio que aparezca en Google? Pregúntame 🔍",
+        "¿Dudas sobre precios o plazos? Solo dime 💬",
+      ],
+      leadBtn: "Dejar una solicitud",
+      leadTitle: "Deja tu solicitud y Victor la evalúa",
+      leadName: "Tu nombre",
+      leadContact: "Email o WhatsApp",
+      leadMessage: "¿Qué necesitas?",
+      leadSend: "Enviar solicitud",
+      leadSending: "Enviando...",
+      leadSuccess: "¡Solicitud enviada! Victor te responderá pronto. 🙌",
+      leadCancel: "Cancelar",
     },
   },
 };

@@ -73,6 +73,7 @@ const normalizeSiteData = (data: Partial<SiteData>): SiteData => ({
         }))
         .filter((tool) => tool.id && tool.name && tool.url)
     : undefined,
+  leads: Array.isArray(data.leads) ? data.leads : undefined,
   serviceCategories: Array.isArray(data.serviceCategories)
     ? data.serviceCategories
         .map((category) => ({

@@ -73,6 +73,14 @@ export type FreeTool = {
   tag?: string; // categoria opcional, ex: "Finanças"
 };
 
+export type Lead = {
+  id: string;
+  name: string;
+  contact: string;
+  message: string;
+  createdAt: string; // ISO 8601
+};
+
 export type Package = {
   id: string;
   tag: string;
@@ -108,6 +116,7 @@ export type SiteData = {
   availability?: AvailabilityStatus;
   projectStats?: ProjectStat[];
   freeTools?: FreeTool[];
+  leads?: Lead[];
 };
 
 export const siteData = rawSiteData as SiteData;

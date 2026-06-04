@@ -7,6 +7,7 @@ import {
   type BudgetService,
   type DeviceView,
   type FreeTool,
+  type Lead,
   type PendingTestimonial,
   type Project,
   type ProjectImage,
@@ -23,7 +24,8 @@ type AdminTab =
   | "technologies"
   | "testimonials"
   | "freetools"
-  | "analise";
+  | "analise"
+  | "leads";
 type SaveStatus = "idle" | "loading" | "saving" | "uploading" | "saved" | "error";
 type UploadKind = "main-image" | "gallery" | "video" | "video-poster";
 type DeviceViewDevice = "tablet" | "mobile";
@@ -95,6 +97,15 @@ const createFreeTool = (): FreeTool => ({
   icon: "✦",
   tag: "",
 });
+
+// Monta um link clicável a partir do contato do lead (e-mail ou WhatsApp/telefone).
+const leadContactHref = (contact: string): string | null => {
+  const c = contact.trim();
+  if (c.includes("@")) return `mailto:${c}`;
+  const digits = c.replace(/\D/g, "");
+  if (digits.length >= 10) return `https://wa.me/${digits.length <= 11 ? `55${digits}` : digits}`;
+  return null;
+};
 
 export default function AdminPage() {
   const [password, setPassword] = useState("");
@@ -594,6 +605,12 @@ export default function AdminPage() {
     }
   };
 
+  const removeLead = (id: string) => {
+    setData((cur) => ({ ...cur, leads: (cur.leads ?? []).filter((l) => l.id !== id) }));
+    setStatus("saved");
+    setMessage("Pedido removido. Clique em Salvar alterações para publicar.");
+  };
+
   // ── API calls ────────────────────────────────────────────────────────────────
 
   const loadData = async () => {
@@ -754,8 +771,13 @@ export default function AdminPage() {
       </div>
 
       <nav className="admin-tabs" aria-label="Seções administrativas">
-        {(["projects", "services", "categories", "technologies", "testimonials", "freetools", "analise"] as const).map((id) => {
-          const pendingCount = id === "testimonials" ? (data.pendingTestimonials?.length ?? 0) : 0;
+        {(["projects", "services", "categories", "technologies", "testimonials", "freetools", "analise", "leads"] as const).map((id) => {
+          const pendingCount =
+            id === "testimonials"
+              ? (data.pendingTestimonials?.length ?? 0)
+              : id === "leads"
+                ? (data.leads?.length ?? 0)
+                : 0;
           return (
             <button
               className={activeTab === id ? "is-active" : ""}
@@ -775,7 +797,9 @@ export default function AdminPage() {
                         ? "Depoimentos"
                         : id === "freetools"
                           ? "Sistemas grátis"
-                          : "Análise de escopo"}
+                          : id === "analise"
+                            ? "Análise de escopo"
+                            : "Pedidos"}
               {pendingCount > 0 && <span className="admin-tab-badge">{pendingCount}</span>}
             </button>
           );
@@ -1916,6 +1940,62 @@ export default function AdminPage() {
               </div>
             </>
           ) : null}
+        </section>
+      ) : null}
+
+      {/* ── Leads tab ────────────────────────────────────────────────────────── */}
+      {activeTab === "leads" ? (
+        <section className="admin-form">
+          <div className="admin-card">
+            <div className="admin-card__head">
+              <p className="eyebrow">Capturados pelo chat</p>
+              <h2>
+                Pedidos de clientes
+                {(data.leads?.length ?? 0) > 0 && (
+                  <span className="admin-tab-badge admin-tab-badge--inline">{data.leads!.length}</span>
+                )}
+              </h2>
+            </div>
+            <p className="admin-card__desc">
+              Pedidos deixados pelos visitantes no assistente de IA (inclui serviços que você ainda não oferece).
+              Após remover, clique em Salvar alterações.
+            </p>
+
+            {!data.leads?.length ? (
+              <p className="admin-empty">Nenhum pedido ainda.</p>
+            ) : (
+              <div className="admin-pending-list">
+                {[...data.leads].reverse().map((lead: Lead) => {
+                  const href = leadContactHref(lead.contact);
+                  return (
+                    <div className="admin-pending-card" key={lead.id}>
+                      <div className="admin-pending-card__avatar">{lead.name.charAt(0).toUpperCase()}</div>
+                      <div className="admin-pending-card__body">
+                        <div className="admin-pending-card__meta">
+                          <strong>{lead.name}</strong>
+                          <span>{lead.contact}</span>
+                          <span className="admin-pending-card__date">
+                            {new Date(lead.createdAt).toLocaleDateString("pt-BR")}
+                          </span>
+                        </div>
+                        <p className="admin-pending-card__text">{lead.message}</p>
+                      </div>
+                      <div className="admin-pending-card__actions">
+                        {href ? (
+                          <a className="admin-inline" href={href} target="_blank" rel="noreferrer">
+                            Responder
+                          </a>
+                        ) : null}
+                        <button className="admin-danger" type="button" onClick={() => removeLead(lead.id)}>
+                          Remover
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </section>
       ) : null}
     </main>
