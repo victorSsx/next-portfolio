@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { siteData } from "../../lib/site-data";
 
 export const runtime = "nodejs";
+export const maxDuration = 30;
 
 const MODEL = process.env.GEMINI_MODEL?.trim() || "gemini-2.5-flash";
 
@@ -117,31 +118,53 @@ export async function POST(request: Request) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 25000);
 
+  const reqBody = JSON.stringify({
+    systemInstruction: { parts: [{ text: buildSystemPrompt() }] },
+    contents,
+    generationConfig: {
+      temperature: 0.6,
+      maxOutputTokens: 800,
+      // gemini-2.5-flash "pensa" por padrão e isso consome tokens da resposta.
+      // Desligamos (chat não precisa): respostas completas, rápidas e baratas.
+      thinkingConfig: { thinkingBudget: 0 },
+    },
+  });
+
+  type GeminiResp = {
+    error?: { message?: string };
+    candidates?: { content?: { parts?: { text?: string }[] } }[];
+  };
+
   try {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      signal: controller.signal,
-      body: JSON.stringify({
-        systemInstruction: { parts: [{ text: buildSystemPrompt() }] },
-        contents,
-        generationConfig: {
-          temperature: 0.6,
-          maxOutputTokens: 800,
-          // gemini-2.5-flash "pensa" por padrão e isso consome tokens da resposta.
-          // Desligamos (chat não precisa): respostas completas, rápidas e baratas.
-          thinkingConfig: { thinkingBudget: 0 },
-        },
-      }),
-    });
+    // O Gemini às vezes responde 503/"high demand" em picos. Tentamos de novo
+    // algumas vezes com uma pausa curta antes de desistir.
+    let data: GeminiResp = {};
+    let ok = false;
+    for (let attempt = 0; attempt < 3; attempt += 1) {
+      const res = await fetch(url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        signal: controller.signal,
+        body: reqBody,
+      });
+      data = (await res.json()) as GeminiResp;
+      if (res.ok) {
+        ok = true;
+        break;
+      }
+      const msg = data?.error?.message || "";
+      const retryable =
+        res.status === 503 ||
+        res.status === 429 ||
+        /overload|high demand|unavailable|try again|resource exhausted/i.test(msg);
+      if (!retryable || attempt === 2) {
+        return NextResponse.json({ error: msg || "Falha na IA." }, { status: 502 });
+      }
+      await new Promise((r) => setTimeout(r, 900 * (attempt + 1)));
+    }
 
-    const data = (await res.json()) as {
-      error?: { message?: string };
-      candidates?: { content?: { parts?: { text?: string }[] } }[];
-    };
-
-    if (!res.ok) {
-      return NextResponse.json({ error: data?.error?.message || "Falha na IA." }, { status: 502 });
+    if (!ok) {
+      return NextResponse.json({ error: "IA indisponível no momento." }, { status: 502 });
     }
 
     const reply = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim();
