@@ -81,7 +81,18 @@
     }
   ],
   "testimonials": [],
-  "pendingTestimonials": [],
+  "pendingTestimonials": [
+    {
+      "id": "t-mpz57u25",
+      "name": "Vcitor",
+      "role": "teste",
+      "company": "teste",
+      "text": "sdsssssssssssssssfbbbbbbbbbbbbbbfbhfb",
+      "rating": 5,
+      "submittedAt": "2026-06-04T06:57:28.301Z",
+      "country": "BR"
+    }
+  ],
   "projectStats": [
     {
       "value": 7,
