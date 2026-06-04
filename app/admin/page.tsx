@@ -113,6 +113,9 @@ export default function AdminPage() {
   const [scopeSelection, setScopeSelection] = useState<Record<string, number>>({});
   const [scopeAnalyzed, setScopeAnalyzed] = useState(false);
   const [scopeCopied, setScopeCopied] = useState(false);
+  const [aiProposal, setAiProposal] = useState<string | null>(null);
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState("");
 
   const activeProject = useMemo(
     () => data.projects.find((p) => p.id === activeProjectId) || data.projects[0],
@@ -532,9 +535,42 @@ export default function AdminPage() {
     setScopeSelection(analyzeScope(scopeText, data.services));
     setScopeAnalyzed(true);
     setScopeCopied(false);
+    setAiProposal(null);
+    setAiError("");
+  };
+
+  const runAiAnalysis = async () => {
+    setAiLoading(true);
+    setAiError("");
+    setScopeCopied(false);
+    try {
+      const res = await fetch("/api/admin/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": password },
+        body: JSON.stringify({ scope: scopeText, services: data.services, packages: data.packages ?? [] }),
+      });
+      const json = (await res.json()) as {
+        services?: { id: string; quantity: number }[];
+        proposal?: string;
+        error?: string;
+      };
+      if (!res.ok) throw new Error(json.error ?? "Erro ao analisar com IA.");
+      const selection: Record<string, number> = {};
+      (json.services ?? []).forEach((s) => {
+        if (data.services.some((x) => x.id === s.id)) selection[s.id] = Math.max(1, s.quantity || 1);
+      });
+      setScopeSelection(selection);
+      setAiProposal(json.proposal && json.proposal.trim() ? json.proposal : null);
+      setScopeAnalyzed(true);
+    } catch (err) {
+      setAiError(err instanceof Error ? err.message : "Erro ao analisar com IA.");
+    } finally {
+      setAiLoading(false);
+    }
   };
 
   const toggleScopeService = (id: string) => {
+    setAiProposal(null);
     setScopeSelection((cur) => {
       const next = { ...cur };
       if (next[id]) delete next[id];
@@ -544,12 +580,13 @@ export default function AdminPage() {
   };
 
   const setScopeQty = (id: string, qty: number) => {
+    setAiProposal(null);
     setScopeSelection((cur) => ({ ...cur, [id]: Math.max(1, qty || 1) }));
   };
 
   const copyProposal = async () => {
     try {
-      await navigator.clipboard.writeText(scopeProposal);
+      await navigator.clipboard.writeText(aiProposal ?? scopeProposal);
       setScopeCopied(true);
       setTimeout(() => setScopeCopied(false), 2000);
     } catch {
@@ -1779,14 +1816,25 @@ export default function AdminPage() {
                 placeholder="Cole aqui o escopo do projeto..."
               />
             </label>
-            <button
-              className="button button--primary"
-              type="button"
-              disabled={!scopeText.trim()}
-              onClick={runScopeAnalysis}
-            >
-              Analisar escopo
-            </button>
+            <div className="scope-actions">
+              <button
+                className="button button--ghost"
+                type="button"
+                disabled={!scopeText.trim() || aiLoading}
+                onClick={runScopeAnalysis}
+              >
+                Analisar (local)
+              </button>
+              <button
+                className="button button--primary"
+                type="button"
+                disabled={!scopeText.trim() || aiLoading}
+                onClick={runAiAnalysis}
+              >
+                {aiLoading ? "Analisando com IA…" : "Analisar com IA ✨"}
+              </button>
+            </div>
+            {aiError ? <p className="admin-status admin-status--error">{aiError}</p> : null}
           </div>
 
           {scopeAnalyzed ? (
@@ -1852,11 +1900,14 @@ export default function AdminPage() {
                   <p className="eyebrow">Pronta pra enviar</p>
                   <h2>Proposta gerada</h2>
                 </div>
-                {scopeResult.items.length === 0 ? (
+                {!(aiProposal ?? scopeProposal) ? (
                   <p className="admin-empty">Selecione ao menos um serviço para gerar a proposta.</p>
                 ) : (
                   <>
-                    <textarea className="scope-proposal" readOnly rows={16} value={scopeProposal} />
+                    {aiProposal ? (
+                      <p className="scope-ai-hint">✨ Proposta gerada por IA — revise antes de enviar.</p>
+                    ) : null}
+                    <textarea className="scope-proposal" readOnly rows={16} value={aiProposal ?? scopeProposal} />
                     <button className="button button--primary" type="button" onClick={copyProposal}>
                       {scopeCopied ? "✓ Copiado!" : "Copiar proposta"}
                     </button>

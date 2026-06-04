@@ -2324,6 +2324,22 @@ a {
   white-space: pre-wrap;
 }
 
+.scope-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.scope-ai-hint {
+  margin: 0 0 12px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: rgba(199, 164, 71, 0.1);
+  border: 1px solid rgba(199, 164, 71, 0.25);
+  color: var(--gold-strong);
+  font-size: 0.82rem;
+}
+
 .admin-rows {
   display: grid;
   gap: 10px;
