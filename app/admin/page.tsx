@@ -615,6 +615,17 @@ export default function AdminPage() {
     setMessage("Pedido removido. Clique em Salvar alterações para publicar.");
   };
 
+  // Vincula/altera o projeto de um depoimento (pendente ou publicado).
+  const setTestimonialProject = (id: string, projectId: string) => {
+    const apply = <T extends { id: string; projectId?: string }>(list: T[]) =>
+      list.map((x) => (x.id === id ? { ...x, projectId: projectId || undefined } : x));
+    setData((cur) => ({
+      ...cur,
+      testimonials: apply(cur.testimonials ?? []),
+      pendingTestimonials: apply(cur.pendingTestimonials ?? []),
+    }));
+  };
+
   // ── API calls ────────────────────────────────────────────────────────────────
 
   const loadData = async () => {
@@ -1671,6 +1682,16 @@ export default function AdminPage() {
                         </span>
                       </div>
                       <p className="admin-pending-card__text">"{pending.text}"</p>
+                      <select
+                        className="admin-testimonial-project"
+                        value={pending.projectId ?? ""}
+                        onChange={(e) => setTestimonialProject(pending.id, e.target.value)}
+                      >
+                        <option value="">— Sem projeto vinculado —</option>
+                        {data.projects.map((p) => (
+                          <option key={p.id} value={p.id}>{p.title}</option>
+                        ))}
+                      </select>
                     </div>
                     <div className="admin-pending-card__actions">
                       <button
@@ -1746,6 +1767,16 @@ export default function AdminPage() {
                         </span>
                       </div>
                       <p className="admin-pending-card__text">"{item.text}"</p>
+                      <select
+                        className="admin-testimonial-project"
+                        value={item.projectId ?? ""}
+                        onChange={(e) => setTestimonialProject(item.id, e.target.value)}
+                      >
+                        <option value="">— Sem projeto vinculado —</option>
+                        {data.projects.map((p) => (
+                          <option key={p.id} value={p.id}>{p.title}</option>
+                        ))}
+                      </select>
                     </div>
                     <div className="admin-pending-card__actions">
                       {confirmDeleteTestimonialId === item.id ? (

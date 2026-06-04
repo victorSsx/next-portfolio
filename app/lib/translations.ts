@@ -87,6 +87,7 @@ export type Translations = {
     eyebrow: string;
     title: string;
     lead: string;
+    projectTag: string;
     workana: { label: string; reviewsSuffix: string; linkLabel: string };
     form: {
       submitBtn: string;
@@ -112,6 +113,8 @@ export type Translations = {
       successText: string;
       closeBtn: string;
       backBtn: string;
+      projectLabel: string;
+      projectNone: string;
     };
   };
   process: {
@@ -258,6 +261,7 @@ export const translations: Record<Language, Translations> = {
       eyebrow: "Depoimentos",
       title: "O que clientes dizem",
       lead: "Resultados reais de quem confiou no trabalho.",
+      projectTag: "Projeto",
       workana: { label: "Avaliação máxima na Workana", reviewsSuffix: "clientes avaliaram com 5 estrelas", linkLabel: "Ver perfil na Workana" },
       form: {
         submitBtn: "Deixar um depoimento",
@@ -283,6 +287,8 @@ export const translations: Record<Language, Translations> = {
         successText: "Obrigado! Vou revisar e publicar em breve.",
         closeBtn: "Fechar",
         backBtn: "← Voltar",
+        projectLabel: "Qual projeto fizemos pra você? (opcional)",
+        projectNone: "Nenhum / depoimento geral",
       },
     },
     process: {
@@ -437,6 +443,7 @@ export const translations: Record<Language, Translations> = {
       eyebrow: "Testimonials",
       title: "What clients say",
       lead: "Real results from those who trusted the work.",
+      projectTag: "Project",
       workana: { label: "Top rating on Workana", reviewsSuffix: "clients rated 5 stars", linkLabel: "View Workana profile" },
       form: {
         submitBtn: "Leave a testimonial",
@@ -462,6 +469,8 @@ export const translations: Record<Language, Translations> = {
         successText: "Thank you! I'll review and publish it soon.",
         closeBtn: "Close",
         backBtn: "← Back",
+        projectLabel: "Which project did we do for you? (optional)",
+        projectNone: "None / general feedback",
       },
     },
     process: {
@@ -616,6 +625,7 @@ export const translations: Record<Language, Translations> = {
       eyebrow: "Testimonios",
       title: "Lo que dicen los clientes",
       lead: "Resultados reales de quienes confiaron en el trabajo.",
+      projectTag: "Proyecto",
       workana: { label: "Calificación máxima en Workana", reviewsSuffix: "clientes calificaron con 5 estrellas", linkLabel: "Ver perfil en Workana" },
       form: {
         submitBtn: "Dejar un testimonio",
@@ -641,6 +651,8 @@ export const translations: Record<Language, Translations> = {
         successText: "¡Gracias! Lo revisaré y publicaré pronto.",
         closeBtn: "Cerrar",
         backBtn: "← Volver",
+        projectLabel: "¿Qué proyecto hicimos para ti? (opcional)",
+        projectNone: "Ninguno / opinión general",
       },
     },
     process: {

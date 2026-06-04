@@ -100,6 +100,7 @@ export type Testimonial = {
   rating: number;
   photo?: string; // compressed base64 JPEG or image URL
   country?: string; // código ISO do país (ex: "BR"), detectado no envio
+  projectId?: string; // projeto vinculado a este depoimento
 };
 
 export type PendingTestimonial = Testimonial & {

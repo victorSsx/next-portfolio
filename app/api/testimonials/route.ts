@@ -66,6 +66,7 @@ export async function POST(request: Request) {
   const role = String(body.role ?? "").trim();
   const company = String(body.company ?? "").trim();
   const photo = body.photo ? String(body.photo).trim() : undefined;
+  const projectId = body.projectId ? String(body.projectId).trim() : "";
 
   if (!name || name.length < 2) {
     return NextResponse.json({ error: "Nome é obrigatório (mínimo 2 caracteres)." }, { status: 400 });
@@ -95,6 +96,10 @@ export async function POST(request: Request) {
 
   try {
     const current = await readData();
+    // Vincula ao projeto apenas se o id existir de fato.
+    if (projectId && current.projects?.some((p) => p.id === projectId)) {
+      pending.projectId = projectId;
+    }
     const updated: SiteData = {
       ...current,
       pendingTestimonials: [...(current.pendingTestimonials ?? []), pending],

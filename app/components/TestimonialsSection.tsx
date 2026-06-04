@@ -85,9 +85,12 @@ type FormState = {
   photo: string;
   rating: number;
   text: string;
+  projectId: string;
 };
 
-const BLANK: FormState = { name: "", role: "", company: "", photo: "", rating: 5, text: "" };
+const BLANK: FormState = { name: "", role: "", company: "", photo: "", rating: 5, text: "", projectId: "" };
+
+const projects = siteData.projects;
 type SubmitState = "idle" | "sending" | "ok" | "err";
 
 // Auto-advance when testimonials count exceeds this threshold
@@ -181,6 +184,7 @@ export function TestimonialsSection() {
           text: form.text.trim(),
           rating: form.rating,
           ...(form.photo ? { photo: form.photo } : {}),
+          ...(form.projectId ? { projectId: form.projectId } : {}),
         }),
       });
       const json = (await res.json()) as { error?: string };
@@ -193,6 +197,7 @@ export function TestimonialsSection() {
   };
 
   const item = approvedTestimonials[idx];
+  const linkedProject = item ? projects.find((p) => p.id === item.projectId) : undefined;
 
   return (
     <>
@@ -259,6 +264,11 @@ export function TestimonialsSection() {
                       {item.role && item.company ? " · " : ""}
                       {item.company}
                     </span>
+                    {linkedProject && (
+                      <a className="testimonial-card__project" href="#projetos">
+                        {t.testimonials.projectTag}: {linkedProject.title}
+                      </a>
+                    )}
                   </div>
                 </footer>
               </article>
@@ -440,6 +450,23 @@ export function TestimonialsSection() {
                       <span className="tform__rating-label">{f.ratingLabel}</span>
                       <StarPicker value={form.rating} onChange={(v) => setForm((prev) => ({ ...prev, rating: v }))} />
                     </div>
+
+                    {projects.length > 0 && (
+                      <label className="tform__label">
+                        {f.projectLabel}
+                        <select
+                          value={form.projectId}
+                          onChange={(e) => setForm((prev) => ({ ...prev, projectId: e.target.value }))}
+                        >
+                          <option value="">{f.projectNone}</option>
+                          {projects.map((p) => (
+                            <option key={p.id} value={p.id}>
+                              {p.title}
+                            </option>
+                          ))}
+                        </select>
+                      </label>
+                    )}
 
                     <label className="tform__label">
                       {f.textLabel} <span className="tform__required">*</span>
