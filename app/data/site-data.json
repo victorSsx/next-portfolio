@@ -80,7 +80,17 @@
       "discount": 100
     }
   ],
-  "testimonials": [],
+  "testimonials": [
+    {
+      "id": "t-mpyuqx9h",
+      "name": "victor",
+      "role": "freelaancer",
+      "company": "V",
+      "text": "Um ótimo profissional, gostei muito dos serviços dele.",
+      "rating": 5
+    }
+  ],
+  "pendingTestimonials": [],
   "projectStats": [
     {
       "value": 7,
@@ -93,6 +103,16 @@
     {
       "value": 100,
       "suffix": "%"
+    }
+  ],
+  "freeTools": [
+    {
+      "id": "rastreador-despesas",
+      "name": "Rastreador de Despesas Pessoais",
+      "description": "Registre receitas e despesas, controle orçamentos por categoria e planeje metas de compra. Funciona 100% no navegador, sem cadastro.",
+      "url": "https://rastreador-de-despesas-pessoais.vercel.app/",
+      "icon": "💰",
+      "tag": "Finanças"
     }
   ],
   "serviceCategories": [
@@ -1082,27 +1102,6 @@
       "tags": [
         "E-commerce / Loja Virtual"
       ]
-    }
-  ],
-  "freeTools": [
-    {
-      "id": "rastreador-despesas",
-      "name": "Rastreador de Despesas Pessoais",
-      "description": "Registre receitas e despesas, controle orçamentos por categoria e planeje metas de compra. Funciona 100% no navegador, sem cadastro.",
-      "url": "https://rastreador-de-despesas-pessoais.vercel.app/",
-      "icon": "💰",
-      "tag": "Finanças"
-    }
-  ],
-  "pendingTestimonials": [
-    {
-      "id": "t-mpyuqx9h",
-      "name": "victor",
-      "role": "freelaancer",
-      "company": "V",
-      "text": "Um ótimo profissional, gostei muito dos serviços dele.",
-      "rating": 5,
-      "submittedAt": "2026-06-04T02:04:23.141Z"
     }
   ]
 }
