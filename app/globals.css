@@ -4131,6 +4131,46 @@ a {
   margin-bottom: 20px;
 }
 
+.admin-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.admin-metrics__label {
+  color: rgba(245, 242, 236, 0.55);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-right: 4px;
+}
+
+.admin-metrics__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid rgba(199, 164, 71, 0.4);
+  border-radius: 999px;
+  color: var(--gold);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.18s, border-color 0.18s;
+}
+
+.admin-metrics__link:hover {
+  background: rgba(199, 164, 71, 0.12);
+  border-color: rgba(199, 164, 71, 0.7);
+}
+
 .admin-site-settings__label {
   font-size: 0.8rem;
   font-weight: 600;

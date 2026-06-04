@@ -770,6 +770,26 @@ export default function AdminPage() {
         </div>
       </div>
 
+      <div className="admin-metrics">
+        <span className="admin-metrics__label">Métricas e SEO</span>
+        <a
+          className="admin-metrics__link"
+          href="https://analytics.google.com/"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Google Analytics <span aria-hidden="true">↗</span>
+        </a>
+        <a
+          className="admin-metrics__link"
+          href="https://search.google.com/search-console/performance/search-analytics?resource_id=https%3A%2F%2Fnext-portfolio-navy-five-46.vercel.app"
+          target="_blank"
+          rel="noreferrer"
+        >
+          Search Console <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+
       <nav className="admin-tabs" aria-label="Seções administrativas">
         {(["projects", "services", "categories", "technologies", "testimonials", "freetools", "analise", "leads"] as const).map((id) => {
           const pendingCount =
