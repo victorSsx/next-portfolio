@@ -1,4 +1,5 @@
 import { BudgetSection } from "./components/BudgetSection";
+import { ChatAssistant } from "./components/ChatAssistant";
 import { ContactSection } from "./components/ContactSection";
 import { FAQSection } from "./components/FAQSection";
 import { FloatingWhatsApp } from "./components/FloatingWhatsApp";
@@ -20,6 +21,7 @@ export default function Home() {
       <FAQSection />
       <ContactSection />
       <FloatingWhatsApp />
+      <ChatAssistant />
     </main>
   );
 }
