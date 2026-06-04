@@ -2344,8 +2344,10 @@ a {
 .admin-form input,
 .admin-form textarea,
 .admin-form select,
+.admin-stat-card input,
 .admin-login input {
   width: 100%;
+  min-width: 0;
   min-height: 42px;
   border: 1px solid rgba(245, 242, 236, 0.14);
   border-radius: 4px;
