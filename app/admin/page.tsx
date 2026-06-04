@@ -111,6 +111,15 @@ const leadContactHref = (contact: string): string | null => {
   return null;
 };
 
+type NewServiceSuggestion = {
+  tempId: string;
+  title: string;
+  price: number;
+  billing: "once" | "monthly";
+  summary: string;
+  category: string;
+};
+
 export default function AdminPage() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -131,6 +140,7 @@ export default function AdminPage() {
   const [aiProposal, setAiProposal] = useState<string | null>(null);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState("");
+  const [aiNewServices, setAiNewServices] = useState<NewServiceSuggestion[]>([]);
 
   const activeProject = useMemo(
     () => data.projects.find((p) => p.id === activeProjectId) || data.projects[0],
@@ -552,6 +562,7 @@ export default function AdminPage() {
     setScopeCopied(false);
     setAiProposal(null);
     setAiError("");
+    setAiNewServices([]);
   };
 
   const runAiAnalysis = async () => {
@@ -562,10 +573,16 @@ export default function AdminPage() {
       const res = await fetch("/api/admin/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-admin-password": password },
-        body: JSON.stringify({ scope: scopeText, services: data.services, packages: data.packages ?? [] }),
+        body: JSON.stringify({
+          scope: scopeText,
+          services: data.services,
+          packages: data.packages ?? [],
+          categories: data.serviceCategories,
+        }),
       });
       const json = (await res.json()) as {
         services?: { id: string; quantity: number }[];
+        newServices?: { title: string; price: number; billing: string; summary: string; category: string }[];
         proposal?: string;
         error?: string;
       };
@@ -576,6 +593,16 @@ export default function AdminPage() {
       });
       setScopeSelection(selection);
       setAiProposal(json.proposal && json.proposal.trim() ? json.proposal : null);
+      setAiNewServices(
+        (json.newServices ?? []).map((s, i) => ({
+          tempId: `ns-${Date.now()}-${i}`,
+          title: s.title,
+          price: Number(s.price) || 0,
+          billing: s.billing === "monthly" ? "monthly" : "once",
+          summary: s.summary || "",
+          category: s.category || "",
+        }))
+      );
       setScopeAnalyzed(true);
     } catch (err) {
       setAiError(err instanceof Error ? err.message : "Erro ao analisar com IA.");
@@ -607,6 +634,32 @@ export default function AdminPage() {
     } catch {
       // clipboard indisponível — ignore
     }
+  };
+
+  const acceptNewService = (s: NewServiceSuggestion) => {
+    const category =
+      s.category && data.serviceCategories.some((c) => c.id === s.category)
+        ? s.category
+        : data.serviceCategories[0]?.id || "sites";
+    const newSvc: BudgetService = {
+      id: makeId("servico"),
+      category,
+      title: s.title,
+      price: s.price,
+      billing: s.billing,
+      summary: s.summary,
+      details: [],
+    };
+    setData((cur) => ({ ...cur, services: [...cur.services, newSvc] }));
+    setScopeSelection((cur) => ({ ...cur, [newSvc.id]: 1 }));
+    setAiProposal(null);
+    setAiNewServices((cur) => cur.filter((x) => x.tempId !== s.tempId));
+    setStatus("saved");
+    setMessage("Serviço criado e adicionado ao orçamento. Clique em Salvar alterações para publicar na sua grade.");
+  };
+
+  const rejectNewService = (tempId: string) => {
+    setAiNewServices((cur) => cur.filter((x) => x.tempId !== tempId));
   };
 
   const removeLead = (id: string) => {
@@ -1993,6 +2046,46 @@ export default function AdminPage() {
                   </div>
                 </div>
               </div>
+
+              {aiNewServices.length > 0 ? (
+                <div className="admin-card">
+                  <div className="admin-card__head">
+                    <p className="eyebrow">Fora da sua grade</p>
+                    <h2>Serviços sugeridos pela IA</h2>
+                  </div>
+                  <p className="admin-card__desc">
+                    A IA detectou pedidos que seus serviços atuais não cobrem. Aceite para criar na sua grade (e somar
+                    ao orçamento) ou recuse.
+                  </p>
+                  <div className="admin-newsvc-list">
+                    {aiNewServices.map((s) => (
+                      <div className="admin-newsvc" key={s.tempId}>
+                        <div className="admin-newsvc__body">
+                          <div className="admin-newsvc__top">
+                            <strong>{s.title}</strong>
+                            <span className="admin-newsvc__price">
+                              {formatBRL(s.price)}
+                              {s.billing === "monthly" ? "/mês" : ""}
+                            </span>
+                          </div>
+                          {s.summary ? <p className="admin-newsvc__summary">{s.summary}</p> : null}
+                          <span className="admin-newsvc__cat">
+                            Categoria: {data.serviceCategories.find((c) => c.id === s.category)?.label || "—"}
+                          </span>
+                        </div>
+                        <div className="admin-newsvc__actions">
+                          <button className="button admin-approve-btn" type="button" onClick={() => acceptNewService(s)}>
+                            ✓ Aceitar
+                          </button>
+                          <button className="admin-danger" type="button" onClick={() => rejectNewService(s.tempId)}>
+                            Recusar
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
 
               <div className="admin-card">
                 <div className="admin-card__head">

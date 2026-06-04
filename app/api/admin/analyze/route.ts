@@ -38,7 +38,12 @@ export async function POST(request: Request) {
     );
   }
 
-  let body: { scope?: string; services?: SvcLite[]; packages?: PkgLite[] };
+  let body: {
+    scope?: string;
+    services?: SvcLite[];
+    packages?: PkgLite[];
+    categories?: { id: string; label: string }[];
+  };
   try {
     body = (await request.json()) as typeof body;
   } catch {
@@ -74,16 +79,23 @@ export async function POST(request: Request) {
     discount: p.discount,
   }));
 
+  const categories =
+    Array.isArray(body.categories) && body.categories.length
+      ? body.categories
+      : ((defaultSiteData.serviceCategories as { id: string; label: string }[]) ?? []);
+  const categoriesForPrompt = categories.map((c) => ({ id: c.id, label: c.label }));
+
   const prompt = [
     "Você é o assistente comercial do Victor, desenvolvedor freelancer (sites, WordPress, lojas WooCommerce, SEO, performance e correções).",
     "Analise o ESCOPO de um projeto e selecione, entre os SERVIÇOS oferecidos, os que atendem ao pedido. Depois escreva uma proposta curta e profissional em português do Brasil.",
     "",
     "REGRAS:",
-    "- Use SOMENTE ids que existem na lista de SERVIÇOS. Nunca invente serviços, ids ou preços.",
+    "- Em 'services', use SOMENTE ids que existem na lista de SERVIÇOS. Não invente ids.",
     "- quantity = 1, exceto serviços com allowQuantity=true (use a quantidade que o escopo indicar; caso não diga, use 1).",
     "- Se todos os serviços de um PACOTE forem selecionados, mencione o desconto do pacote na proposta.",
-    "- Preços em reais (BRL). billing 'monthly' = valor mensal; 'once' = valor único. Use exatamente os preços fornecidos.",
-    "- A proposta deve: saudar, listar o que será feito, mostrar o investimento, citar prazo (5 a 14 dias úteis) e a garantia de 7 dias de ajustes grátis. Tom confiante e direto, sem exagero.",
+    "- Preços em reais (BRL). billing 'monthly' = valor mensal; 'once' = valor único. Use exatamente os preços fornecidos para os serviços existentes.",
+    "- SERVIÇOS NOVOS: se o escopo pedir algo que NENHUM serviço da lista cobre, proponha em 'newServices'. NÃO proponha se já existir um serviço equivalente. Cada novo serviço deve ter: title (curto e claro), price (número em BRL, estimativa realista de mercado para freelancer BR), billing ('once' ou 'monthly'), summary (1 frase do que inclui) e category (use um id de CATEGORIAS; se nenhum servir bem, use o mais próximo). Se tudo já estiver coberto, devolva newServices como lista vazia.",
+    "- A proposta deve: saudar, listar o que será feito, mostrar o investimento, citar prazo (5 a 14 dias úteis) e a garantia de 7 dias de ajustes grátis. Tom confiante e direto, sem exagero. Pode considerar os serviços novos na proposta.",
     "",
     "SERVIÇOS (JSON):",
     JSON.stringify(servicesForPrompt),
@@ -91,10 +103,13 @@ export async function POST(request: Request) {
     "PACOTES (JSON):",
     JSON.stringify(packagesForPrompt),
     "",
+    "CATEGORIAS (JSON):",
+    JSON.stringify(categoriesForPrompt),
+    "",
     "ESCOPO DO PROJETO:",
     `"""${scope}"""`,
     "",
-    'Responda APENAS com um JSON neste formato exato, sem markdown: {"services":[{"id":"string","quantity":number}],"proposal":"string"}',
+    'Responda APENAS com um JSON neste formato exato, sem markdown: {"services":[{"id":"string","quantity":number}],"newServices":[{"title":"string","price":number,"billing":"once|monthly","summary":"string","category":"string"}],"proposal":"string"}',
   ].join("\n");
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${encodeURIComponent(key)}`;
@@ -125,7 +140,11 @@ export async function POST(request: Request) {
     }
 
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
-    let parsed: { services?: { id: string; quantity: number }[]; proposal?: string };
+    let parsed: {
+      services?: { id: string; quantity: number }[];
+      newServices?: { title?: string; price?: number; billing?: string; summary?: string; category?: string }[];
+      proposal?: string;
+    };
     try {
       const clean = text.replace(/^```json\s*/i, "").replace(/```$/i, "").trim();
       parsed = JSON.parse(clean);
@@ -143,8 +162,25 @@ export async function POST(request: Request) {
           .map((x) => ({ id: x.id, quantity: Math.max(1, Math.round(Number(x.quantity) || 1)) }))
       : [];
 
+    const categoryIds = new Set(categories.map((c) => c.id));
+    const existingTitles = new Set(services.map((s) => s.title.trim().toLowerCase()));
+    const cleanedNewServices = Array.isArray(parsed.newServices)
+      ? parsed.newServices
+          .filter((x) => x && typeof x.title === "string" && x.title.trim().length > 1)
+          .filter((x) => !existingTitles.has((x.title as string).trim().toLowerCase()))
+          .slice(0, 4)
+          .map((x) => ({
+            title: (x.title as string).trim().slice(0, 80),
+            price: Math.max(0, Math.round(Number(x.price) || 0)),
+            billing: x.billing === "monthly" ? "monthly" : "once",
+            summary: typeof x.summary === "string" ? x.summary.trim().slice(0, 300) : "",
+            category: x.category && categoryIds.has(x.category) ? x.category : categories[0]?.id || "",
+          }))
+      : [];
+
     return NextResponse.json({
       services: cleanedServices,
+      newServices: cleanedNewServices,
       proposal: typeof parsed.proposal === "string" ? parsed.proposal : "",
     });
   } catch (error) {

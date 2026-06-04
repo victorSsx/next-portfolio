@@ -4700,6 +4700,75 @@ a {
   font-size: 0.82rem;
 }
 
+/* AI-suggested new services (adaptive scope analysis) */
+.admin-newsvc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.admin-newsvc {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid rgba(199, 164, 71, 0.28);
+  border-radius: 10px;
+  background: rgba(199, 164, 71, 0.05);
+}
+
+.admin-newsvc__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-newsvc__top {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.admin-newsvc__top strong {
+  color: var(--white);
+  font-size: 0.95rem;
+}
+
+.admin-newsvc__price {
+  color: var(--gold-strong);
+  font-weight: 800;
+  font-size: 0.9rem;
+}
+
+.admin-newsvc__summary {
+  margin: 6px 0 4px;
+  color: rgba(245, 242, 236, 0.62);
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.admin-newsvc__cat {
+  color: rgba(245, 242, 236, 0.45);
+  font-size: 0.78rem;
+}
+
+.admin-newsvc__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 620px) {
+  .admin-newsvc {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .admin-newsvc__actions {
+    flex-direction: row;
+  }
+}
+
 .testimonial-card__avatar {
   width: 40px;
   height: 40px;
