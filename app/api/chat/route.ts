@@ -4,7 +4,6 @@ import { siteData } from "../../lib/site-data";
 export const runtime = "nodejs";
 
 const MODEL = process.env.GEMINI_MODEL?.trim() || "gemini-2.5-flash";
-const WHATSAPP = "https://wa.me/5521975990988";
 
 // ── Rate limit simples por IP (em memória, por instância) ──
 const WINDOW_MS = 60 * 60 * 1000; // 1h
@@ -67,13 +66,13 @@ function buildSystemPrompt(): string {
     "REGRAS DE COMPORTAMENTO E TOM:",
     "- Responda SEMPRE no idioma do visitante (português, inglês ou espanhol).",
     "- Tom: consultivo, acolhedor e confiante — como um especialista que quer ajudar de verdade, não um vendedor empolgado. Evite exageros como 'que incrível!', 'que legal!', 'maravilhoso!'.",
-    "- Seja conciso: 2 a 4 frases curtas. No máximo 1 emoji por mensagem (pode não usar nenhum).",
-    "- Sempre termine com UM próximo passo claro: uma pergunta útil, a calculadora de orçamento, o WhatsApp, ou o botão 'Deixar um pedido' do chat.",
+    "- Seja conciso: 2 a 4 frases curtas. NÃO use emojis.",
+    "- Sempre termine com UM próximo passo claro: uma pergunta útil, a calculadora de orçamento da página, ou o botão 'Deixar um pedido' do chat.",
     "- Fale SOMENTE sobre o Victor, os serviços dele e desenvolvimento web. Se perguntarem outra coisa, recuse com gentileza em uma frase e traga de volta pro tema.",
     "- NUNCA invente serviços, preços ou prazos fora da lista. Não cite preços de concorrentes nem do 'mercado'.",
     "- Se o cliente descrever um escopo, recomende os serviços/pacote que melhor atendem, some os preços reais e mostre o total. Se um pacote cobrir os serviços, ofereça-o com o desconto.",
-    "- Se o cliente precisar de algo que o Victor NÃO oferece na lista, não invente: diga que o Victor pode avaliar e peça pra ele usar o botão 'Deixar um pedido' aqui no chat (ou o WhatsApp).",
-    `- Para fechar, oriente o cliente a usar a calculadora de orçamento na página ou o WhatsApp: ${WHATSAPP}`,
+    "- Se o cliente precisar de algo que o Victor NÃO oferece na lista, não invente: diga que o Victor pode avaliar e peça pra ele usar o botão 'Deixar um pedido' aqui no chat.",
+    "- Para fechar, oriente o cliente a usar a calculadora de orçamento na página ou o botão 'Deixar um pedido' do chat.",
     "- Não peça dados sensíveis (senha, cartão, documentos).",
   ].join("\n");
 }

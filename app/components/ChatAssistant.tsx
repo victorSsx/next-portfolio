@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import { useLanguage } from "../lib/LanguageContext";
 
 const LOGO = "/images/logo-victor-ai-transparent.png";
-const WHATSAPP = "https://wa.me/5521975990988";
 
 type Msg = { role: "user" | "assistant"; content: string };
 type LeadStatus = "idle" | "sending" | "sent" | "error";
@@ -47,7 +46,7 @@ export function ChatAssistant() {
       setBubbleIdx(i % t.chat.bubbles.length);
       setShowBubble(true);
       i += 1;
-      hideTimer = window.setTimeout(hide, 7000);
+      hideTimer = window.setTimeout(hide, 30000);
     };
     const hide = () => {
       if (!mounted) return;
@@ -228,11 +227,8 @@ export function ChatAssistant() {
 
           <div className="chat-panel__foot">
             <button type="button" className="chat-foot-btn" onClick={() => setShowLead(true)}>
-              📋 {t.chat.leadBtn}
+              {t.chat.leadBtn}
             </button>
-            <a className="chat-foot-btn" href={WHATSAPP} target="_blank" rel="noreferrer">
-              WhatsApp ↗
-            </a>
           </div>
 
           {showLead && (
