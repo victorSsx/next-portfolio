@@ -124,7 +124,13 @@ export async function POST(request: Request) {
       body: JSON.stringify({
         systemInstruction: { parts: [{ text: buildSystemPrompt() }] },
         contents,
-        generationConfig: { temperature: 0.6, maxOutputTokens: 500 },
+        generationConfig: {
+          temperature: 0.6,
+          maxOutputTokens: 800,
+          // gemini-2.5-flash "pensa" por padrão e isso consome tokens da resposta.
+          // Desligamos (chat não precisa): respostas completas, rápidas e baratas.
+          thinkingConfig: { thinkingBudget: 0 },
+        },
       }),
     });
 
