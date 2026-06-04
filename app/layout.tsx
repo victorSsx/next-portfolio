@@ -6,7 +6,8 @@ import { LanguageProvider } from "./lib/LanguageContext";
 
 const SITE_URL = "https://next-portfolio-navy-five-46.vercel.app";
 const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-3WS5PGSFHJ"; // ID de medição do Google Analytics
-const GSC_VERIFICATION = process.env.NEXT_PUBLIC_GSC_VERIFICATION; // código do Search Console
+const GSC_VERIFICATION =
+  process.env.NEXT_PUBLIC_GSC_VERIFICATION || "ZNYzSqJjgcBydgdfyXjVLILKJns2c3Q6aikzhMTo6Ms"; // verificação do Search Console
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
