@@ -89,6 +89,14 @@ export type Translations = {
       annualLabel: string;
       perYear: string;
     };
+    coupon: {
+      label: string;
+      placeholder: string;
+      apply: string;
+      applied: string;
+      invalid: string;
+      lineLabel: string;
+    };
   };
   faq: {
     eyebrow: string;
@@ -100,6 +108,7 @@ export type Translations = {
     title: string;
     lead: string;
     projectTag: string;
+    reviewOffer: string;
     workana: { label: string; reviewsSuffix: string; linkLabel: string };
     form: {
       submitBtn: string;
@@ -268,6 +277,14 @@ export const translations: Record<Language, Translations> = {
         annualLabel: "Domínio + hospedagem (pago ao provedor)",
         perYear: "/ano",
       },
+      coupon: {
+        label: "Cupom de desconto",
+        placeholder: "Ex: OBRIGADO-7K2P",
+        apply: "Aplicar",
+        applied: "Cupom aplicado!",
+        invalid: "Cupom inválido",
+        lineLabel: "Desconto do cupom",
+      },
     },
     faq: {
       eyebrow: "Dúvidas frequentes",
@@ -286,6 +303,7 @@ export const translations: Record<Language, Translations> = {
       title: "O que clientes dizem",
       lead: "Resultados reais de quem confiou no trabalho.",
       projectTag: "Projeto",
+      reviewOffer: "Foi meu cliente? Deixe um depoimento e ganhe 10% de desconto no próximo projeto.",
       workana: { label: "Avaliação máxima na Workana", reviewsSuffix: "clientes avaliaram com 5 estrelas", linkLabel: "Ver perfil na Workana" },
       form: {
         submitBtn: "Deixar um depoimento",
@@ -462,6 +480,14 @@ export const translations: Record<Language, Translations> = {
         annualLabel: "Domain + hosting (paid to provider)",
         perYear: "/yr",
       },
+      coupon: {
+        label: "Discount coupon",
+        placeholder: "e.g. OBRIGADO-7K2P",
+        apply: "Apply",
+        applied: "Coupon applied!",
+        invalid: "Invalid coupon",
+        lineLabel: "Coupon discount",
+      },
     },
     faq: {
       eyebrow: "FAQ",
@@ -480,6 +506,7 @@ export const translations: Record<Language, Translations> = {
       title: "What clients say",
       lead: "Real results from those who trusted the work.",
       projectTag: "Project",
+      reviewOffer: "Were you my client? Leave a testimonial and get 10% off your next project.",
       workana: { label: "Top rating on Workana", reviewsSuffix: "clients rated 5 stars", linkLabel: "View Workana profile" },
       form: {
         submitBtn: "Leave a testimonial",
@@ -656,6 +683,14 @@ export const translations: Record<Language, Translations> = {
         annualLabel: "Dominio + hosting (pagado al proveedor)",
         perYear: "/año",
       },
+      coupon: {
+        label: "Cupón de descuento",
+        placeholder: "Ej: OBRIGADO-7K2P",
+        apply: "Aplicar",
+        applied: "¡Cupón aplicado!",
+        invalid: "Cupón inválido",
+        lineLabel: "Descuento del cupón",
+      },
     },
     faq: {
       eyebrow: "Preguntas frecuentes",
@@ -674,6 +709,7 @@ export const translations: Record<Language, Translations> = {
       title: "Lo que dicen los clientes",
       lead: "Resultados reales de quienes confiaron en el trabajo.",
       projectTag: "Proyecto",
+      reviewOffer: "¿Fuiste mi cliente? Deja un testimonio y obtén 10% de descuento en tu próximo proyecto.",
       workana: { label: "Calificación máxima en Workana", reviewsSuffix: "clientes calificaron con 5 estrellas", linkLabel: "Ver perfil en Workana" },
       form: {
         submitBtn: "Dejar un testimonio",

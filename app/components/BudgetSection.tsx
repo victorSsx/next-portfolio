@@ -67,7 +67,9 @@ function buildBudgetMessage(
   onceTotal: number,
   monthlyTotal: number,
   packageDiscount: number,
-  hostingNote: string
+  hostingNote: string,
+  couponDiscount: number,
+  couponCode: string
 ): string {
   const hasSelected = selectedItems.length > 0;
 
@@ -105,6 +107,7 @@ function buildBudgetMessage(
       serviceLines,
       hostingNote || "",
       packageDiscount > 0 ? `Package discount: -${formatAmount(packageDiscount, "USD")}` : "",
+      couponDiscount > 0 ? `Coupon ${couponCode}: -${formatAmount(couponDiscount, currency)}` : "",
       "",
       `Estimated one-time investment: ${formatAmount(onceTotal, "USD")}`,
       monthlyTotal ? `Estimated monthly investment: ${formatAmount(monthlyTotal, "USD")}/mo` : "",
@@ -134,6 +137,7 @@ function buildBudgetMessage(
       serviceLines,
       hostingNote || "",
       packageDiscount > 0 ? `Descuento de paquete: -${formatAmount(packageDiscount, currency)}` : "",
+      couponDiscount > 0 ? `Cupón ${couponCode}: -${formatAmount(couponDiscount, currency)}` : "",
       "",
       `Inversión única estimada: ${formatAmount(onceTotal, currency)}`,
       monthlyTotal ? `Inversión mensual estimada: ${formatAmount(monthlyTotal, currency)}/mes` : "",
@@ -163,6 +167,7 @@ function buildBudgetMessage(
     serviceLines,
     hostingNote || "",
     packageDiscount > 0 ? `Desconto de pacote: -${formatAmount(packageDiscount, "BRL")}` : "",
+    couponDiscount > 0 ? `Cupom ${couponCode}: -${formatAmount(couponDiscount, currency)}` : "",
     "",
     `Investimento único estimado: ${formatAmount(onceTotal, "BRL")}`,
     monthlyTotal ? `Investimento mensal estimado: ${formatAmount(monthlyTotal, "BRL")}/mês` : "",
@@ -187,6 +192,9 @@ export function BudgetSection() {
   const [sendStatus, setSendStatus] = useState<SendStatus>("idle");
   const [selectedServices, setSelectedServices] = useState<Record<string, number>>({});
   const [hostingOption, setHostingOption] = useState<HostingOption>("have");
+  const [couponInput, setCouponInput] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{ code: string; percent: number } | null>(null);
+  const [couponError, setCouponError] = useState(false);
 
   const categories = useMemo(
     () => [
@@ -318,7 +326,11 @@ export function BudgetSection() {
   const hostingLabor = hasCreation ? 0 : hostingLaborBase;
   const hostingAnnual = hostingOption === "acquire-victor" ? HOSTING_RESOURCE_ANNUAL : 0;
 
-  const onceTotal = Math.max(0, onceSubtotal - packageDiscount) + hostingLabor;
+  // Cupom de depoimento: % sobre o valor único de serviços (após desconto de pacote).
+  const onceAfterPackage = Math.max(0, onceSubtotal - packageDiscount);
+  const couponDiscount = appliedCoupon ? Math.round(onceAfterPackage * (appliedCoupon.percent / 100)) : 0;
+
+  const onceTotal = Math.max(0, onceAfterPackage - couponDiscount) + hostingLabor;
 
   // Linha(s) de hospedagem para a mensagem, no idioma da mensagem.
   const hostingNote = useMemo(() => {
@@ -333,9 +345,39 @@ export function BudgetSection() {
   }, [hostingOption, hostingLabor, hostingAnnual, messageLang, currency]);
 
   const budgetMessage = useMemo(
-    () => buildBudgetMessage(messageLang, currency, selectedItems, onceTotal, monthlyTotal, packageDiscount, hostingNote),
-    [messageLang, currency, selectedItems, onceTotal, monthlyTotal, packageDiscount, hostingNote]
+    () =>
+      buildBudgetMessage(
+        messageLang,
+        currency,
+        selectedItems,
+        onceTotal,
+        monthlyTotal,
+        packageDiscount,
+        hostingNote,
+        couponDiscount,
+        appliedCoupon?.code ?? ""
+      ),
+    [messageLang, currency, selectedItems, onceTotal, monthlyTotal, packageDiscount, hostingNote, couponDiscount, appliedCoupon]
   );
+
+  function applyCoupon() {
+    const code = couponInput.trim().toUpperCase();
+    if (!code) return;
+    const found = (siteData.coupons ?? []).find((c) => c.code.toUpperCase() === code);
+    if (found) {
+      setAppliedCoupon({ code: found.code, percent: found.percent });
+      setCouponError(false);
+    } else {
+      setAppliedCoupon(null);
+      setCouponError(true);
+    }
+  }
+
+  function removeCoupon() {
+    setAppliedCoupon(null);
+    setCouponInput("");
+    setCouponError(false);
+  }
 
   function getPackagePrices(pkg: Package) {
     const pkgServices = pkg.services.map((id) => services.find((s) => s.id === id)).filter(Boolean) as BudgetService[];
@@ -665,11 +707,59 @@ export function BudgetSection() {
             ))}
           </div>
 
+          <div className="budget-coupon">
+            <label htmlFor="budget-coupon">{t.budget.coupon.label}</label>
+            {appliedCoupon ? (
+              <div className="budget-coupon__applied">
+                <span className="budget-coupon__badge">
+                  ✓ {appliedCoupon.code} · −{appliedCoupon.percent}%
+                </span>
+                <button type="button" className="budget-coupon__remove" onClick={removeCoupon}>
+                  {t.budget.coupon.applied}
+                  <span aria-hidden="true"> ✕</span>
+                </button>
+              </div>
+            ) : (
+              <>
+                <div className="budget-coupon__row">
+                  <input
+                    id="budget-coupon"
+                    type="text"
+                    value={couponInput}
+                    placeholder={t.budget.coupon.placeholder}
+                    onChange={(e) => {
+                      setCouponInput(e.target.value);
+                      if (couponError) setCouponError(false);
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        applyCoupon();
+                      }
+                    }}
+                  />
+                  <button type="button" className="budget-coupon__apply" onClick={applyCoupon}>
+                    {t.budget.coupon.apply}
+                  </button>
+                </div>
+                {couponError && <p className="budget-coupon__error">{t.budget.coupon.invalid}</p>}
+              </>
+            )}
+          </div>
+
           <div className="totals">
             {packageDiscount > 0 && (
               <div className="totals__discount">
                 <span>{t.budget.packageDiscount}</span>
                 <strong>− {formatAmount(packageDiscount, currency)}</strong>
+              </div>
+            )}
+            {couponDiscount > 0 && (
+              <div className="totals__discount">
+                <span>
+                  {t.budget.coupon.lineLabel} ({appliedCoupon?.percent}%)
+                </span>
+                <strong>− {formatAmount(couponDiscount, currency)}</strong>
               </div>
             )}
             {hostingOption !== "have" && (

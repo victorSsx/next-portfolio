@@ -5,6 +5,7 @@ import {
   siteData as defaultSiteData,
   type AvailabilityStatus,
   type BudgetService,
+  type Coupon,
   type DeviceView,
   type FreeTool,
   type Lead,
@@ -102,6 +103,17 @@ const createFreeTool = (): FreeTool => ({
 // Bandeira do país por código ISO (imagens flagcdn).
 const flagUrl = (code?: string): string | null =>
   code && /^[a-zA-Z]{2}$/.test(code) ? `https://flagcdn.com/${code.toLowerCase()}.svg` : null;
+
+// Desconto (%) do cupom gerado quando um depoimento é aprovado.
+const REVIEW_COUPON_PERCENT = 10;
+
+// Gera um código de cupom legível, ex: OBRIGADO-7K2P (sem caracteres ambíguos).
+const generateCouponCode = () => {
+  const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+  let suffix = "";
+  for (let i = 0; i < 4; i += 1) suffix += chars[Math.floor(Math.random() * chars.length)];
+  return `OBRIGADO-${suffix}`;
+};
 
 // Monta um link clicável a partir do contato do lead (e-mail ou WhatsApp/telefone).
 const leadContactHref = (contact: string): string | null => {
@@ -1806,11 +1818,25 @@ export default function AdminPage() {
                         onClick={() => {
                           // eslint-disable-next-line @typescript-eslint/no-unused-vars
                           const { submittedAt: _date, ...approved } = pending;
+                          const existing = new Set((data.coupons ?? []).map((c) => c.code));
+                          let code = generateCouponCode();
+                          while (existing.has(code)) code = generateCouponCode();
+                          const coupon: Coupon = {
+                            code,
+                            percent: REVIEW_COUPON_PERCENT,
+                            createdAt: new Date().toISOString(),
+                            label: pending.name,
+                          };
                           setData((cur) => ({
                             ...cur,
                             testimonials: [...(cur.testimonials ?? []), approved as Testimonial],
                             pendingTestimonials: (cur.pendingTestimonials ?? []).filter((p) => p.id !== pending.id),
+                            coupons: [coupon, ...(cur.coupons ?? [])],
                           }));
+                          setStatus("saved");
+                          setMessage(
+                            `Depoimento aprovado! Cupom ${coupon.code} (${coupon.percent}% OFF) criado para ${pending.name}. Copie na aba abaixo, envie ao cliente e clique em Salvar alterações.`
+                          );
                         }}
                       >
                         ✓ Aprovar
@@ -1919,6 +1945,86 @@ export default function AdminPage() {
                           Remover
                         </button>
                       )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Coupons (review reward) */}
+          <div className="admin-card">
+            <div className="admin-card__head">
+              <p className="eyebrow">Recompensa por depoimento</p>
+              <h2>
+                Cupons de desconto
+                {(data.coupons?.length ?? 0) > 0 && (
+                  <span className="admin-tab-badge admin-tab-badge--inline">{data.coupons!.length}</span>
+                )}
+              </h2>
+              <button
+                className="admin-inline admin-card__action"
+                type="button"
+                onClick={() => {
+                  const existing = new Set((data.coupons ?? []).map((c) => c.code));
+                  let code = generateCouponCode();
+                  while (existing.has(code)) code = generateCouponCode();
+                  setData((cur) => ({
+                    ...cur,
+                    coupons: [
+                      { code, percent: REVIEW_COUPON_PERCENT, createdAt: new Date().toISOString() },
+                      ...(cur.coupons ?? []),
+                    ],
+                  }));
+                  setStatus("saved");
+                  setMessage(`Cupom ${code} (${REVIEW_COUPON_PERCENT}% OFF) criado. Clique em Salvar alterações.`);
+                }}
+              >
+                + Novo cupom
+              </button>
+            </div>
+            <p className="admin-hint">
+              Ao aprovar um depoimento, um cupom de {REVIEW_COUPON_PERCENT}% é gerado automaticamente. Copie o
+              código, envie ao cliente, e ele aplica na calculadora de orçamento no próximo projeto.
+            </p>
+            {!data.coupons?.length ? (
+              <p className="admin-empty">Nenhum cupom ainda.</p>
+            ) : (
+              <div className="admin-coupon-list">
+                {data.coupons.map((coupon: Coupon) => (
+                  <div className="admin-coupon-card" key={coupon.code}>
+                    <div className="admin-coupon-card__info">
+                      <code className="admin-coupon-code">{coupon.code}</code>
+                      <span className="admin-coupon-meta">
+                        {coupon.percent}% OFF
+                        {coupon.label ? ` · ${coupon.label}` : ""}
+                        {` · ${new Date(coupon.createdAt).toLocaleDateString("pt-BR")}`}
+                      </span>
+                    </div>
+                    <div className="admin-coupon-card__actions">
+                      <button
+                        className="admin-inline"
+                        type="button"
+                        onClick={() => {
+                          navigator.clipboard?.writeText(coupon.code);
+                          setStatus("saved");
+                          setMessage(`Cupom ${coupon.code} copiado.`);
+                        }}
+                      >
+                        Copiar
+                      </button>
+                      <button
+                        className="admin-danger"
+                        type="button"
+                        onClick={() =>
+                          setData((cur) => ({
+                            ...cur,
+                            coupons: (cur.coupons ?? []).filter((c) => c.code !== coupon.code),
+                          }))
+                        }
+                      >
+                        Remover
+                      </button>
                     </div>
                   </div>
                 ))}

@@ -81,6 +81,13 @@ export type Lead = {
   createdAt: string; // ISO 8601
 };
 
+export type Coupon = {
+  code: string;
+  percent: number;
+  createdAt: string; // ISO 8601
+  label?: string; // ex: nome do cliente que deixou o depoimento
+};
+
 export type Package = {
   id: string;
   tag: string;
@@ -119,6 +126,7 @@ export type SiteData = {
   projectStats?: ProjectStat[];
   freeTools?: FreeTool[];
   leads?: Lead[];
+  coupons?: Coupon[];
 };
 
 export const siteData = rawSiteData as SiteData;
