@@ -206,6 +206,24 @@
       "startingAt": false
     },
     {
+      "id": "blog-site-existente",
+      "category": "sites",
+      "title": "Blog em site existente",
+      "price": 450,
+      "billing": "once",
+      "summary": "Adiciono ou reformulo o blog de um site que você já tem — estrutura de categorias, template de artigo, estilo e SEO básico do blog.",
+      "details": [
+        "Para sites que já existem (não é um site novo)",
+        "Estrutura de categorias e tags",
+        "Template de artigo com boa leitura",
+        "Estilo alinhado ao visual do seu site",
+        "SEO básico do blog configurado",
+        "Preço varia conforme a plataforma do site atual"
+      ],
+      "allowQuantity": false,
+      "startingAt": true
+    },
+    {
       "id": "pagina-adicional",
       "category": "sites",
       "title": "Página extra",

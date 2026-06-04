@@ -17,6 +17,10 @@ const KEYWORDS: Record<string, string[]> = {
     "site profissional", "quem somos", "pagina sobre", "apresentar o negocio", "presenca digital",
   ],
   "site-com-blog": ["blog", "artigos", "posts", "noticias", "conteudo", "publicacoes"],
+  "blog-site-existente": [
+    "adicionar blog", "incluir blog", "ja tenho site", "site existente", "reformular blog",
+    "colocar um blog", "blog no meu site", "blog no site atual", "adicionar um blog",
+  ],
   "pagina-adicional": ["pagina extra", "paginas extras", "pagina adicional", "paginas adicionais", "mais paginas"],
   "loja-woocommerce": [
     "loja", "e-commerce", "ecommerce", "woocommerce", "vender online", "venda online",
