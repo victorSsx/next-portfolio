@@ -5,7 +5,7 @@ import { AnimationObserver } from "./components/AnimationObserver";
 import { LanguageProvider } from "./lib/LanguageContext";
 
 const SITE_URL = "https://next-portfolio-navy-five-46.vercel.app";
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID; // ex: G-XXXXXXXXXX
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID || "G-3WS5PGSFHJ"; // ID de medição do Google Analytics
 const GSC_VERIFICATION = process.env.NEXT_PUBLIC_GSC_VERIFICATION; // código do Search Console
 
 export const metadata: Metadata = {
