@@ -77,6 +77,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Foto muito grande." }, { status: 400 });
   }
 
+  // País detectado pela geolocalização de borda da Vercel (sem API externa).
+  const countryHeader = (request.headers.get("x-vercel-ip-country") || "").trim().toUpperCase();
+  const country = /^[A-Z]{2}$/.test(countryHeader) ? countryHeader : undefined;
+
   const pending: PendingTestimonial = {
     id: `t-${Date.now().toString(36)}`,
     name,
@@ -86,6 +90,7 @@ export async function POST(request: Request) {
     rating,
     submittedAt: new Date().toISOString(),
     ...(photo ? { photo } : {}),
+    ...(country ? { country } : {}),
   };
 
   try {

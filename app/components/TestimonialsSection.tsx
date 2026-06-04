@@ -11,6 +11,10 @@ const approvedTestimonials = (siteData.testimonials ?? []) as Testimonial[];
 const WORKANA_URL = "https://www.workana.com/freelancer/d6e8a59b03761470ce1e4c7707997550";
 const WORKANA_REVIEWS = 2;
 
+// Bandeira por código ISO do país (imagens — funcionam em qualquer sistema, inclusive Windows)
+const flagUrl = (code?: string) =>
+  code && /^[a-zA-Z]{2}$/.test(code) ? `https://flagcdn.com/${code.toLowerCase()}.svg` : null;
+
 // ── Star rating display ──────────────────────────────────────────────────────
 
 function StarRating({ rating }: { rating: number }) {
@@ -239,7 +243,17 @@ export function TestimonialsSection() {
                     {item.photo ? <img src={item.photo} alt="" /> : item.name.charAt(0)}
                   </div>
                   <div>
-                    <strong>{item.name}</strong>
+                    <strong className="testimonial-card__name">
+                      {item.name}
+                      {flagUrl(item.country) && (
+                        <img
+                          className="testimonial-flag"
+                          src={flagUrl(item.country) as string}
+                          alt={item.country}
+                          title={item.country}
+                        />
+                      )}
+                    </strong>
                     <span>
                       {item.role}
                       {item.role && item.company ? " · " : ""}

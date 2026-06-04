@@ -99,6 +99,7 @@ export type Testimonial = {
   text: string;
   rating: number;
   photo?: string; // compressed base64 JPEG or image URL
+  country?: string; // código ISO do país (ex: "BR"), detectado no envio
 };
 
 export type PendingTestimonial = Testimonial & {

@@ -4661,6 +4661,17 @@ a {
   padding-top: 14px;
 }
 
+.testimonial-flag {
+  display: inline-block;
+  width: 22px;
+  height: 16px;
+  margin-left: 8px;
+  border-radius: 3px;
+  object-fit: cover;
+  box-shadow: 0 0 0 1px rgba(245, 242, 236, 0.18);
+  vertical-align: -2px;
+}
+
 .testimonial-card__avatar {
   width: 40px;
   height: 40px;

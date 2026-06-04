@@ -98,6 +98,10 @@ const createFreeTool = (): FreeTool => ({
   tag: "",
 });
 
+// Bandeira do país por código ISO (imagens flagcdn).
+const flagUrl = (code?: string): string | null =>
+  code && /^[a-zA-Z]{2}$/.test(code) ? `https://flagcdn.com/${code.toLowerCase()}.svg` : null;
+
 // Monta um link clicável a partir do contato do lead (e-mail ou WhatsApp/telefone).
 const leadContactHref = (contact: string): string | null => {
   const c = contact.trim();
@@ -1647,7 +1651,17 @@ export default function AdminPage() {
                     </div>
                     <div className="admin-pending-card__body">
                       <div className="admin-pending-card__meta">
-                        <strong>{pending.name}</strong>
+                        <strong>
+                          {pending.name}
+                          {flagUrl(pending.country) && (
+                            <img
+                              className="testimonial-flag"
+                              src={flagUrl(pending.country) as string}
+                              alt={pending.country}
+                              title={pending.country}
+                            />
+                          )}
+                        </strong>
                         {pending.role && <span>{pending.role}{pending.company ? ` · ${pending.company}` : ""}</span>}
                         <span className="admin-pending-card__date">
                           {new Date(pending.submittedAt).toLocaleDateString("pt-BR")}
@@ -1715,7 +1729,17 @@ export default function AdminPage() {
                     </div>
                     <div className="admin-pending-card__body">
                       <div className="admin-pending-card__meta">
-                        <strong>{item.name}</strong>
+                        <strong>
+                          {item.name}
+                          {flagUrl(item.country) && (
+                            <img
+                              className="testimonial-flag"
+                              src={flagUrl(item.country) as string}
+                              alt={item.country}
+                              title={item.country}
+                            />
+                          )}
+                        </strong>
                         {item.role && <span>{item.role}{item.company ? ` · ${item.company}` : ""}</span>}
                         <span className="admin-pending-card__stars">
                           {"★".repeat(item.rating)}{"☆".repeat(5 - item.rating)}
