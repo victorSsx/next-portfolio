@@ -1120,6 +1120,85 @@ a {
   font-size: 18px;
 }
 
+.totals__note {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.totals__note span {
+  color: rgba(245, 242, 236, 0.7);
+  font-size: 13px;
+}
+
+.totals__note strong {
+  margin-top: 0;
+  color: var(--gold-strong);
+  font-size: 15px;
+}
+
+/* Domínio e hospedagem (orçamento) */
+.budget-hosting {
+  margin-top: 18px;
+  padding: 16px;
+  border: 1px solid rgba(245, 242, 236, 0.1);
+  border-radius: 10px;
+  background: rgba(245, 242, 236, 0.025);
+}
+
+.budget-hosting__title {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 800;
+  color: var(--white);
+}
+
+.budget-hosting__hint {
+  margin: 4px 0 12px;
+  font-size: 12px;
+  color: rgba(245, 242, 236, 0.5);
+  line-height: 1.5;
+}
+
+.budget-hosting__opt {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 11px;
+  margin-bottom: 8px;
+  border: 1px solid rgba(245, 242, 236, 0.1);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 1.35;
+  color: rgba(245, 242, 236, 0.8);
+  transition: border-color 0.18s, background 0.18s;
+}
+
+.budget-hosting__opt:last-child {
+  margin-bottom: 0;
+}
+
+.budget-hosting__opt:hover {
+  border-color: rgba(199, 164, 71, 0.35);
+}
+
+.budget-hosting__opt.is-active {
+  border-color: rgba(199, 164, 71, 0.55);
+  background: rgba(199, 164, 71, 0.08);
+  color: var(--white);
+}
+
+.budget-hosting__opt input {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+
 .budget-panel__cta {
   width: 100%;
   margin-top: 18px;

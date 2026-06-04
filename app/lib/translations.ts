@@ -77,6 +77,18 @@ export type Translations = {
     packageSavings: string;
     packageIncludes: string;
     packageDiscount: string;
+    hosting: {
+      title: string;
+      hint: string;
+      have: string;
+      help: string;
+      acquireClient: string;
+      acquireVictor: string;
+      configLabel: string;
+      included: string;
+      annualLabel: string;
+      perYear: string;
+    };
   };
   faq: {
     eyebrow: string;
@@ -244,6 +256,18 @@ export const translations: Record<Language, Translations> = {
       packageSavings: "Economize",
       packageIncludes: "O que inclui",
       packageDiscount: "Desconto de pacote",
+      hosting: {
+        title: "Domínio e hospedagem",
+        hint: "Onde seu site fica no ar. A mão de obra é grátis junto com um site, loja ou pacote.",
+        have: "Já tenho domínio e hospedagem",
+        help: "Tenho, mas preciso de ajuda para configurar",
+        acquireClient: "Preciso adquirir — eu compro, você configura",
+        acquireVictor: "Preciso adquirir — você compra e repassa o custo",
+        configLabel: "Configuração de domínio e hospedagem",
+        included: "incluso",
+        annualLabel: "Domínio + hospedagem (pago ao provedor)",
+        perYear: "/ano",
+      },
     },
     faq: {
       eyebrow: "Dúvidas frequentes",
@@ -426,6 +450,18 @@ export const translations: Record<Language, Translations> = {
       packageSavings: "Save",
       packageIncludes: "What's included",
       packageDiscount: "Package discount",
+      hosting: {
+        title: "Domain & hosting",
+        hint: "Where your site lives online. Setup labor is free with a site, store or package.",
+        have: "I already have domain & hosting",
+        help: "I have it, but need help setting it up",
+        acquireClient: "I need to get it — I buy, you configure",
+        acquireVictor: "I need to get it — you buy and pass the cost",
+        configLabel: "Domain & hosting setup",
+        included: "included",
+        annualLabel: "Domain + hosting (paid to provider)",
+        perYear: "/yr",
+      },
     },
     faq: {
       eyebrow: "FAQ",
@@ -608,6 +644,18 @@ export const translations: Record<Language, Translations> = {
       packageSavings: "Ahorra",
       packageIncludes: "Qué incluye",
       packageDiscount: "Descuento de paquete",
+      hosting: {
+        title: "Dominio y hosting",
+        hint: "Donde vive tu sitio. La mano de obra es gratis junto con un sitio, tienda o paquete.",
+        have: "Ya tengo dominio y hosting",
+        help: "Lo tengo, pero necesito ayuda para configurar",
+        acquireClient: "Necesito adquirirlo — yo compro, tú configuras",
+        acquireVictor: "Necesito adquirirlo — tú compras y repasas el costo",
+        configLabel: "Configuración de dominio y hosting",
+        included: "incluido",
+        annualLabel: "Dominio + hosting (pagado al proveedor)",
+        perYear: "/año",
+      },
     },
     faq: {
       eyebrow: "Preguntas frecuentes",

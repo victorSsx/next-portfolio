@@ -3,17 +3,23 @@
 import { useMemo, useRef, useState } from "react";
 import { siteData, type BudgetService, type CategoryId, type Package } from "../lib/site-data";
 import { useLanguage } from "../lib/LanguageContext";
-import type { Language } from "../lib/translations";
+import { translations, type Language } from "../lib/translations";
 
 type BudgetChannel = "workana" | "upwork" | "direto";
 type SendStatus = "idle" | "sending" | "sent" | "error";
 type Currency = "BRL" | "USD";
 type ChannelStep = "selecting" | "browsing";
+type HostingOption = "have" | "help" | "acquire-client" | "acquire-victor";
 
 const WHATSAPP_URL = "https://wa.me/5521975990988";
 
 // Update this value when the exchange rate changes significantly
 const USD_TO_BRL = 5.5;
+
+// Domínio e hospedagem (valores em BRL — ajuste conforme seus preços)
+const HOSTING_HELP_LABOR = 80; // configurar algo que o cliente já tem
+const HOSTING_SETUP_LABOR = 120; // adquirir + configurar do zero
+const HOSTING_RESOURCE_ANNUAL = 290; // repasse anual estimado (domínio + hospedagem)
 
 const services: BudgetService[] = siteData.services;
 const packages: Package[] = siteData.packages ?? [];
@@ -60,7 +66,8 @@ function buildBudgetMessage(
   selectedItems: { service: BudgetService; quantity: number }[],
   onceTotal: number,
   monthlyTotal: number,
-  packageDiscount: number
+  packageDiscount: number,
+  hostingNote: string
 ): string {
   const hasSelected = selectedItems.length > 0;
 
@@ -96,6 +103,7 @@ function buildBudgetMessage(
       "",
       "I'm interested in the following services:",
       serviceLines,
+      hostingNote || "",
       packageDiscount > 0 ? `Package discount: -${formatAmount(packageDiscount, "USD")}` : "",
       "",
       `Estimated one-time investment: ${formatAmount(onceTotal, "USD")}`,
@@ -124,6 +132,7 @@ function buildBudgetMessage(
       "",
       "Estoy interesado en los siguientes servicios:",
       serviceLines,
+      hostingNote || "",
       packageDiscount > 0 ? `Descuento de paquete: -${formatAmount(packageDiscount, currency)}` : "",
       "",
       `Inversión única estimada: ${formatAmount(onceTotal, currency)}`,
@@ -152,6 +161,7 @@ function buildBudgetMessage(
     "",
     "Tenho interesse nos seguintes serviços:",
     serviceLines,
+    hostingNote || "",
     packageDiscount > 0 ? `Desconto de pacote: -${formatAmount(packageDiscount, "BRL")}` : "",
     "",
     `Investimento único estimado: ${formatAmount(onceTotal, "BRL")}`,
@@ -176,6 +186,7 @@ export function BudgetSection() {
   const [copyStatus, setCopyStatus] = useState("");
   const [sendStatus, setSendStatus] = useState<SendStatus>("idle");
   const [selectedServices, setSelectedServices] = useState<Record<string, number>>({});
+  const [hostingOption, setHostingOption] = useState<HostingOption>("have");
 
   const categories = useMemo(
     () => [
@@ -245,6 +256,7 @@ export function BudgetSection() {
     setBudgetChannel(channel);
     setChannelStep("browsing");
     setSelectedServices({});
+    setHostingOption("have");
     setCopyStatus("");
     setSendStatus("idle");
   }
@@ -252,6 +264,7 @@ export function BudgetSection() {
   function goBack() {
     setChannelStep("selecting");
     setSelectedServices({});
+    setHostingOption("have");
     setCopyStatus("");
     setSendStatus("idle");
     setDetectedCurrency(null);
@@ -292,11 +305,36 @@ export function BudgetSection() {
     [selectedServices]
   );
 
-  const onceTotal = Math.max(0, onceSubtotal - packageDiscount);
+  // Domínio e hospedagem: mão de obra grátis quando há criação de site/loja ou pacote.
+  const hasCreation = selectedItems.some(
+    ({ service }) => service.category === "sites" || service.category === "ecommerce"
+  );
+  const hostingLaborBase =
+    hostingOption === "help"
+      ? HOSTING_HELP_LABOR
+      : hostingOption === "acquire-client" || hostingOption === "acquire-victor"
+        ? HOSTING_SETUP_LABOR
+        : 0;
+  const hostingLabor = hasCreation ? 0 : hostingLaborBase;
+  const hostingAnnual = hostingOption === "acquire-victor" ? HOSTING_RESOURCE_ANNUAL : 0;
+
+  const onceTotal = Math.max(0, onceSubtotal - packageDiscount) + hostingLabor;
+
+  // Linha(s) de hospedagem para a mensagem, no idioma da mensagem.
+  const hostingNote = useMemo(() => {
+    if (hostingOption === "have") return "";
+    const h = translations[messageLang].budget.hosting;
+    const labor = hostingLabor > 0 ? formatAmount(hostingLabor, currency) : h.included;
+    let note = `- ${h.configLabel}: ${labor}`;
+    if (hostingAnnual > 0) {
+      note += `\n- ${h.annualLabel}: ~${formatAmount(hostingAnnual, currency)}${h.perYear}`;
+    }
+    return note;
+  }, [hostingOption, hostingLabor, hostingAnnual, messageLang, currency]);
 
   const budgetMessage = useMemo(
-    () => buildBudgetMessage(messageLang, currency, selectedItems, onceTotal, monthlyTotal, packageDiscount),
-    [messageLang, currency, selectedItems, onceTotal, monthlyTotal, packageDiscount]
+    () => buildBudgetMessage(messageLang, currency, selectedItems, onceTotal, monthlyTotal, packageDiscount, hostingNote),
+    [messageLang, currency, selectedItems, onceTotal, monthlyTotal, packageDiscount, hostingNote]
   );
 
   function getPackagePrices(pkg: Package) {
@@ -604,11 +642,51 @@ export function BudgetSection() {
             )}
           </div>
 
+          <div className="budget-hosting">
+            <p className="budget-hosting__title">{t.budget.hosting.title}</p>
+            <p className="budget-hosting__hint">{t.budget.hosting.hint}</p>
+            {(
+              [
+                ["have", t.budget.hosting.have],
+                ["help", t.budget.hosting.help],
+                ["acquire-client", t.budget.hosting.acquireClient],
+                ["acquire-victor", t.budget.hosting.acquireVictor],
+              ] as [HostingOption, string][]
+            ).map(([val, label]) => (
+              <label key={val} className={`budget-hosting__opt${hostingOption === val ? " is-active" : ""}`}>
+                <input
+                  type="radio"
+                  name="hosting"
+                  checked={hostingOption === val}
+                  onChange={() => setHostingOption(val)}
+                />
+                <span>{label}</span>
+              </label>
+            ))}
+          </div>
+
           <div className="totals">
             {packageDiscount > 0 && (
               <div className="totals__discount">
                 <span>{t.budget.packageDiscount}</span>
                 <strong>− {formatAmount(packageDiscount, currency)}</strong>
+              </div>
+            )}
+            {hostingOption !== "have" && (
+              <div className="totals__note">
+                <span>{t.budget.hosting.configLabel}</span>
+                <strong>
+                  {hostingLabor > 0 ? formatAmount(hostingLabor, currency) : t.budget.hosting.included}
+                </strong>
+              </div>
+            )}
+            {hostingAnnual > 0 && (
+              <div className="totals__note">
+                <span>{t.budget.hosting.annualLabel}</span>
+                <strong>
+                  ~{formatAmount(hostingAnnual, currency)}
+                  {t.budget.hosting.perYear}
+                </strong>
               </div>
             )}
             <div>
