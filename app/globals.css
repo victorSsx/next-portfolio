@@ -2867,6 +2867,55 @@ a {
   font-size: 0.82rem;
 }
 
+/* Consultor IA (admin) */
+.advisor-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.advisor-answer {
+  color: rgba(245, 242, 236, 0.88);
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.advisor-answer strong {
+  color: var(--white);
+}
+
+.advisor-sources {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(245, 242, 236, 0.1);
+}
+
+.advisor-sources span {
+  color: rgba(245, 242, 236, 0.5);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.advisor-sources a {
+  color: var(--gold);
+  font-size: 0.82rem;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.advisor-sources a:hover {
+  border-color: rgba(199, 164, 71, 0.6);
+}
+
 .admin-rows {
   display: grid;
   gap: 10px;

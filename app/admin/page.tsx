@@ -25,7 +25,8 @@ type AdminTab =
   | "testimonials"
   | "freetools"
   | "analise"
-  | "leads";
+  | "leads"
+  | "consultor";
 type SaveStatus = "idle" | "loading" | "saving" | "uploading" | "saved" | "error";
 type UploadKind = "main-image" | "gallery" | "video" | "video-poster";
 type DeviceViewDevice = "tablet" | "mobile";
@@ -111,6 +112,17 @@ const leadContactHref = (contact: string): string | null => {
   return null;
 };
 
+// Renderização leve de markdown (negrito, listas, quebras) — conteúdo vem da IA, atrás da senha do admin.
+const renderAdvisor = (text: string): string =>
+  text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+    .replace(/^#{1,6}\s*(.+)$/gm, "<strong>$1</strong>")
+    .replace(/^\s*[-*]\s+/gm, "• ")
+    .replace(/\n/g, "<br/>");
+
 type NewServiceSuggestion = {
   tempId: string;
   title: string;
@@ -141,6 +153,12 @@ export default function AdminPage() {
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState("");
   const [aiNewServices, setAiNewServices] = useState<NewServiceSuggestion[]>([]);
+  const [advisorText, setAdvisorText] = useState("");
+  const [advisorSources, setAdvisorSources] = useState<{ title: string; uri: string }[]>([]);
+  const [advisorLoading, setAdvisorLoading] = useState("");
+  const [advisorError, setAdvisorError] = useState("");
+  const [advisorQuestion, setAdvisorQuestion] = useState("");
+  const [advisorPrices, setAdvisorPrices] = useState("");
 
   const activeProject = useMemo(
     () => data.projects.find((p) => p.id === activeProjectId) || data.projects[0],
@@ -662,6 +680,39 @@ export default function AdminPage() {
     setAiNewServices((cur) => cur.filter((x) => x.tempId !== tempId));
   };
 
+  const runAdvisor = async (mode: "pricing" | "innovation" | "ask") => {
+    if (mode === "ask" && !advisorQuestion.trim()) return;
+    setAdvisorLoading(mode);
+    setAdvisorError("");
+    try {
+      const res = await fetch("/api/admin/advisor", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": password },
+        body: JSON.stringify({
+          mode,
+          question: advisorQuestion,
+          pastedPrices: advisorPrices,
+          services: data.services,
+          packages: data.packages ?? [],
+        }),
+      });
+      const json = (await res.json()) as {
+        text?: string;
+        sources?: { title: string; uri: string }[];
+        error?: string;
+      };
+      if (!res.ok || !json.text) throw new Error(json.error || "Erro ao consultar a IA.");
+      setAdvisorText(json.text);
+      setAdvisorSources(json.sources ?? []);
+    } catch (err) {
+      setAdvisorError(err instanceof Error ? err.message : "Erro ao consultar a IA.");
+      setAdvisorText("");
+      setAdvisorSources([]);
+    } finally {
+      setAdvisorLoading("");
+    }
+  };
+
   const removeLead = (id: string) => {
     setData((cur) => ({ ...cur, leads: (cur.leads ?? []).filter((l) => l.id !== id) }));
     setStatus("saved");
@@ -859,7 +910,7 @@ export default function AdminPage() {
       </div>
 
       <nav className="admin-tabs" aria-label="Seções administrativas">
-        {(["projects", "services", "categories", "technologies", "testimonials", "freetools", "analise", "leads"] as const).map((id) => {
+        {(["projects", "services", "categories", "technologies", "testimonials", "freetools", "analise", "leads", "consultor"] as const).map((id) => {
           const pendingCount =
             id === "testimonials"
               ? (data.pendingTestimonials?.length ?? 0)
@@ -887,7 +938,9 @@ export default function AdminPage() {
                           ? "Sistemas grátis"
                           : id === "analise"
                             ? "Análise de escopo"
-                            : "Pedidos"}
+                            : id === "leads"
+                              ? "Pedidos"
+                              : "Consultor IA"}
               {pendingCount > 0 && <span className="admin-tab-badge">{pendingCount}</span>}
             </button>
           );
@@ -2164,6 +2217,98 @@ export default function AdminPage() {
               </div>
             )}
           </div>
+        </section>
+      ) : null}
+
+      {/* ── Consultor IA tab ─────────────────────────────────────────────────── */}
+      {activeTab === "consultor" ? (
+        <section className="admin-form">
+          <div className="admin-card">
+            <div className="admin-card__head">
+              <p className="eyebrow">Só pra você</p>
+              <h2>Consultor IA</h2>
+            </div>
+            <p className="admin-card__desc">
+              Conselhos para tocar o negócio: análise de preços (com busca atual de mercado), ideias de inovação e
+              perguntas livres — tudo com base nos seus serviços.
+            </p>
+            <div className="advisor-actions">
+              <button
+                className="button button--primary"
+                type="button"
+                disabled={Boolean(advisorLoading)}
+                onClick={() => runAdvisor("pricing")}
+              >
+                {advisorLoading === "pricing" ? "Analisando…" : "Analisar meus preços"}
+              </button>
+              <button
+                className="button button--ghost"
+                type="button"
+                disabled={Boolean(advisorLoading)}
+                onClick={() => runAdvisor("innovation")}
+              >
+                {advisorLoading === "innovation" ? "Pensando…" : "Ideias de inovação"}
+              </button>
+            </div>
+          </div>
+
+          <div className="admin-card">
+            <div className="admin-card__head">
+              <p className="eyebrow">Pergunta livre</p>
+              <h2>Pergunte ao consultor</h2>
+            </div>
+            <label>
+              Sua pergunta
+              <textarea
+                value={advisorQuestion}
+                onChange={(e) => setAdvisorQuestion(e.target.value)}
+                rows={3}
+                placeholder="Ex: vale a pena criar um plano mensal de conteúdo? Como me diferenciar de agências?"
+              />
+            </label>
+            <label>
+              Preços que você viu <span className="admin-hint">(opcional — cole pra comparar com os seus)</span>
+              <textarea
+                value={advisorPrices}
+                onChange={(e) => setAdvisorPrices(e.target.value)}
+                rows={3}
+                placeholder="Ex: landing page R$ 1200, loja R$ 3000, manutenção R$ 250/mês..."
+              />
+            </label>
+            <button
+              className="button button--primary"
+              type="button"
+              disabled={Boolean(advisorLoading) || !advisorQuestion.trim()}
+              onClick={() => runAdvisor("ask")}
+            >
+              {advisorLoading === "ask" ? "Consultando…" : "Perguntar"}
+            </button>
+          </div>
+
+          {advisorError ? <p className="admin-status admin-status--error">{advisorError}</p> : null}
+
+          {advisorText ? (
+            <div className="admin-card">
+              <div className="admin-card__head">
+                <p className="eyebrow">Resposta</p>
+                <h2>O que o consultor diz</h2>
+              </div>
+              <div
+                className="advisor-answer"
+                dangerouslySetInnerHTML={{ __html: renderAdvisor(advisorText) }}
+              />
+              {advisorSources.length > 0 ? (
+                <div className="advisor-sources">
+                  <span>Fontes:</span>
+                  {advisorSources.map((s, i) => (
+                    <a key={i} href={s.uri} target="_blank" rel="noreferrer">
+                      {s.title || `Fonte ${i + 1}`}
+                    </a>
+                  ))}
+                </div>
+              ) : null}
+            </div>
+          ) : null}
         </section>
       ) : null}
     </main>
