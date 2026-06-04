@@ -80,16 +80,7 @@
       "discount": 100
     }
   ],
-  "testimonials": [
-    {
-      "id": "t-mpyuqx9h",
-      "name": "victor",
-      "role": "freelaancer",
-      "company": "V",
-      "text": "Um ótimo profissional, gostei muito dos serviços dele.",
-      "rating": 5
-    }
-  ],
+  "testimonials": [],
   "pendingTestimonials": [],
   "projectStats": [
     {
