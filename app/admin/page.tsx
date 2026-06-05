@@ -9,6 +9,7 @@ import {
   type DeviceView,
   type FreeTool,
   type Lead,
+  type PaymentLink,
   type PendingTestimonial,
   type Project,
   type ProjectImage,
@@ -25,6 +26,7 @@ type AdminTab =
   | "technologies"
   | "testimonials"
   | "freetools"
+  | "pagamentos"
   | "analise"
   | "leads"
   | "consultor";
@@ -98,6 +100,14 @@ const createFreeTool = (): FreeTool => ({
   url: "",
   icon: "✦",
   tag: "",
+});
+
+const createPaymentLink = (): PaymentLink => ({
+  id: makeId("pay"),
+  label: "Pagar sinal (PIX / cartão)",
+  url: "",
+  region: "br",
+  note: "",
 });
 
 // Bandeira do país por código ISO (imagens flagcdn).
@@ -578,6 +588,26 @@ export default function AdminPage() {
     setData((cur) => ({ ...cur, freeTools: [...(cur.freeTools ?? []), createFreeTool()] }));
   };
 
+  // ── Payment links helpers ──────────────────────────────────────────────────────
+
+  const updatePaymentLink = (id: string, patch: Partial<PaymentLink>) => {
+    setData((cur) => ({
+      ...cur,
+      paymentLinks: (cur.paymentLinks ?? []).map((p) => (p.id === id ? { ...p, ...patch } : p)),
+    }));
+  };
+
+  const removePaymentLink = (id: string) => {
+    setData((cur) => ({
+      ...cur,
+      paymentLinks: (cur.paymentLinks ?? []).filter((p) => p.id !== id),
+    }));
+  };
+
+  const addPaymentLink = () => {
+    setData((cur) => ({ ...cur, paymentLinks: [...(cur.paymentLinks ?? []), createPaymentLink()] }));
+  };
+
   // ── Scope analyzer helpers ─────────────────────────────────────────────────────
 
   const scopeResult = useMemo(
@@ -922,7 +952,7 @@ export default function AdminPage() {
       </div>
 
       <nav className="admin-tabs" aria-label="Seções administrativas">
-        {(["projects", "services", "categories", "technologies", "testimonials", "freetools", "analise", "leads", "consultor"] as const).map((id) => {
+        {(["projects", "services", "categories", "technologies", "testimonials", "freetools", "pagamentos", "analise", "leads", "consultor"] as const).map((id) => {
           const pendingCount =
             id === "testimonials"
               ? (data.pendingTestimonials?.length ?? 0)
@@ -948,11 +978,13 @@ export default function AdminPage() {
                         ? "Depoimentos"
                         : id === "freetools"
                           ? "Sistemas grátis"
-                          : id === "analise"
-                            ? "Análise de escopo"
-                            : id === "leads"
-                              ? "Pedidos"
-                              : "Consultor IA"}
+                          : id === "pagamentos"
+                            ? "Pagamentos"
+                            : id === "analise"
+                              ? "Análise de escopo"
+                              : id === "leads"
+                                ? "Pedidos"
+                                : "Consultor IA"}
               {pendingCount > 0 && <span className="admin-tab-badge">{pendingCount}</span>}
             </button>
           );
@@ -2097,6 +2129,84 @@ export default function AdminPage() {
                     </label>
                     <button className="admin-danger" type="button" onClick={() => removeFreeTool(tool.id)}>
                       Remover sistema
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </section>
+      ) : null}
+
+      {/* ── Payments tab ─────────────────────────────────────────────────────── */}
+      {activeTab === "pagamentos" ? (
+        <section className="admin-form">
+          <div className="admin-card">
+            <div className="admin-card__head">
+              <p className="eyebrow">Indicação direta</p>
+              <h2>Links de pagamento</h2>
+              <button className="admin-inline admin-card__action" type="button" onClick={addPaymentLink}>
+                + Adicionar link
+              </button>
+            </div>
+            <p className="admin-card__desc">
+              Cole aqui os links de cobrança que você cria no seu provedor (Mercado Pago, Stripe, PayPal...).
+              Eles viram um botão de &quot;sinal/entrada&quot; só para quem veio por indicação direta — em
+              Workana e Upwork o pagamento é pela própria plataforma.
+            </p>
+            <p className="admin-hint">
+              🔒 O cliente paga numa página do provedor; nenhum dado de cartão passa pelo seu site. Dica:
+              configure o link como sinal de 50% para travar a vaga.
+            </p>
+
+            {!data.paymentLinks?.length ? (
+              <p className="admin-empty">Nenhum link cadastrado ainda.</p>
+            ) : (
+              <div className="admin-freetools">
+                {data.paymentLinks.map((p: PaymentLink) => (
+                  <div className="admin-freetool" key={p.id}>
+                    <div className="admin-freetool__grid">
+                      <label>
+                        Texto do botão
+                        <input
+                          value={p.label}
+                          onChange={(e) => updatePaymentLink(p.id, { label: e.target.value })}
+                          placeholder="Pagar sinal (PIX / cartão)"
+                        />
+                      </label>
+                      <label>
+                        Mostrar para
+                        <select
+                          value={p.region}
+                          onChange={(e) =>
+                            updatePaymentLink(p.id, { region: e.target.value as PaymentLink["region"] })
+                          }
+                        >
+                          <option value="br">Brasil (R$)</option>
+                          <option value="intl">Internacional ($)</option>
+                          <option value="all">Todos</option>
+                        </select>
+                      </label>
+                    </div>
+                    <label>
+                      Link de pagamento
+                      <input
+                        type="url"
+                        value={p.url}
+                        onChange={(e) => updatePaymentLink(p.id, { url: e.target.value })}
+                        placeholder="https://mpago.la/..."
+                      />
+                    </label>
+                    <label>
+                      Observação <span className="admin-hint">(opcional)</span>
+                      <input
+                        value={p.note ?? ""}
+                        onChange={(e) => updatePaymentLink(p.id, { note: e.target.value })}
+                        placeholder="Mercado Pago — PIX ou cartão em até 12x"
+                      />
+                    </label>
+                    <button className="admin-danger" type="button" onClick={() => removePaymentLink(p.id)}>
+                      Remover link
                     </button>
                   </div>
                 ))}

@@ -75,6 +75,20 @@ const normalizeSiteData = (data: Partial<SiteData>): SiteData => ({
     : undefined,
   leads: Array.isArray(data.leads) ? data.leads : undefined,
   coupons: Array.isArray(data.coupons) ? data.coupons : undefined,
+  paymentLinks: Array.isArray(data.paymentLinks)
+    ? data.paymentLinks
+        .map((p) => ({
+          id: String(p?.id || "").trim(),
+          label: String(p?.label || "").trim(),
+          url: String(p?.url || "").trim(),
+          region: (["br", "intl", "all"].includes(p?.region as string) ? p?.region : "all") as
+            | "br"
+            | "intl"
+            | "all",
+          ...(p?.note ? { note: String(p.note).trim() } : {}),
+        }))
+        .filter((p) => p.id && p.label && p.url)
+    : undefined,
   serviceCategories: Array.isArray(data.serviceCategories)
     ? data.serviceCategories
         .map((category) => ({

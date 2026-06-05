@@ -97,6 +97,11 @@ export type Translations = {
       invalid: string;
       lineLabel: string;
     };
+    payment: {
+      title: string;
+      hint: string;
+      secure: string;
+    };
   };
   faq: {
     eyebrow: string;
@@ -284,6 +289,11 @@ export const translations: Record<Language, Translations> = {
         applied: "Cupom aplicado!",
         invalid: "Cupom inválido",
         lineLabel: "Desconto do cupom",
+      },
+      payment: {
+        title: "Pronto para começar?",
+        hint: "Garanta sua vaga com um sinal agora. O restante fica para a entrega.",
+        secure: "Pagamento processado pelo provedor — seus dados de cartão não passam por este site.",
       },
     },
     faq: {
@@ -488,6 +498,11 @@ export const translations: Record<Language, Translations> = {
         invalid: "Invalid coupon",
         lineLabel: "Coupon discount",
       },
+      payment: {
+        title: "Ready to start?",
+        hint: "Secure your spot with a deposit now. The rest on delivery.",
+        secure: "Payment processed by the provider — your card details never touch this site.",
+      },
     },
     faq: {
       eyebrow: "FAQ",
@@ -690,6 +705,11 @@ export const translations: Record<Language, Translations> = {
         applied: "¡Cupón aplicado!",
         invalid: "Cupón inválido",
         lineLabel: "Descuento del cupón",
+      },
+      payment: {
+        title: "¿Listo para empezar?",
+        hint: "Asegura tu lugar con una seña ahora. El resto en la entrega.",
+        secure: "Pago procesado por el proveedor — los datos de tu tarjeta no pasan por este sitio.",
       },
     },
     faq: {

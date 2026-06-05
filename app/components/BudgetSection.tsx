@@ -360,6 +360,13 @@ export function BudgetSection() {
     [messageLang, currency, selectedItems, onceTotal, monthlyTotal, packageDiscount, hostingNote, couponDiscount, appliedCoupon]
   );
 
+  // Links de pagamento: só para indicação direta, filtrados pela moeda detectada.
+  const paymentLinks = useMemo(() => {
+    if (budgetChannel !== "direto") return [];
+    const region = currency === "BRL" ? "br" : "intl";
+    return (siteData.paymentLinks ?? []).filter((p) => p.region === region || p.region === "all");
+  }, [budgetChannel, currency]);
+
   function applyCoupon() {
     const code = couponInput.trim().toUpperCase();
     if (!code) return;
@@ -821,6 +828,28 @@ export function BudgetSection() {
           {sendStatus === "error" ? (
             <p className="budget-status budget-status--warning">{t.budget.couldNotCopy}</p>
           ) : null}
+
+          {paymentLinks.length > 0 && (
+            <div className="budget-payment">
+              <p className="budget-payment__title">{t.budget.payment.title}</p>
+              <p className="budget-payment__hint">{t.budget.payment.hint}</p>
+              <div className="budget-payment__links">
+                {paymentLinks.map((p) => (
+                  <a
+                    key={p.id}
+                    className="budget-payment__btn"
+                    href={p.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span className="budget-payment__btn-label">{p.label}</span>
+                    {p.note ? <span className="budget-payment__btn-note">{p.note}</span> : null}
+                  </a>
+                ))}
+              </div>
+              <p className="budget-payment__secure">🔒 {t.budget.payment.secure}</p>
+            </div>
+          )}
         </aside>
       </div>
     </section>

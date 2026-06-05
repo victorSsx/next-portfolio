@@ -88,6 +88,14 @@ export type Coupon = {
   label?: string; // ex: nome do cliente que deixou o depoimento
 };
 
+export type PaymentLink = {
+  id: string;
+  label: string; // ex: "Pagar sinal (PIX / cartão)"
+  url: string; // link hospedado do provedor (Mercado Pago, Stripe, PayPal...)
+  region: "br" | "intl" | "all"; // quando mostrar, conforme a moeda detectada
+  note?: string; // ex: "Mercado Pago — PIX ou cartão em até 12x"
+};
+
 export type Package = {
   id: string;
   tag: string;
@@ -127,6 +135,7 @@ export type SiteData = {
   freeTools?: FreeTool[];
   leads?: Lead[];
   coupons?: Coupon[];
+  paymentLinks?: PaymentLink[];
 };
 
 export const siteData = rawSiteData as SiteData;
