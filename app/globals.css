@@ -1300,6 +1300,19 @@ a {
   color: #e2766b;
 }
 
+.budget-paymethods {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 12px 0 0;
+  padding: 9px 12px;
+  border-radius: 8px;
+  background: rgba(245, 242, 236, 0.04);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: rgba(245, 242, 236, 0.72);
+}
+
 .budget-payment {
   margin-top: 18px;
   padding: 16px;

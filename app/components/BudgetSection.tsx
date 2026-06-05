@@ -829,6 +829,13 @@ export function BudgetSection() {
             <p className="budget-status budget-status--warning">{t.budget.couldNotCopy}</p>
           ) : null}
 
+          {budgetChannel === "direto" && (
+            <p className="budget-paymethods">
+              <span aria-hidden="true">💳</span>{" "}
+              {currency === "BRL" ? t.budget.payment.methodsBr : t.budget.payment.methodsIntl}
+            </p>
+          )}
+
           {paymentLinks.length > 0 && (
             <div className="budget-payment">
               <p className="budget-payment__title">{t.budget.payment.title}</p>

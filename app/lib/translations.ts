@@ -101,6 +101,8 @@ export type Translations = {
       title: string;
       hint: string;
       secure: string;
+      methodsBr: string;
+      methodsIntl: string;
     };
   };
   faq: {
@@ -294,6 +296,8 @@ export const translations: Record<Language, Translations> = {
         title: "Pronto para começar?",
         hint: "Garanta sua vaga com um sinal agora. O restante fica para a entrega.",
         secure: "Pagamento processado pelo provedor — seus dados de cartão não passam por este site.",
+        methodsBr: "Pagamento: PIX, cartão em até 12x ou sinal de 50% para começar.",
+        methodsIntl: "Pagamento: cartão internacional ou 50% de entrada para começar.",
       },
     },
     faq: {
@@ -502,6 +506,8 @@ export const translations: Record<Language, Translations> = {
         title: "Ready to start?",
         hint: "Secure your spot with a deposit now. The rest on delivery.",
         secure: "Payment processed by the provider — your card details never touch this site.",
+        methodsBr: "Payment: PIX, card in up to 12x, or a 50% deposit to start.",
+        methodsIntl: "Payment: international cards or 50% upfront to get started.",
       },
     },
     faq: {
@@ -710,6 +716,8 @@ export const translations: Record<Language, Translations> = {
         title: "¿Listo para empezar?",
         hint: "Asegura tu lugar con una seña ahora. El resto en la entrega.",
         secure: "Pago procesado por el proveedor — los datos de tu tarjeta no pasan por este sitio.",
+        methodsBr: "Pago: PIX, tarjeta hasta 12x o una seña del 50% para empezar.",
+        methodsIntl: "Pago: tarjetas internacionales o 50% por adelantado para empezar.",
       },
     },
     faq: {
