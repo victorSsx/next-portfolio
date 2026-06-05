@@ -115,6 +115,15 @@
       "createdAt": "2026-06-04T08:09:25.467Z"
     }
   ],
+  "paymentLinks": [
+    {
+      "id": "pay-mq0t47sz",
+      "label": "Pagar sinal (PIX / cartão)",
+      "url": "https://link.mercadopago.com.br/devictor",
+      "region": "br",
+      "note": "Mercado Pago - PIX ou cartão em até 12x"
+    }
+  ],
   "serviceCategories": [
     {
       "id": "sites",
