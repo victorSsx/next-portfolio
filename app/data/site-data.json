@@ -11,7 +11,19 @@
         "landing-page",
         "seo-essencial"
       ],
-      "discount": 50
+      "discount": 50,
+      "i18n": {
+        "en": {
+          "title": "Online start",
+          "description": "The essential to establish an online presence and appear on Google. Ideal for those just starting out.",
+          "tag": "Economical"
+        },
+        "es": {
+          "title": "Inicio online",
+          "description": "Lo esencial para marcar presencia en internet y ya aparecer en Google. Ideal para quien está empezando.",
+          "tag": "Económico"
+        }
+      }
     },
     {
       "id": "presenca-completa",
@@ -24,7 +36,19 @@
         "seo-essencial",
         "suporte-30"
       ],
-      "discount": 50
+      "discount": 50,
+      "i18n": {
+        "en": {
+          "title": "Complete presence",
+          "description": "Professional website with everything configured and post-delivery support included. The most balanced choice.",
+          "tag": "Most popular"
+        },
+        "es": {
+          "title": "Presencia completa",
+          "description": "Sitio profesional con todo configurado y soporte post-entrega incluido. La elección más equilibrada.",
+          "tag": "Más popular"
+        }
+      }
     },
     {
       "id": "autoridade-digital",
@@ -37,7 +61,19 @@
         "seo-tecnico",
         "manutencao"
       ],
-      "discount": 100
+      "discount": 100,
+      "i18n": {
+        "en": {
+          "title": "Digital authority",
+          "description": "Website with a blog to grow on Google continuously, with technical SEO and a monthly care plan.",
+          "tag": "Best return"
+        },
+        "es": {
+          "title": "Autoridad digital",
+          "description": "Sitio con blog para crecer en Google de forma continua, con SEO técnico y plan mensual de cuidados.",
+          "tag": "Mejor retorno"
+        }
+      }
     },
     {
       "id": "loja-pronta",
@@ -51,7 +87,19 @@
         "performance",
         "manutencao"
       ],
-      "discount": 200
+      "discount": 200,
+      "i18n": {
+        "en": {
+          "title": "Ready store",
+          "description": "Complete online store with Google visibility, fast website, and monthly maintenance included.",
+          "tag": "Complete E-commerce"
+        },
+        "es": {
+          "title": "Tienda lista",
+          "description": "Tienda virtual completa con visibilidad en Google, sitio rápido y mantenimiento mensual incluido.",
+          "tag": "E-commerce completo"
+        }
+      }
     },
     {
       "id": "pacote-resgate",
@@ -64,7 +112,19 @@
         "correcao-pack",
         "performance"
       ],
-      "discount": 130
+      "discount": 130,
+      "i18n": {
+        "en": {
+          "title": "Website rescue",
+          "description": "Website with problems, slow, or full of errors? I diagnose everything, fix up to 5 bugs, and make it fast — delivery within a week.",
+          "tag": "For emergencies"
+        },
+        "es": {
+          "title": "Rescate de sitio",
+          "description": "¿Sitio con problemas, lento o lleno de errores? Diagnostico todo, corrijo hasta 5 bugs y además lo dejo rápido — entrega en hasta una semana.",
+          "tag": "Para urgencias"
+        }
+      }
     },
     {
       "id": "pacote-manutencao-pro",
@@ -77,7 +137,19 @@
         "manutencao",
         "suporte-30"
       ],
-      "discount": 100
+      "discount": 100,
+      "i18n": {
+        "en": {
+          "title": "Pro Maintenance",
+          "description": "Complete monthly plan with initial diagnosis included and 30 days of support after setup — ideal for those who want their website always working without worry.",
+          "tag": "Recurring"
+        },
+        "es": {
+          "title": "Mantenimiento Pro",
+          "description": "Plan mensual completo con diagnóstico inicial incluido y 30 días de soporte después de la configuración — ideal para quien quiere el sitio siempre funcionando sin preocupación.",
+          "tag": "Recurrente"
+        }
+      }
     }
   ],
   "testimonials": [],
@@ -103,7 +175,19 @@
       "description": "Registre receitas e despesas, controle orçamentos por categoria e planeje metas de compra. Funciona 100% no navegador, sem cadastro.",
       "url": "https://rastreador-de-despesas-pessoais.vercel.app/",
       "icon": "💰",
-      "tag": "Finanças"
+      "tag": "Finanças",
+      "i18n": {
+        "en": {
+          "name": "Personal Expense Tracker",
+          "description": "Record income and expenses, control budgets by category, and plan purchase goals. Works 100% in the browser, no registration required.",
+          "tag": "Finance"
+        },
+        "es": {
+          "name": "Rastreador de Gastos Personales",
+          "description": "Registre ingresos y gastos, controle presupuestos por categoría y planifique metas de compra. Funciona 100% en el navegador, sin registro.",
+          "tag": "Finanzas"
+        }
+      }
     }
   ],
   "leads": [
@@ -127,23 +211,63 @@
   "serviceCategories": [
     {
       "id": "sites",
-      "label": "Sites"
+      "label": "Sites",
+      "i18n": {
+        "en": {
+          "label": "Websites"
+        },
+        "es": {
+          "label": "Sitios"
+        }
+      }
     },
     {
       "id": "ecommerce",
-      "label": "E-commerce"
+      "label": "E-commerce",
+      "i18n": {
+        "en": {
+          "label": "E-commerce"
+        },
+        "es": {
+          "label": "E-commerce"
+        }
+      }
     },
     {
       "id": "seo",
-      "label": "SEO e velocidade"
+      "label": "SEO e velocidade",
+      "i18n": {
+        "en": {
+          "label": "SEO and Speed"
+        },
+        "es": {
+          "label": "SEO y velocidad"
+        }
+      }
     },
     {
       "id": "suporte",
-      "label": "Suporte"
+      "label": "Suporte",
+      "i18n": {
+        "en": {
+          "label": "Support"
+        },
+        "es": {
+          "label": "Soporte"
+        }
+      }
     },
     {
       "id": "diagnostico",
-      "label": "Diagnóstico e correções"
+      "label": "Diagnóstico e correções",
+      "i18n": {
+        "en": {
+          "label": "Diagnosis and Fixes"
+        },
+        "es": {
+          "label": "Diagnóstico y correcciones"
+        }
+      }
     }
   ],
   "technologies": [
@@ -174,7 +298,35 @@
         "Entrega em até 5 dias úteis"
       ],
       "allowQuantity": false,
-      "startingAt": true
+      "startingAt": true,
+      "i18n": {
+        "en": {
+          "title": "Conversion page",
+          "summary": "A page focused on converting visitors into customers — with a sales structure, clear value proposition, and strong call to action.",
+          "details": [
+            "Hero with headline and value proposition",
+            "Benefit and social proof sections",
+            "Contact form or WhatsApp button",
+            "Responsive layout (mobile and desktop)",
+            "Basic page SEO configured",
+            "Google Analytics (GA4) configured",
+            "Delivery within 5 business days"
+          ]
+        },
+        "es": {
+          "title": "Página de conversión",
+          "summary": "Una página enfocada en transformar visitantes en clientes — con estructura de ventas, propuesta de valor clara y llamada a la acción fuerte.",
+          "details": [
+            "Hero con titular y propuesta de valor",
+            "Secciones de beneficios y prueba social",
+            "Formulario de contacto o botón WhatsApp",
+            "Diseño responsivo (móvil y escritorio)",
+            "SEO básico de la página configurado",
+            "Google Analytics (GA4) configurado",
+            "Entrega en hasta 5 días hábiles"
+          ]
+        }
+      }
     },
     {
       "id": "site-institucional",
@@ -193,7 +345,35 @@
         "Google Maps integrado (se necessário)"
       ],
       "allowQuantity": false,
-      "startingAt": true
+      "startingAt": true,
+      "i18n": {
+        "en": {
+          "title": "Institutional website",
+          "summary": "Complete website to present your business professionally, build credibility, and receive customer contacts.",
+          "details": [
+            "Up to 5 pages (Home, About, Services, Contact + 1)",
+            "WordPress + professional Elementor",
+            "Fixed WhatsApp and contact form",
+            "Responsive and mobile-adapted layout",
+            "Basic SEO configured on all pages",
+            "Google Analytics (GA4) configured",
+            "Google Maps integrated (if necessary)"
+          ]
+        },
+        "es": {
+          "title": "Sitio institucional",
+          "summary": "Sitio completo para presentar su negocio con profesionalismo, generar credibilidad y recibir contactos de clientes.",
+          "details": [
+            "Hasta 5 páginas (Inicio, Sobre, Servicios, Contacto + 1)",
+            "WordPress + Elementor profesional",
+            "WhatsApp fijo y formulario de contacto",
+            "Diseño responsivo y adaptado para móvil",
+            "SEO básico configurado en todas las páginas",
+            "Google Analytics (GA4) configurado",
+            "Google Maps integrado (si es necesario)"
+          ]
+        }
+      }
     },
     {
       "id": "site-com-blog",
@@ -212,7 +392,35 @@
         "Ideal para negócios que querem aparecer no Google"
       ],
       "allowQuantity": false,
-      "startingAt": false
+      "startingAt": false,
+      "i18n": {
+        "en": {
+          "title": "Website with blog",
+          "summary": "Institutional website with integrated blog to attract visitors from Google, build authority in your niche, and generate leads continuously.",
+          "details": [
+            "Everything from the institutional website included",
+            "Blog with category and tag structure",
+            "Article template with good readability",
+            "Optimized for content SEO",
+            "Easy to update without a programmer",
+            "Google Analytics (GA4) configured",
+            "Ideal for businesses that want to appear on Google"
+          ]
+        },
+        "es": {
+          "title": "Sitio con blog",
+          "summary": "Sitio institucional con blog integrado para atraer visitantes por Google, construir autoridad en su nicho y generar leads de forma continua.",
+          "details": [
+            "Todo lo del sitio institucional incluido",
+            "Blog con estructura de categorías y etiquetas",
+            "Plantilla de artículo con buena lectura",
+            "Optimizado para SEO de contenido",
+            "Fácil de actualizar sin programador",
+            "Google Analytics (GA4) configurado",
+            "Ideal para negocios que quieren aparecer en Google"
+          ]
+        }
+      }
     },
     {
       "id": "blog-site-existente",
@@ -230,7 +438,33 @@
         "Preço varia conforme a plataforma do site atual"
       ],
       "allowQuantity": false,
-      "startingAt": true
+      "startingAt": true,
+      "i18n": {
+        "en": {
+          "title": "Blog on existing website",
+          "summary": "I add or redesign the blog of an existing website — category structure, article template, style, and basic blog SEO.",
+          "details": [
+            "For existing websites (not a new website)",
+            "Category and tag structure",
+            "Article template with good readability",
+            "Style aligned with your site's visual identity",
+            "Basic blog SEO configured",
+            "Price varies according to the current site's platform"
+          ]
+        },
+        "es": {
+          "title": "Blog en sitio existente",
+          "summary": "Añado o reformulo el blog de un sitio que ya tiene — estructura de categorías, plantilla de artículo, estilo y SEO básico del blog.",
+          "details": [
+            "Para sitios que ya existen (no es un sitio nuevo)",
+            "Estructura de categorías y etiquetas",
+            "Plantilla de artículo con buena lectura",
+            "Estilo alineado al visual de su sitio",
+            "SEO básico del blog configurado",
+            "El precio varía según la plataforma del sitio actual"
+          ]
+        }
+      }
     },
     {
       "id": "pagina-adicional",
@@ -247,7 +481,31 @@
       ],
       "allowQuantity": true,
       "unitLabel": "páginas",
-      "startingAt": false
+      "startingAt": false,
+      "i18n": {
+        "en": {
+          "title": "Extra page",
+          "summary": "For projects that need more pages beyond those included in the base package.",
+          "details": [
+            "Layout following the site's visual identity",
+            "Content organized by sections",
+            "Responsive on all devices",
+            "Form or CTA if necessary"
+          ],
+          "unitLabel": "pages"
+        },
+        "es": {
+          "title": "Página extra",
+          "summary": "Para proyectos que necesitan más páginas además de las incluidas en el paquete base.",
+          "details": [
+            "Diseño siguiendo el visual del sitio",
+            "Contenido organizado por secciones",
+            "Responsivo en todos los dispositivos",
+            "Formulario o CTA si es necesario"
+          ],
+          "unitLabel": "páginas"
+        }
+      }
     },
     {
       "id": "loja-woocommerce",
@@ -265,7 +523,33 @@
         "Layout responsivo e otimizado para conversão"
       ],
       "allowQuantity": false,
-      "startingAt": true
+      "startingAt": true,
+      "i18n": {
+        "en": {
+          "title": "WooCommerce Store",
+          "summary": "Complete online store on WordPress to sell physical or digital products — with cart, checkout, and an easy-to-manage order panel.",
+          "details": [
+            "WooCommerce configured from scratch",
+            "Up to 10 products registered with photos and variations",
+            "Product page, cart, and checkout",
+            "Payment method integration (PIX, card)",
+            "Simple panel to manage orders",
+            "Responsive and conversion-optimized layout"
+          ]
+        },
+        "es": {
+          "title": "Tienda WooCommerce",
+          "summary": "Tienda virtual completa en WordPress para vender productos físicos o digitales — con carrito, checkout y panel de pedidos fácil de gestionar.",
+          "details": [
+            "WooCommerce configurado desde cero",
+            "Hasta 10 productos registrados con fotos y variaciones",
+            "Página de producto, carrito y checkout",
+            "Integración con medio de pago (PIX, tarjeta)",
+            "Panel simple para gestionar pedidos",
+            "Diseño responsivo y optimizado para conversión"
+          ]
+        }
+      }
     },
     {
       "id": "produto-adicional",
@@ -281,7 +565,29 @@
       ],
       "allowQuantity": true,
       "unitLabel": "produtos",
-      "startingAt": false
+      "startingAt": false,
+      "i18n": {
+        "en": {
+          "title": "Additional products",
+          "summary": "Registration of extra products beyond the 10 included in the store package.",
+          "details": [
+            "Photos, description, and price configured",
+            "Variations (color, size, etc.) if necessary",
+            "Organized categories"
+          ],
+          "unitLabel": "products"
+        },
+        "es": {
+          "title": "Productos adicionales",
+          "summary": "Registro de productos extras además de los 10 incluidos en el paquete de tienda.",
+          "details": [
+            "Fotos, descripción y precio configurados",
+            "Variaciones (color, tamaño, etc.) si es necesario",
+            "Categorías organizadas"
+          ],
+          "unitLabel": "productos"
+        }
+      }
     },
     {
       "id": "seo-essencial",
@@ -300,7 +606,35 @@
         "Rank Math SEO configurado"
       ],
       "allowQuantity": false,
-      "startingAt": false
+      "startingAt": false,
+      "i18n": {
+        "en": {
+          "title": "Google Setup",
+          "summary": "Complete configuration for Google to understand, index, and start showing your site in searches — the foundation for any SEO strategy.",
+          "details": [
+            "Optimized titles and meta descriptions",
+            "Friendly URLs and clean structure",
+            "H1, H2, H3 headings reviewed",
+            "XML sitemap and robots.txt configured",
+            "Google Search Console: indexing and search monitoring",
+            "Advanced Analytics: tracked events and conversions",
+            "Rank Math SEO configured"
+          ]
+        },
+        "es": {
+          "title": "Configuración Google",
+          "summary": "Configuración completa para que Google entienda, indexe y empiece a mostrar su sitio en las búsquedas — base para cualquier estrategia de SEO.",
+          "details": [
+            "Títulos y meta descripciones optimizados",
+            "URLs amigables y estructura limpia",
+            "Encabezados H1, H2, H3 revisados",
+            "Sitemap XML y robots.txt configurados",
+            "Google Search Console: indexación y monitoreo de búsquedas",
+            "Analytics avanzado: eventos y conversiones rastreados",
+            "Rank Math SEO configurado"
+          ]
+        }
+      }
     },
     {
       "id": "performance",
@@ -317,7 +651,31 @@
         "Relatório antes e depois com scores reais"
       ],
       "allowQuantity": false,
-      "startingAt": false
+      "startingAt": false,
+      "i18n": {
+        "en": {
+          "title": "Fast mobile site",
+          "summary": "Optimization focused on real speed — for the site to load quickly on mobile, improve PageSpeed, and stop losing visits due to slowness.",
+          "details": [
+            "Image optimization and compression",
+            "Advanced cache configuration (LiteSpeed)",
+            "Removal of unnecessary scripts and CSS",
+            "Improvement of Core Web Vitals (LCP, CLS, FID)",
+            "Before and after report with real scores"
+          ]
+        },
+        "es": {
+          "title": "Sitio rápido en móvil",
+          "summary": "Optimización enfocada en velocidad real — para que el sitio cargue rápido en el celular, mejore el PageSpeed y deje de perder visitas por la lentitud.",
+          "details": [
+            "Optimización y compresión de imágenes",
+            "Configuración avanzada de caché (LiteSpeed)",
+            "Eliminación de scripts y CSS innecesarios",
+            "Mejora de Core Web Vitals (LCP, CLS, FID)",
+            "Informe antes y después con puntuaciones reales"
+          ]
+        }
+      }
     },
     {
       "id": "seo-tecnico",
@@ -334,7 +692,31 @@
         "Relatório completo com tudo que foi feito"
       ],
       "allowQuantity": false,
-      "startingAt": false
+      "startingAt": false,
+      "i18n": {
+        "en": {
+          "title": "Technical SEO",
+          "summary": "Audit and correction of technical issues preventing your site from ranking higher on Google — indexing, structure, crawling, and speed.",
+          "details": [
+            "Complete technical site audit",
+            "Correction of indexing and crawl errors",
+            "Internal link structure reviewed",
+            "Search Console monitored and cleaned",
+            "Full report with everything done"
+          ]
+        },
+        "es": {
+          "title": "SEO técnico",
+          "summary": "Auditoría y corrección de los problemas técnicos que impiden que su sitio suba en Google — indexación, estructura, rastreo y velocidad.",
+          "details": [
+            "Auditoría técnica completa del sitio",
+            "Corrección de errores de indexación y rastreo",
+            "Estructura interna de enlaces revisada",
+            "Search Console monitoreado y limpio",
+            "Informe completo con todo lo realizado"
+          ]
+        }
+      }
     },
     {
       "id": "manutencao",
@@ -351,7 +733,31 @@
         "Relatório mensal com status do site"
       ],
       "allowQuantity": false,
-      "startingAt": false
+      "startingAt": false,
+      "i18n": {
+        "en": {
+          "title": "Monthly plan",
+          "summary": "Your site always working: updates, backups, security, and small adjustments every month — without needing to call someone for every little thing.",
+          "details": [
+            "Plugin and WordPress updates",
+            "Automatic weekly backup",
+            "Security and uptime monitoring",
+            "Up to 2h of monthly adjustments included",
+            "Monthly report with site status"
+          ]
+        },
+        "es": {
+          "title": "Plan mensual",
+          "summary": "Su sitio funcionando siempre: actualizaciones, copias de seguridad, seguridad y pequeños ajustes cada mes — sin necesidad de llamar a nadie para cada cosa.",
+          "details": [
+            "Actualización de plugins y WordPress",
+            "Copia de seguridad semanal automática",
+            "Monitoreo de seguridad y tiempo de actividad",
+            "Hasta 2h de ajustes mensuales incluidas",
+            "Informe mensual con el estado del sitio"
+          ]
+        }
+      }
     },
     {
       "id": "suporte-30",
@@ -367,7 +773,29 @@
         "Pequenas alterações de conteúdo incluídas"
       ],
       "allowQuantity": false,
-      "startingAt": false
+      "startingAt": false,
+      "i18n": {
+        "en": {
+          "title": "Post-delivery support",
+          "summary": "30 days of follow-up after delivery — to correct, adjust, and ensure everything is working as expected.",
+          "details": [
+            "Layout corrections and fine adjustments",
+            "Technical support via message",
+            "Responses within 24 business hours",
+            "Small content changes included"
+          ]
+        },
+        "es": {
+          "title": "Soporte post-entrega",
+          "summary": "30 días de seguimiento después de la entrega — para corregir, ajustar y garantizar que todo funciona como se espera.",
+          "details": [
+            "Correcciones de diseño y ajustes finos",
+            "Soporte técnico por mensaje",
+            "Respuestas en hasta 24h hábiles",
+            "Pequeñas alteraciones de contenido incluidas"
+          ]
+        }
+      }
     },
     {
       "id": "atualizacao-site",
@@ -384,7 +812,31 @@
         "Backup completo antes de qualquer alteração"
       ],
       "allowQuantity": false,
-      "startingAt": true
+      "startingAt": true,
+      "i18n": {
+        "en": {
+          "title": "Old website update",
+          "summary": "For outdated, slow, or visually old-fashioned websites — I update plugins, modernize the layout, and fix accumulated problems.",
+          "details": [
+            "Update WordPress and all plugins",
+            "Correction of post-update conflicts",
+            "Layout and responsiveness adjustments",
+            "Basic speed optimization included",
+            "Full backup before any changes"
+          ]
+        },
+        "es": {
+          "title": "Actualización de sitio antiguo",
+          "summary": "Para sitios desactualizados, lentos o con un aspecto anticuado — actualizo plugins, modernizo el diseño y corrijo los problemas acumulados.",
+          "details": [
+            "Actualización de WordPress y todos los plugins",
+            "Corrección de conflictos post-actualización",
+            "Ajustes de diseño y responsividad",
+            "Optimización básica de velocidad incluida",
+            "Copia de seguridad completa antes de cualquier alteración"
+          ]
+        }
+      }
     },
     {
       "id": "diagnostico-site",
@@ -402,7 +854,33 @@
         "Lista priorizada de melhorias com estimativas"
       ],
       "allowQuantity": false,
-      "startingAt": false
+      "startingAt": false,
+      "i18n": {
+        "en": {
+          "title": "Website diagnosis",
+          "summary": "Complete technical analysis of your website — speed, SEO, errors, usability, and security — with a detailed report and prioritized list of what to fix.",
+          "details": [
+            "Full report delivered within 48 hours",
+            "Speed and Core Web Vitals analysis",
+            "Technical SEO errors identified",
+            "Layout and usability issues pointed out",
+            "Security and broken link verification",
+            "Prioritized list of improvements with estimates"
+          ]
+        },
+        "es": {
+          "title": "Diagnóstico de sitio",
+          "summary": "Análisis técnico completo de su sitio — velocidad, SEO, errores, usabilidad y seguridad — con informe detallado y lista priorizada de lo que hay que corregir.",
+          "details": [
+            "Informe completo entregado en hasta 48h",
+            "Análisis de velocidad y Core Web Vitals",
+            "Errores de SEO técnico identificados",
+            "Problemas de diseño y usabilidad señalados",
+            "Verificación de seguridad y enlaces rotos",
+            "Lista priorizada de mejoras con estimaciones"
+          ]
+        }
+      }
     },
     {
       "id": "correcao-bug",
@@ -419,7 +897,31 @@
       ],
       "allowQuantity": true,
       "unitLabel": "correções",
-      "startingAt": false
+      "startingAt": false,
+      "i18n": {
+        "en": {
+          "title": "Specific bug fix",
+          "summary": "Resolution of a specific problem on your website — display error, broken functionality, form bug, or unexpected behavior.",
+          "details": [
+            "Problem diagnosis included",
+            "Correction within 24 to 48 hours",
+            "Tested on mobile and desktop after correction",
+            "No charge if unable to resolve"
+          ],
+          "unitLabel": "fixes"
+        },
+        "es": {
+          "title": "Corrección de bug puntual",
+          "summary": "Resolución de un problema específico en su sitio — error de visualización, funcionalidad rota, bug en formulario o comportamiento inesperado.",
+          "details": [
+            "Diagnóstico del problema incluido",
+            "Corrección con plazo de 24 a 48h",
+            "Probado en móvil y escritorio después de la corrección",
+            "Sin cobro si no se puede resolver"
+          ],
+          "unitLabel": "correcciones"
+        }
+      }
     },
     {
       "id": "correcao-pack",
@@ -436,7 +938,31 @@
         "Mais econômico que contratar por hora"
       ],
       "allowQuantity": false,
-      "startingAt": false
+      "startingAt": false,
+      "i18n": {
+        "en": {
+          "title": "Fixes package",
+          "summary": "For those who have accumulated several problems — solves up to 5 bugs or adjustments for a fixed price, with no surprises at the end.",
+          "details": [
+            "Up to 5 fixes or adjustments included",
+            "Layout, forms, speed, and functionality bugs",
+            "Delivery within 5 business days",
+            "Report of what was done for each item",
+            "More economical than hiring by the hour"
+          ]
+        },
+        "es": {
+          "title": "Paquete de correcciones",
+          "summary": "Para quien acumuló varios problemas — resuelve hasta 5 bugs o ajustes por un precio fijo, sin sorpresas al final.",
+          "details": [
+            "Hasta 5 correcciones o ajustes incluidos",
+            "Bugs de diseño, formularios, velocidad y funcionalidades",
+            "Entrega en hasta 5 días hábiles",
+            "Informe de lo realizado en cada ítem",
+            "Más económico que contratar por hora"
+          ]
+        }
+      }
     }
   ],
   "projects": [
@@ -517,7 +1043,43 @@
       ],
       "tags": [
         "Landing pages"
-      ]
+      ],
+      "i18n": {
+        "en": {
+          "title": "A Mais Radiologia Landing Page",
+          "category": "Landing Page / Health / Dental Radiology / Lead Generation",
+          "summary": "Modern and responsive landing page for a dental radiology clinic, focused on lead capture and requesting exam quotes.",
+          "status": "Demo",
+          "workDone": [
+            "Hero with banner image.",
+            "Quote request form.",
+            "Benefit cards.",
+            "Exam cards.",
+            "Final CTA.",
+            "Footer with contact information and map.",
+            "SEO best practices.",
+            "Mobile responsiveness.",
+            "Visual optimizations for conversion."
+          ]
+        },
+        "es": {
+          "title": "Landing Page A Mais Radiologia",
+          "category": "Landing Page / Salud / Radiología Dental / Generación de Leads",
+          "summary": "Landing page moderna y responsiva para una clínica de radiología dental, creada con enfoque en la captación de leads y solicitud de presupuesto para exámenes.",
+          "status": "Demostración",
+          "workDone": [
+            "Hero con imagen en banner.",
+            "Formulario de presupuesto.",
+            "Tarjetas de beneficios.",
+            "Tarjetas de exámenes.",
+            "CTA final.",
+            "Pie de página con información de contacto y mapa.",
+            "Buenas prácticas de SEO.",
+            "Responsividad móvil.",
+            "Optimizaciones visuales para conversión."
+          ]
+        }
+      }
     },
     {
       "id": "projeto-mplqmvz4",
@@ -600,7 +1162,41 @@
       ],
       "tags": [
         "Landing pages"
-      ]
+      ],
+      "i18n": {
+        "en": {
+          "title": "FisioVida Landing Page",
+          "category": "Institutional Website / Landing page / Health and Physiotherapy",
+          "summary": "Responsive landing page for a physiotherapy clinic, featuring service presentation, benefits, testimonials, WhatsApp call-to-action, and contact form.",
+          "status": "Demo",
+          "workDone": [
+            "Conversion of the original Next.js project to WordPress.",
+            "Created a child theme of Hello Elementor,",
+            "ported the landing sections,",
+            "adapted the visual to native CSS,",
+            "implemented a mobile menu,",
+            "fixed WhatsApp button,",
+            "form via admin-ajax.php,",
+            "asset loading and activation in local WordPress."
+          ]
+        },
+        "es": {
+          "title": "FisioVida Landing Page",
+          "category": "Sitio institucional / Landing page / Salud y fisioterapia",
+          "summary": "Landing page responsiva para clínica de fisioterapia, con presentación de servicios, beneficios, testimonios, llamada a WhatsApp y formulario de contacto.",
+          "status": "Demostración",
+          "workDone": [
+            "Conversión del proyecto original en Next.js a WordPress.",
+            "Creé un tema hijo de Hello Elementor,",
+            "porté las secciones de la landing,",
+            "adapté el visual a CSS nativo,",
+            "implementé menú móvil,",
+            "botón fijo de WhatsApp,",
+            "formulario vía admin-ajax.php,",
+            "carga de assets y activación en WordPress local."
+          ]
+        }
+      }
     },
     {
       "id": "projeto-mpm51gww",
@@ -667,7 +1263,27 @@
       ],
       "tags": [
         "Sites institucionais"
-      ]
+      ],
+      "i18n": {
+        "en": {
+          "title": "Pedro Alexandre BJJ",
+          "category": "Institutional Website / Sports Portfolio",
+          "summary": "Multilingual institutional website for a professional Jiu-Jitsu athlete, showcasing their journey, achievements, programs, training locations, sponsors, and contact channels.",
+          "status": "Published",
+          "workDone": [
+            "Creation and customization of the WordPress site, structuring main pages, SEO configuration, responsive layout, multilingual content, custom content types for events/achievements/locations/sponsors, and basic security and tracking optimizations."
+          ]
+        },
+        "es": {
+          "title": "Pedro Alexandre BJJ",
+          "category": "Sitio institucional / Portafolio deportivo",
+          "summary": "Sitio institucional multilingüe para atleta profesional de Jiu-Jitsu\n presentando trayectoria\nlogros\nprogramas\nlugares de entrenamiento\npatrocinadores\ncanales de contacto.",
+          "status": "Publicado",
+          "workDone": [
+            "Creación y personalización del sitio en WordPress, estructuración de las páginas principales, configuración de SEO, diseño responsivo, contenido multilingüe, tipos de contenido personalizados para eventos/logros/ubicaciones/patrocinadores y optimizaciones básicas de seguridad y seguimiento."
+          ]
+        }
+      }
     },
     {
       "id": "projeto-mpm6sgsu",
@@ -756,7 +1372,27 @@
       "link": "https://apexcore-labs.com/",
       "tags": [
         "Sites institucionais"
-      ]
+      ],
+      "i18n": {
+        "en": {
+          "title": "Apex Core Labs",
+          "category": "Institutional Website with Product Catalog and Authentication System",
+          "summary": "Premium institutional website for presenting research peptides, dynamic catalog, individual product pages, QR Code authentication, dosage calculator, and contact form.",
+          "status": "In Production",
+          "workDone": [
+            "Creation of a custom child theme for WordPress, modern institutional layout, dynamic product catalog, reusable individual pages via ACF fields, QR Code verification/authentication system, SVG QR Code generation, Calculator page, About Us page, Contact page, terms and policies, 21+ age verification popup, mobile/tablet/desktop responsiveness, and security enhancements."
+          ]
+        },
+        "es": {
+          "title": "Apex Core Labs",
+          "category": "Sitio web institucional con catálogo de productos y sistema de autenticación",
+          "summary": "Sitio institucional premium para presentación de péptidos de investigación\ncatálogo dinámico\npáginas individuales de productos\nautenticación por QR Code\ncalculadora de dosificación\nformulario de contacto.",
+          "status": "En producción",
+          "workDone": [
+            "Creación de tema hijo personalizado para WordPress, diseño institucional moderno, catálogo de productos dinámico, páginas individuales reutilizables vía campos ACF, sistema de verificación/autenticación por QR Code, generación de QR Codes en SVG, página de calculadora, página About Us, página Contact, términos y políticas, popup de verificación de edad 21+, responsividad móvil/tablet/desktop y mejoras de seguridad."
+          ]
+        }
+      }
     },
     {
       "id": "projeto-mps409br",
@@ -865,7 +1501,45 @@
       ],
       "tags": [
         "Lojas / E-commerce"
-      ]
+      ],
+      "i18n": {
+        "en": {
+          "title": "TechVibe — Technology Store (Premium Dark E-commerce)",
+          "category": "E-commerce / Online Store (WordPress + WooCommerce)",
+          "summary": "Technology e-commerce store with a premium dark visual identity, built on WordPress + WooCommerce with a fully customized child theme. Responsive.",
+          "status": "Completed",
+          "workDone": [
+            "Premium dark design system in an Astra child theme (color tokens, Inter typography, shadows, blue→teal gradients)",
+            "Customized Home: hero with particle canvas + floating product cards (glassmorphism), animated counters, category grid, featured products, promotional banner, and newsletter",
+            "16 products in 4 categories (Audio, Wearables, Smartphones, Smart Home) with curated images",
+            "Shop with sidebar: real-time search, category filter, price range slider, and sorting — all client-side, with mobile drawer",
+            "Product page: framed gallery, breadcrumb, prominent price, quantity stepper, trust badges, tabs, and related products",
+            "Redesigned Cart and Checkout: 2-column layout, sticky order summary, stylized payment methods, and handled empty states",
+            "About and Contact pages: custom templates with hero, animated orbital visual, values section, and validated form",
+            "Cart in header (WooCommerce) with live counter via AJAX; conflict with SureCart plugin removed",
+            "Payments configured (bank transfer/PIX and cash on delivery) and fatal error in checkout fixed",
+            "pt-BR translation of WooCommerce strings + fully responsive (desktop/tablet/mobile)"
+          ]
+        },
+        "es": {
+          "title": "TechVibe — Tienda de Tecnología (E-commerce Dark Premium)",
+          "category": "E-commerce / Tienda Virtual (WordPress + WooCommerce)",
+          "summary": "Tienda virtual de tecnología con identidad visual dark premium\nconstruida en WordPress + WooCommerce con tema-hijo totalmente personalizado \nResponsivo",
+          "status": "Completado",
+          "workDone": [
+            "Sistema de diseño dark premium en un tema-hijo de Astra (tokens de color, tipografía Inter, sombras, gradientes azul→teal)",
+            "Home personalizada: hero con canvas de partículas + tarjetas de producto flotantes (glassmorphism), contadores animados, cuadrícula de categorías, productos destacados, banner promocional y newsletter",
+            "16 productos en 4 categorías (Audio, Wearables, Smartphones, Casa Inteligente) con imágenes curadas",
+            "Tienda con sidebar: búsqueda en tiempo real, filtro por categoría, slider de rango de precios y ordenación — todo client-side, con drawer en móvil",
+            "Página de producto: galería enmarcada, breadcrumb, precio destacado, stepper de cantidad, sellos de confianza, pestañas y productos relacionados",
+            "Carrito y Checkout rediseñados: diseño en 2 columnas, resumen del pedido fijo (sticky), métodos de pago estilizados y estados vacíos tratados",
+            "Páginas Sobre y Contacto: plantillas propias con hero, visual orbital animado, sección de valores y formulario con validación",
+            "Carrito en el header (WooCommerce) con contador en vivo vía AJAX; eliminado conflicto con plugin SureCart",
+            "Pagos configurados (transferencia/PIX y contra entrega) y corrección de error fatal en el checkout",
+            "Traducción es-ES de las strings de WooCommerce + totalmente responsivo (desktop/tablet/móvil)"
+          ]
+        }
+      }
     },
     {
       "id": "projeto-mpt48ust",
@@ -959,7 +1633,39 @@
       "link": "https://rastreador-de-despesas-pessoais.vercel.app/",
       "tags": [
         "Web apps"
-      ]
+      ],
+      "i18n": {
+        "en": {
+          "title": "My Finances — Personal Expense Tracker",
+          "category": "Web Application · Front-end · Finance (Fintech)",
+          "summary": "Personal finance app (pt-BR) to record income and expenses, control budgets by category, and plan purchase goals with income projection and installment simulation. Works 100% in the browser, no backend.",
+          "status": "Live",
+          "workDone": [
+            "- Income/expenses with categorization, search, and filters",
+            "- Monthly summaries with charts (donut, bar, projection, comparison)",
+            "- Category budgets with alerts (within/attention/over budget)",
+            "- Purchase goals with compound interest projection",
+            "- Down payment + installment strategy (Price Table) with cash vs. installment comparison",
+            "- Integration with interest APIs (BrasilAPI/Banco Central) with fallback",
+            "- Light/dark theme, responsive, export/import backup, deploy on Vercel"
+          ]
+        },
+        "es": {
+          "title": "Mis Finanzas — Rastreador de Gastos Personales",
+          "category": "Aplicación Web · Front-end · Finanzas (Fintech)",
+          "summary": "App de finanzas personales (es-ES) para registrar ingresos y gastos\n controlar presupuestos por categoría y planificar metas de compra con proyección de rendimiento y simulación de cuotas\n Funciona 100% en el navegador\n sin backend",
+          "status": "En línea",
+          "workDone": [
+            "- Ingresos/gastos con categorización, búsqueda y filtros",
+            "- Resúmenes mensuales con gráficos (donut, barras, proyección, comparación)",
+            "- Presupuestos por categoría con alertas (dentro/atención/excedido)",
+            "- Metas de compra con proyección de intereses compuestos",
+            "- Estrategia entrada + cuotas (Tabla Price) con comparación al contado × a cuotas",
+            "- Integración con APIs de intereses (BrasilAPI/Banco Central) con fallback",
+            "- Tema claro/oscuro, responsivo, exportar/importar backup, deploy en Vercel"
+          ]
+        }
+      }
     },
     {
       "id": "projeto-blog-salient",
@@ -1003,7 +1709,37 @@
       "videos": [],
       "tags": [
         "Blog"
-      ]
+      ],
+      "i18n": {
+        "en": {
+          "title": "Professional Blog with Lead Capture",
+          "category": "WordPress / Salient Theme / Blog and Lead Automation",
+          "summary": "Reconstruction of a WordPress site's blog using the Salient theme: two-column layout with a sticky author sidebar and newsletter, lead capture form at the end of posts integrated with leadlovers — all without touching the rest of the site.",
+          "status": "Completed",
+          "workDone": [
+            "Cleanup of old Elementor edits and restoration of the native Salient theme template",
+            "Two-column layout on the blog and posts: 70% for content and 30% for the sidebar",
+            "Sticky sidebar with author photo and name, newsletter call-to-action, and subscribe button",
+            "Subscription form at the end of each post with name, email, and phone fields",
+            "Automatic integration of leads with leadlovers for nurturing and email marketing",
+            "Scope focused exclusively on the blog, preserving the header, footer, and other site pages"
+          ]
+        },
+        "es": {
+          "title": "Blog Profesional con Captación de Leads",
+          "category": "WordPress / Tema Salient / Blog y Automatización de Leads",
+          "summary": "Reconstrucción del blog de un sitio WordPress en el tema Salient: diseño de dos columnas con sidebar fija de autor y newsletter\nformulario de captación al final de los posts integrado a leadlovers — todo sin tocar el resto del sitio.",
+          "status": "Completado",
+          "workDone": [
+            "Limpieza de residuos de ediciones antiguas en Elementor y restauración de la plantilla nativa del tema Salient",
+            "Diseño de dos columnas en el blog y en los posts: 70% para el contenido y 30% para la sidebar",
+            "Sidebar fija (sticky) con foto y nombre del autor, llamada a la newsletter y botón de suscripción",
+            "Formulario de suscripción al final de cada post con campos de nombre, e-mail y teléfono",
+            "Integración automática de los leads con leadlovers para nutrición y e-mail marketing",
+            "Alcance enfocado exclusivamente en el blog, preservando header, footer y demás páginas del sitio"
+          ]
+        }
+      }
     },
     {
       "id": "projeto-mpx8pccm",
@@ -1128,7 +1864,43 @@
       ],
       "tags": [
         "E-commerce / Loja Virtual"
-      ]
+      ],
+      "i18n": {
+        "en": {
+          "title": "Encanto de Laço — Children's Bows Online Store",
+          "category": "E-commerce / Online Store (WordPress + WooCommerce)",
+          "summary": "Complete online store for the Encanto de Laço brand, specializing in handmade children's bows. From navigable prototype to custom WooCommerce theme, with a delicate identity (pink, beige, and pastel tones), catalog with variations, Brazilian shipping and payment methods — responsive and optimized for conversion.",
+          "status": "Completed (demo)",
+          "workDone": [
+            "High-fidelity and responsive prototype of the main screens (Home, Shop, Product, Cart, and Checkout) in HTML/CSS/JS",
+            "Custom design system: pink/beige/pastel palette, Playfair Display + Quicksand + Dancing Script typography, and an original SVG bow as a brand element",
+            "WooCommerce installation and configuration for Brazil (BRL currency, pt-BR language, friendly permalinks, SEO-friendly)",
+            "Custom Storefront child theme, porting the identity to the real store (homepage with hero, categories, and highlights; product page; cart; redesigned 2-column checkout)",
+            "Catalog: 12 products in 4 categories, including variable product (color × size) and customer reviews",
+            "Shipping: Brazil zone with free shipping above R$150, Sedex and PAC",
+            "Transactional emails with the brand's visual identity",
+            "Payment: Mercado Pago gateway (PIX, card, and boleto) integrated",
+            "Presentation material: demo videos (desktop and mobile) and high-resolution prints"
+          ]
+        },
+        "es": {
+          "title": "Encanto de Lazo — Tienda Virtual de Lazos Infantiles",
+          "category": "E-commerce / Tienda Virtual (WordPress + WooCommerce)",
+          "summary": "Tienda virtual completa para la marca Encanto de Lazo, especializada en lazos infantiles artesanales.\n Desde el prototipo navegable hasta el tema WooCommerce a medida, con identidad delicada (rosa, beige y tonos pastel), catálogo con variaciones, envío y medios de pago brasileños — responsiva y optimizada para conversión.",
+          "status": "Completado (demostración)",
+          "workDone": [
+            "Prototipo de alta fidelidad y responsivo de las pantallas principales (Home, Tienda, Producto, Carrito y Checkout) en HTML/CSS/JS",
+            "Sistema de diseño propio: paleta rosa/beige/pastel, tipografía Playfair Display + Quicksand + Dancing Script y un lazo SVG autoral como elemento de marca",
+            "Instalación y configuración de WooCommerce para Brasil (moneda BRL, idioma es-ES, permalinks amigables, SEO-friendly)",
+            "Tema-hijo de Storefront a medida, portando la identidad a la tienda real (homepage con hero, categorías y destacados; página de producto; carrito; checkout rediseñado en 2 columnas)",
+            "Catálogo: 12 productos en 4 categorías, incluyendo producto variable (color × tamaño) y evaluaciones de clientes",
+            "Envío: zona Brasil con envío gratis a partir de R$150, Sedex y PAC",
+            "E-mails transaccionales con la identidad visual de la marca",
+            "Pago: pasarela Mercado Pago (PIX, tarjeta y boleto) integrada",
+            "Material de presentación: videos de demostración (desktop y móvil) e impresiones en alta resolución"
+          ]
+        }
+      }
     }
   ]
 }
