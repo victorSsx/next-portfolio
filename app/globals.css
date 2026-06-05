@@ -3554,11 +3554,16 @@ a {
   }
 
   .topbar {
-    grid-template-columns: auto 1fr;
-    align-items: start;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
   }
 
+  /* No mobile escondemos só os links de navegação, mantendo o seletor de idioma visível. */
   .topbar__links {
+    gap: 0;
+  }
+
+  .topbar__links a {
     display: none;
   }
 
@@ -4585,9 +4590,12 @@ a {
   background: rgba(255, 255, 255, 0.18);
 }
 
-.lang-dropdown__flag {
-  font-size: 1.15rem;
+.lang-dropdown__code {
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
   line-height: 1;
+  color: var(--gold);
 }
 
 .lang-dropdown__chevron {
@@ -5356,11 +5364,6 @@ a {
   font-size: 0.86rem;
   line-height: 1.45;
   color: rgba(245, 242, 236, 0.82);
-}
-
-.testimonials-cta__gift {
-  font-size: 1rem;
-  flex-shrink: 0;
 }
 
 @media (max-width: 600px) {

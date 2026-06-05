@@ -831,7 +831,6 @@ export function BudgetSection() {
 
           {budgetChannel === "direto" && (
             <p className="budget-paymethods">
-              <span aria-hidden="true">💳</span>{" "}
               {currency === "BRL" ? t.budget.payment.methodsBr : t.budget.payment.methodsIntl}
             </p>
           )}
@@ -854,7 +853,7 @@ export function BudgetSection() {
                   </a>
                 ))}
               </div>
-              <p className="budget-payment__secure">🔒 {t.budget.payment.secure}</p>
+              <p className="budget-payment__secure">{t.budget.payment.secure}</p>
             </div>
           )}
         </aside>

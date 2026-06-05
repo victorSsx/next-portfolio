@@ -7,10 +7,10 @@ import type { Language } from "../lib/translations";
 
 const CUSTOM_LOGO_PATH: string | null = "/images/logo-victor-ai-transparent.png";
 
-const FLAG_OPTIONS: { lang: Language; flag: string; label: string }[] = [
-  { lang: "pt", flag: "🇧🇷", label: "Português" },
-  { lang: "en", flag: "🇺🇸", label: "English" },
-  { lang: "es", flag: "🇪🇸", label: "Español" },
+const LANG_OPTIONS: { lang: Language; code: string; label: string }[] = [
+  { lang: "pt", code: "PT", label: "Português" },
+  { lang: "en", code: "EN", label: "English" },
+  { lang: "es", code: "ES", label: "Español" },
 ];
 
 export function HeroSection() {
@@ -22,7 +22,7 @@ export function HeroSection() {
   const langRef = useRef<HTMLDivElement>(null);
 
   const availability = siteData.availability ?? "available";
-  const currentFlag = FLAG_OPTIONS.find((o) => o.lang === lang)?.flag ?? "🇧🇷";
+  const currentCode = LANG_OPTIONS.find((o) => o.lang === lang)?.code ?? "PT";
 
   useEffect(() => {
     if (!langOpen) return;
@@ -111,12 +111,12 @@ export function HeroSection() {
               aria-haspopup="listbox"
               onClick={() => setLangOpen((o) => !o)}
             >
-              <span className="lang-dropdown__flag">{currentFlag}</span>
+              <span className="lang-dropdown__code">{currentCode}</span>
               <span className="lang-dropdown__chevron" aria-hidden="true">▾</span>
             </button>
             {langOpen && (
               <div className="lang-dropdown__menu" role="listbox" aria-label="Idioma">
-                {FLAG_OPTIONS.map(({ lang: l, flag, label }) => (
+                {LANG_OPTIONS.map(({ lang: l, code, label }) => (
                   <button
                     key={l}
                     className={`lang-dropdown__option${lang === l ? " is-active" : ""}`}
@@ -125,7 +125,7 @@ export function HeroSection() {
                     role="option"
                     aria-selected={lang === l}
                   >
-                    <span className="lang-dropdown__flag">{flag}</span>
+                    <span className="lang-dropdown__code">{code}</span>
                     {label}
                   </button>
                 ))}

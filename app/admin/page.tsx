@@ -2155,7 +2155,7 @@ export default function AdminPage() {
               Workana e Upwork o pagamento é pela própria plataforma.
             </p>
             <p className="admin-hint">
-              🔒 O cliente paga numa página do provedor; nenhum dado de cartão passa pelo seu site. Dica:
+              O cliente paga numa página do provedor; nenhum dado de cartão passa pelo seu site. Dica:
               configure o link como sinal de 50% para travar a vaga.
             </p>
 
@@ -2252,7 +2252,7 @@ export default function AdminPage() {
                 disabled={!scopeText.trim() || aiLoading}
                 onClick={runAiAnalysis}
               >
-                {aiLoading ? "Analisando com IA…" : "Analisar com IA ✨"}
+                {aiLoading ? "Analisando com IA…" : "Analisar com IA"}
               </button>
             </div>
             {aiError ? <p className="admin-status admin-status--error">{aiError}</p> : null}
@@ -2366,7 +2366,7 @@ export default function AdminPage() {
                 ) : (
                   <>
                     {aiProposal ? (
-                      <p className="scope-ai-hint">✨ Proposta gerada por IA — revise antes de enviar.</p>
+                      <p className="scope-ai-hint">Proposta gerada por IA — revise antes de enviar.</p>
                     ) : null}
                     <textarea className="scope-proposal" readOnly rows={16} value={aiProposal ?? scopeProposal} />
                     <button className="button button--primary" type="button" onClick={copyProposal}>

@@ -327,10 +327,7 @@ export function TestimonialsSection() {
 
         {/* CTA */}
         <div className="testimonials-cta" data-animate>
-          <p className="testimonials-cta__offer">
-            <span className="testimonials-cta__gift" aria-hidden="true">🎁</span>
-            {t.testimonials.reviewOffer}
-          </p>
+          <p className="testimonials-cta__offer">{t.testimonials.reviewOffer}</p>
           <button className="button button--outline" type="button" onClick={() => setOpen(true)}>
             {f.submitBtn}
           </button>

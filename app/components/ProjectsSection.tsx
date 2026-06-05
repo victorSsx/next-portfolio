@@ -271,7 +271,7 @@ export function ProjectsSection({ limit, showAllLink, showFilter }: ProjectsSect
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    Ver ao vivo <span aria-hidden="true">↗</span>
+                    {t.projects.viewLive} <span aria-hidden="true">↗</span>
                   </a>
                 )}
               </div>

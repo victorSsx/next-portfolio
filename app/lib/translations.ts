@@ -17,6 +17,7 @@ export type Translations = {
     stats: { value: number; suffix: string; label: string }[];
     viewDetails: string;
     viewAll: string;
+    viewLive: string;
     backHome: string;
     allTitle: string;
     filterAll: string;
@@ -207,6 +208,7 @@ export const translations: Record<Language, Translations> = {
       ],
       viewDetails: "Ver detalhes",
       viewAll: "Ver todos os projetos",
+      viewLive: "Ver ao vivo",
       backHome: "Voltar ao início",
       allTitle: "Todos os projetos",
       filterAll: "Todos",
@@ -395,10 +397,10 @@ export const translations: Record<Language, Translations> = {
       skip: "Pular",
       prev: "Anterior",
       next: "Próximo",
-      finish: "Começar 🚀",
+      finish: "Começar",
       replay: "Como funciona?",
       steps: [
-        { title: "Bem-vindo! 👋", text: "Em 30 segundos eu te mostro como meu portfólio funciona. Vamos?" },
+        { title: "Bem-vindo!", text: "Em 30 segundos eu te mostro como meu portfólio funciona. Vamos?" },
         { title: "Meus projetos", text: "Projetos reais que entreguei. Clique em qualquer um pra ver telas, tecnologias e detalhes." },
         { title: "Ferramentas grátis", text: "Sistemas que criei e liberei de graça pra você usar — sem cadastro." },
         { title: "Monte seu orçamento", text: "Escolha serviços ou um pacote e veja o preço na hora, sem compromisso. Depois é só copiar e me chamar." },
@@ -432,6 +434,7 @@ export const translations: Record<Language, Translations> = {
       ],
       viewDetails: "View details",
       viewAll: "View all projects",
+      viewLive: "View live",
       backHome: "Back to home",
       allTitle: "All projects",
       filterAll: "All",
@@ -620,10 +623,10 @@ export const translations: Record<Language, Translations> = {
       skip: "Skip",
       prev: "Back",
       next: "Next",
-      finish: "Start 🚀",
+      finish: "Start",
       replay: "How it works?",
       steps: [
-        { title: "Welcome! 👋", text: "In 30 seconds I'll show you how my portfolio works. Ready?" },
+        { title: "Welcome!", text: "In 30 seconds I'll show you how my portfolio works. Ready?" },
         { title: "My projects", text: "Real projects I delivered. Click any to see screens, tech and details." },
         { title: "Free tools", text: "Systems I built and released for free — no signup required." },
         { title: "Build your quote", text: "Pick services or a package and see the price instantly, no strings attached. Then just copy and message me." },
@@ -657,6 +660,7 @@ export const translations: Record<Language, Translations> = {
       ],
       viewDetails: "Ver detalles",
       viewAll: "Ver todos los proyectos",
+      viewLive: "Ver en vivo",
       backHome: "Volver al inicio",
       allTitle: "Todos los proyectos",
       filterAll: "Todos",
@@ -845,10 +849,10 @@ export const translations: Record<Language, Translations> = {
       skip: "Saltar",
       prev: "Atrás",
       next: "Siguiente",
-      finish: "Empezar 🚀",
+      finish: "Empezar",
       replay: "¿Cómo funciona?",
       steps: [
-        { title: "¡Bienvenido! 👋", text: "En 30 segundos te muestro cómo funciona mi portafolio. ¿Vamos?" },
+        { title: "¡Bienvenido!", text: "En 30 segundos te muestro cómo funciona mi portafolio. ¿Vamos?" },
         { title: "Mis proyectos", text: "Proyectos reales que entregué. Haz clic en cualquiera para ver pantallas, tecnologías y detalles." },
         { title: "Herramientas gratis", text: "Sistemas que creé y liberé gratis para que uses — sin registro." },
         { title: "Arma tu presupuesto", text: "Elige servicios o un paquete y mira el precio al instante, sin compromiso. Luego solo copia y escríbeme." },
