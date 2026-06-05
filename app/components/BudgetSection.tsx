@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
-import { siteData, type BudgetService, type CategoryId, type Package } from "../lib/site-data";
+import { siteData, localizeContent, type BudgetService, type CategoryId, type Package } from "../lib/site-data";
 import { useLanguage } from "../lib/LanguageContext";
 import { translations, type Language } from "../lib/translations";
 
@@ -200,18 +200,18 @@ export function BudgetSection() {
     () => [
       { id: "pacotes", label: t.budget.packagesTab },
       { id: "todos", label: t.budget.allCategory },
-      ...siteData.serviceCategories,
+      ...siteData.serviceCategories.map((c) => localizeContent(c, lang)),
     ],
-    [t]
+    [t, lang]
   );
 
   const serviceCategoryLabels = useMemo(
     () =>
       siteData.serviceCategories.reduce<Record<string, string>>((acc, c) => {
-        acc[c.id] = c.label;
+        acc[c.id] = localizeContent(c, lang).label;
         return acc;
       }, {}),
-    []
+    [lang]
   );
 
   const channelOptions = useMemo(
@@ -279,9 +279,9 @@ export function BudgetSection() {
   }
 
   const filteredServices = useMemo(() => {
-    if (activeCategory === "todos") return services;
-    return services.filter((s) => s.category === activeCategory);
-  }, [activeCategory]);
+    const base = activeCategory === "todos" ? services : services.filter((s) => s.category === activeCategory);
+    return base.map((s) => localizeContent(s, lang));
+  }, [activeCategory, lang]);
 
   const selectedItems = useMemo(
     () =>
@@ -349,7 +349,8 @@ export function BudgetSection() {
       buildBudgetMessage(
         messageLang,
         currency,
-        selectedItems,
+        // títulos no idioma da mensagem (workana=pt, upwork=en, indicação=idioma do site)
+        selectedItems.map(({ service, quantity }) => ({ service: localizeContent(service, messageLang), quantity })),
         onceTotal,
         monthlyTotal,
         packageDiscount,
@@ -534,6 +535,7 @@ export function BudgetSection() {
               {packages.map((pkg, i) => {
                 const { once, monthly, originalOnce } = getPackagePrices(pkg);
                 const isAdded = addedPackageId === pkg.id;
+                const lpkg = localizeContent(pkg, lang);
                 return (
                   <article
                     className={`package-card package-card--${pkg.tagColor}`}
@@ -541,9 +543,9 @@ export function BudgetSection() {
                     data-animate
                     style={{ "--animate-delay": `${i * 80}ms` } as React.CSSProperties}
                   >
-                    <div className="package-card__tag">{pkg.tag}</div>
-                    <h3>{pkg.title}</h3>
-                    <p className="package-card__desc">{pkg.description}</p>
+                    <div className="package-card__tag">{lpkg.tag}</div>
+                    <h3>{lpkg.title}</h3>
+                    <p className="package-card__desc">{lpkg.description}</p>
 
                     <ul className="package-card__includes">
                       {pkg.services.map((id) => {
@@ -551,7 +553,7 @@ export function BudgetSection() {
                         return svc ? (
                           <li key={id}>
                             <span aria-hidden="true">✓</span>
-                            {svc.title}
+                            {localizeContent(svc, lang).title}
                             {svc.billing === "monthly" && (
                               <em>{currency === "USD" ? " /mo" : " /mês"}</em>
                             )}
@@ -649,10 +651,10 @@ export function BudgetSection() {
               selectedItems.map(({ service, quantity }) => (
                 <div className="selected-item" key={service.id}>
                   <div>
-                    <strong>{service.title}</strong>
+                    <strong>{localizeContent(service, lang).title}</strong>
                     <span>
                       {service.allowQuantity
-                        ? `${quantity} ${service.unitLabel || t.budget.units} × ${formatAmount(service.price, currency)}`
+                        ? `${quantity} ${localizeContent(service, lang).unitLabel || t.budget.units} × ${formatAmount(service.price, currency)}`
                         : formatServicePrice(service, currency)}
                       {service.allowQuantity && service.billing === "monthly" ? t.budget.perMonth : ""}
                     </span>

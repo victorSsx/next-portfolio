@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { siteData, type Project, type ProjectImage } from "../lib/site-data";
+import { siteData, localizeContent, type Project, type ProjectImage } from "../lib/site-data";
 import { useLanguage } from "../lib/LanguageContext";
 
 const projects = siteData.projects;
@@ -117,9 +117,9 @@ type ProjectsSectionProps = {
 };
 
 export function ProjectsSection({ limit, showAllLink, showFilter }: ProjectsSectionProps = {}) {
-  const { t } = useLanguage();
-  // Newest first, so recently added projects surface automatically
-  const orderedProjects = useMemo(() => [...projects].reverse(), []);
+  const { t, lang } = useLanguage();
+  // Newest first, so recently added projects surface automatically (localized to the UI language)
+  const orderedProjects = useMemo(() => [...projects].reverse().map((p) => localizeContent(p, lang)), [lang]);
 
   // Unique filter tags across all projects (stable order by first appearance)
   const allTags = useMemo(() => {

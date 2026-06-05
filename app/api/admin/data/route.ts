@@ -70,6 +70,7 @@ const normalizeSiteData = (data: Partial<SiteData>): SiteData => ({
           url: String(tool?.url || "").trim(),
           ...(tool?.icon ? { icon: String(tool.icon).trim().slice(0, 8) } : {}),
           ...(tool?.tag ? { tag: String(tool.tag).trim() } : {}),
+          ...(tool?.i18n && typeof tool.i18n === "object" ? { i18n: tool.i18n } : {}),
         }))
         .filter((tool) => tool.id && tool.name && tool.url)
     : undefined,
@@ -94,6 +95,7 @@ const normalizeSiteData = (data: Partial<SiteData>): SiteData => ({
         .map((category) => ({
           id: String(category.id || "").trim(),
           label: String(category.label || "").trim(),
+          ...(category.i18n && typeof category.i18n === "object" ? { i18n: category.i18n } : {}),
         }))
         .filter((category) => category.id && category.label)
     : [],
@@ -111,6 +113,7 @@ const normalizeSiteData = (data: Partial<SiteData>): SiteData => ({
           allowQuantity: Boolean(service.allowQuantity),
           unitLabel: service.unitLabel ? String(service.unitLabel).trim() : undefined,
           startingAt: Boolean(service.startingAt),
+          ...(service.i18n && typeof service.i18n === "object" ? { i18n: service.i18n } : {}),
         }))
         .filter((service) => service.id && service.title && service.category)
     : [],
@@ -185,6 +188,7 @@ const normalizeSiteData = (data: Partial<SiteData>): SiteData => ({
             ...(Array.isArray(project.tags) && project.tags.length
               ? { tags: project.tags.map((tag) => String(tag).trim()).filter(Boolean) }
               : {}),
+            ...(project.i18n && typeof project.i18n === "object" ? { i18n: project.i18n } : {}),
           };
         })
         .filter((project) => project.id && project.title && project.mainImage.src)

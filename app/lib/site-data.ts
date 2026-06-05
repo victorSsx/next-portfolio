@@ -3,9 +3,22 @@ import rawSiteData from "../data/site-data.json";
 export type CategoryId = string;
 export type Billing = "once" | "monthly";
 
+// Traduções de conteúdo geradas por IA: { en: { campo: valor }, es: {...} }.
+// Só guarda campos de exibição (nunca ids, preços, urls).
+export type ContentI18n = Record<string, Record<string, string | string[]>>;
+
+// Devolve uma cópia do item com os campos traduzidos do idioma aplicado (cai pra PT se faltar).
+export function localizeContent<T extends { i18n?: ContentI18n }>(item: T, lang: string): T {
+  if (lang === "pt") return item;
+  const tr = item.i18n?.[lang];
+  if (!tr) return item;
+  return { ...item, ...tr } as T;
+}
+
 export type ServiceCategory = {
   id: string;
   label: string;
+  i18n?: ContentI18n;
 };
 
 export type BudgetService = {
@@ -19,6 +32,7 @@ export type BudgetService = {
   allowQuantity?: boolean;
   unitLabel?: string;
   startingAt?: boolean;
+  i18n?: ContentI18n;
 };
 
 export type ProjectImage = {
@@ -55,6 +69,7 @@ export type Project = {
   deviceViews?: DeviceView[];
   link?: string;
   tags?: string[];
+  i18n?: ContentI18n;
 };
 
 export type AvailabilityStatus = "available" | "busy" | "unavailable";
@@ -71,6 +86,7 @@ export type FreeTool = {
   url: string;
   icon?: string; // emoji opcional
   tag?: string; // categoria opcional, ex: "Finanças"
+  i18n?: ContentI18n;
 };
 
 export type Lead = {
@@ -104,6 +120,7 @@ export type Package = {
   description: string;
   services: string[];
   discount: number;
+  i18n?: ContentI18n;
 };
 
 export type Testimonial = {

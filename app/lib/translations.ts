@@ -152,7 +152,7 @@ export type Translations = {
     steps: { number: string; title: string; desc: string }[];
   };
   contact: { eyebrow: string; title: string; lead: string; whatsappGreeting: string; emailSubject: string };
-  freeTools: { eyebrow: string; title: string; lead: string; useBtn: string };
+  freeTools: { eyebrow: string; title: string; lead: string; useBtn: string; freeBadge: string };
   chat: {
     title: string;
     subtitle: string;
@@ -367,7 +367,7 @@ export const translations: Record<Language, Translations> = {
       ],
     },
     contact: { eyebrow: "Contato", title: "Seu projeto pode ser a próxima história de sucesso.", lead: "Respondo rápido, normalmente em poucas horas. Me chama no WhatsApp ou e-mail e a gente alinha seu projeto sem compromisso.", whatsappGreeting: "Olá Victor! Vim pelo seu portfólio e gostaria de conversar sobre um projeto.", emailSubject: "Contato pelo portfólio" },
-    freeTools: { eyebrow: "Ferramentas gratuitas", title: "Sistemas que criei, com acesso livre para você", lead: "Ferramentas web que desenvolvi e disponibilizo sem custo. Use à vontade — e se curtir, imagina o que posso criar pro seu negócio.", useBtn: "Usar grátis" },
+    freeTools: { eyebrow: "Ferramentas gratuitas", title: "Sistemas que criei, com acesso livre para você", lead: "Ferramentas web que desenvolvi e disponibilizo sem custo. Use à vontade — e se curtir, imagina o que posso criar pro seu negócio.", useBtn: "Usar grátis", freeBadge: "Grátis" },
     chat: {
       title: "Assistente do Victor",
       subtitle: "Tira dúvidas e monta orçamento",
@@ -593,7 +593,7 @@ export const translations: Record<Language, Translations> = {
       ],
     },
     contact: { eyebrow: "Contact", title: "Your project could be the next success story.", lead: "I reply fast, usually within a few hours. Message me on WhatsApp or email and we'll scope your project — no commitment.", whatsappGreeting: "Hi Victor! I came from your portfolio and would like to talk about a project.", emailSubject: "Contact from your portfolio" },
-    freeTools: { eyebrow: "Free tools", title: "Systems I built, with free access for you", lead: "Web tools I developed and share at no cost. Use them freely — and if you like them, imagine what I can build for your business.", useBtn: "Use for free" },
+    freeTools: { eyebrow: "Free tools", title: "Systems I built, with free access for you", lead: "Web tools I developed and share at no cost. Use them freely — and if you like them, imagine what I can build for your business.", useBtn: "Use for free", freeBadge: "Free" },
     chat: {
       title: "Victor's assistant",
       subtitle: "Answers questions & builds quotes",
@@ -819,7 +819,7 @@ export const translations: Record<Language, Translations> = {
       ],
     },
     contact: { eyebrow: "Contacto", title: "Tu proyecto puede ser la próxima historia de éxito.", lead: "Respondo rápido, normalmente en pocas horas. Escríbeme por WhatsApp o correo y planificamos tu proyecto, sin compromiso.", whatsappGreeting: "¡Hola Victor! Vine desde tu portafolio y me gustaría hablar sobre un proyecto.", emailSubject: "Contacto desde tu portafolio" },
-    freeTools: { eyebrow: "Herramientas gratuitas", title: "Sistemas que creé, con acceso libre para ti", lead: "Herramientas web que desarrollé y comparto sin costo. Úsalas libremente — y si te gustan, imagina lo que puedo crear para tu negocio.", useBtn: "Usar gratis" },
+    freeTools: { eyebrow: "Herramientas gratuitas", title: "Sistemas que creé, con acceso libre para ti", lead: "Herramientas web que desarrollé y comparto sin costo. Úsalas libremente — y si te gustan, imagina lo que puedo crear para tu negocio.", useBtn: "Usar gratis", freeBadge: "Gratis" },
     chat: {
       title: "Asistente de Victor",
       subtitle: "Resuelve dudas y arma presupuestos",

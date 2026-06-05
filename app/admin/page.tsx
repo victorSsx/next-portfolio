@@ -5,6 +5,7 @@ import {
   siteData as defaultSiteData,
   type AvailabilityStatus,
   type BudgetService,
+  type ContentI18n,
   type Coupon,
   type DeviceView,
   type FreeTool,
@@ -181,6 +182,7 @@ export default function AdminPage() {
   const [advisorError, setAdvisorError] = useState("");
   const [advisorQuestion, setAdvisorQuestion] = useState("");
   const [advisorPrices, setAdvisorPrices] = useState("");
+  const [translating, setTranslating] = useState(false);
 
   const activeProject = useMemo(
     () => data.projects.find((p) => p.id === activeProjectId) || data.projects[0],
@@ -811,6 +813,78 @@ export default function AdminPage() {
     );
   };
 
+  // Traduz o conteúdo (PT → EN/ES) por IA e preenche os campos i18n. Depois é só Salvar.
+  const runContentTranslation = async () => {
+    const items: { id: string; fields: Record<string, string | string[]> }[] = [];
+    const push = (id: string, fields: Record<string, string | string[] | undefined>) => {
+      const clean: Record<string, string | string[]> = {};
+      for (const [k, v] of Object.entries(fields)) {
+        if (typeof v === "string" && v.trim()) clean[k] = v;
+        else if (Array.isArray(v) && v.length) clean[k] = v;
+      }
+      if (Object.keys(clean).length) items.push({ id, fields: clean });
+    };
+
+    (data.projects ?? []).forEach((p) =>
+      push(`project:${p.id}`, { title: p.title, category: p.category, summary: p.summary, status: p.status, workDone: p.workDone })
+    );
+    (data.services ?? []).forEach((s) =>
+      push(`service:${s.id}`, { title: s.title, summary: s.summary, details: s.details, unitLabel: s.unitLabel })
+    );
+    (data.packages ?? []).forEach((p) =>
+      push(`package:${p.id}`, { title: p.title, description: p.description, tag: p.tag })
+    );
+    (data.freeTools ?? []).forEach((tl) =>
+      push(`tool:${tl.id}`, { name: tl.name, description: tl.description, tag: tl.tag })
+    );
+    (data.serviceCategories ?? []).forEach((c) => push(`cat:${c.id}`, { label: c.label }));
+
+    if (!items.length) {
+      setStatus("error");
+      setMessage("Nada para traduzir.");
+      return;
+    }
+
+    setTranslating(true);
+    setStatus("loading");
+    setMessage("Traduzindo conteúdo com IA (PT → EN/ES). Pode levar alguns segundos…");
+    try {
+      const res = await fetch("/api/admin/translate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": password },
+        body: JSON.stringify({ items, langs: ["en", "es"] }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || "Falha na tradução.");
+      const translations: Record<string, ContentI18n> = json.translations || {};
+
+      const apply = <T extends { id: string; i18n?: ContentI18n }>(arr: T[], prefix: string): T[] =>
+        arr.map((it) => {
+          const tr = translations[`${prefix}:${it.id}`];
+          return tr ? { ...it, i18n: { ...(it.i18n ?? {}), ...tr } } : it;
+        });
+
+      setData((cur) => ({
+        ...cur,
+        projects: apply(cur.projects, "project"),
+        services: apply(cur.services, "service"),
+        serviceCategories: apply(cur.serviceCategories, "cat"),
+        ...(cur.packages ? { packages: apply(cur.packages, "package") } : {}),
+        ...(cur.freeTools ? { freeTools: apply(cur.freeTools, "tool") } : {}),
+      }));
+
+      setStatus("saved");
+      setMessage(
+        `Tradução concluída (${Object.keys(translations).length} itens em EN/ES). Revise se quiser e clique em Salvar alterações para publicar.`
+      );
+    } catch (e) {
+      setStatus("error");
+      setMessage(e instanceof Error ? e.message : "Não foi possível traduzir.");
+    } finally {
+      setTranslating(false);
+    }
+  };
+
   // ── Login screen ─────────────────────────────────────────────────────────────
 
   if (!isUnlocked) {
@@ -894,6 +968,15 @@ export default function AdminPage() {
         </div>
         <div className="admin-header__actions">
           <a className="admin-link" href="/">Ver site</a>
+          <button
+            className="button button--ghost"
+            disabled={translating || status === "saving" || status === "uploading"}
+            onClick={runContentTranslation}
+            type="button"
+            title="Traduz títulos, resumos e descrições para EN e ES com IA"
+          >
+            {translating ? "Traduzindo…" : "Traduzir (IA)"}
+          </button>
           <button
             className="button button--primary"
             disabled={status === "saving" || status === "uploading"}

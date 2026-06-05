@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { siteData, type FreeTool } from "../lib/site-data";
+import { siteData, localizeContent, type FreeTool } from "../lib/site-data";
 import { useLanguage } from "../lib/LanguageContext";
 
 const freeTools = siteData.freeTools ?? [];
 const CAROUSEL_THRESHOLD = 3;
 
-function ToolCard({ tool, useBtn }: { tool: FreeTool; useBtn: string }) {
+function ToolCard({ tool, useBtn, freeLabel }: { tool: FreeTool; useBtn: string; freeLabel: string }) {
   return (
     <article className="free-tool-card">
       <div className="free-tool-card__head">
@@ -15,7 +15,7 @@ function ToolCard({ tool, useBtn }: { tool: FreeTool; useBtn: string }) {
           {tool.icon || "✦"}
         </span>
         {tool.tag && <span className="free-tool-card__tag">{tool.tag}</span>}
-        <span className="free-tool-card__free">Grátis</span>
+        <span className="free-tool-card__free">{freeLabel}</span>
       </div>
 
       <h3 className="free-tool-card__name">{tool.name}</h3>
@@ -29,7 +29,7 @@ function ToolCard({ tool, useBtn }: { tool: FreeTool; useBtn: string }) {
 }
 
 export function FreeToolsSection() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const isCarousel = freeTools.length > CAROUSEL_THRESHOLD;
   const viewportRef = useRef<HTMLDivElement>(null);
   const [paused, setPaused] = useState(false);
@@ -81,7 +81,7 @@ export function FreeToolsSection() {
 
           <div className="free-tools__viewport" ref={viewportRef}>
             {freeTools.map((tool) => (
-              <ToolCard key={tool.id} tool={tool} useBtn={t.freeTools.useBtn} />
+              <ToolCard key={tool.id} tool={localizeContent(tool, lang)} useBtn={t.freeTools.useBtn} freeLabel={t.freeTools.freeBadge} />
             ))}
           </div>
 
@@ -102,7 +102,7 @@ export function FreeToolsSection() {
               data-animate
               style={{ "--animate-delay": `${i * 90}ms` } as React.CSSProperties}
             >
-              <ToolCard tool={tool} useBtn={t.freeTools.useBtn} />
+              <ToolCard tool={localizeContent(tool, lang)} useBtn={t.freeTools.useBtn} freeLabel={t.freeTools.freeBadge} />
             </div>
           ))}
         </div>
