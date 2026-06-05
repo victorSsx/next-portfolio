@@ -4,6 +4,7 @@ import { ContactSection } from "./components/ContactSection";
 import { FAQSection } from "./components/FAQSection";
 import { FloatingWhatsApp } from "./components/FloatingWhatsApp";
 import { FreeToolsSection } from "./components/FreeToolsSection";
+import { GuidedTour } from "./components/GuidedTour";
 import { HeroSection } from "./components/HeroSection";
 import { ProcessSection } from "./components/ProcessSection";
 import { ProjectsSection } from "./components/ProjectsSection";
@@ -22,6 +23,7 @@ export default function Home() {
       <ContactSection />
       <FloatingWhatsApp />
       <ChatAssistant />
+      <GuidedTour />
     </main>
   );
 }

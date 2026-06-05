@@ -171,6 +171,14 @@ export type Translations = {
     leadSuccess: string;
     leadCancel: string;
   };
+  tour: {
+    skip: string;
+    prev: string;
+    next: string;
+    finish: string;
+    replay: string;
+    steps: { title: string; text: string }[];
+  };
 };
 
 export const translations: Record<Language, Translations> = {
@@ -383,6 +391,21 @@ export const translations: Record<Language, Translations> = {
       leadSuccess: "Pedido enviado! O Victor vai te retornar em breve.",
       leadCancel: "Cancelar",
     },
+    tour: {
+      skip: "Pular",
+      prev: "Anterior",
+      next: "Próximo",
+      finish: "Começar 🚀",
+      replay: "Como funciona?",
+      steps: [
+        { title: "Bem-vindo! 👋", text: "Em 30 segundos eu te mostro como meu portfólio funciona. Vamos?" },
+        { title: "Meus projetos", text: "Projetos reais que entreguei. Clique em qualquer um pra ver telas, tecnologias e detalhes." },
+        { title: "Ferramentas grátis", text: "Sistemas que criei e liberei de graça pra você usar — sem cadastro." },
+        { title: "Monte seu orçamento", text: "Escolha serviços ou um pacote e veja o preço na hora, sem compromisso. Depois é só copiar e me chamar." },
+        { title: "Depoimentos", text: "Veja o que os clientes dizem. Foi meu cliente? Deixe um depoimento e ganhe 10% no próximo projeto." },
+        { title: "Vamos conversar", text: "Pronto pra começar? Me chame por aqui e a gente tira sua ideia do papel." },
+      ],
+    },
   },
   en: {
     nav: { projects: "Projects", budget: "Quote", process: "Process", contact: "Contact" },
@@ -593,6 +616,21 @@ export const translations: Record<Language, Translations> = {
       leadSuccess: "Request sent! Victor will get back to you soon.",
       leadCancel: "Cancel",
     },
+    tour: {
+      skip: "Skip",
+      prev: "Back",
+      next: "Next",
+      finish: "Start 🚀",
+      replay: "How it works?",
+      steps: [
+        { title: "Welcome! 👋", text: "In 30 seconds I'll show you how my portfolio works. Ready?" },
+        { title: "My projects", text: "Real projects I delivered. Click any to see screens, tech and details." },
+        { title: "Free tools", text: "Systems I built and released for free — no signup required." },
+        { title: "Build your quote", text: "Pick services or a package and see the price instantly, no strings attached. Then just copy and message me." },
+        { title: "Testimonials", text: "See what clients say. Were you my client? Leave a testimonial and get 10% off your next project." },
+        { title: "Let's talk", text: "Ready to start? Reach out here and let's bring your idea to life." },
+      ],
+    },
   },
   es: {
     nav: { projects: "Proyectos", budget: "Presupuesto", process: "Proceso", contact: "Contacto" },
@@ -802,6 +840,21 @@ export const translations: Record<Language, Translations> = {
       leadSending: "Enviando...",
       leadSuccess: "¡Solicitud enviada! Victor te responderá pronto.",
       leadCancel: "Cancelar",
+    },
+    tour: {
+      skip: "Saltar",
+      prev: "Atrás",
+      next: "Siguiente",
+      finish: "Empezar 🚀",
+      replay: "¿Cómo funciona?",
+      steps: [
+        { title: "¡Bienvenido! 👋", text: "En 30 segundos te muestro cómo funciona mi portafolio. ¿Vamos?" },
+        { title: "Mis proyectos", text: "Proyectos reales que entregué. Haz clic en cualquiera para ver pantallas, tecnologías y detalles." },
+        { title: "Herramientas gratis", text: "Sistemas que creé y liberé gratis para que uses — sin registro." },
+        { title: "Arma tu presupuesto", text: "Elige servicios o un paquete y mira el precio al instante, sin compromiso. Luego solo copia y escríbeme." },
+        { title: "Testimonios", text: "Mira lo que dicen los clientes. ¿Fuiste mi cliente? Deja un testimonio y obtén 10% en tu próximo proyecto." },
+        { title: "Hablemos", text: "¿Listo para empezar? Escríbeme por aquí y damos vida a tu idea." },
+      ],
     },
   },
 };
