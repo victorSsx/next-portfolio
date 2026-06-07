@@ -1008,6 +1008,17 @@
       "details": [],
       "allowQuantity": false,
       "startingAt": false
+    },
+    {
+      "id": "servico-mq3g7yvy",
+      "category": "suporte",
+      "title": "Configuração e Build de App Mobile (React Native/Expo)",
+      "price": 800,
+      "billing": "once",
+      "summary": "Configuração completa do ambiente de build EAS/Expo, resolução de dependências e geração do arquivo APK para seu aplicativo Android em React Native.",
+      "details": [],
+      "allowQuantity": false,
+      "startingAt": false
     }
   ],
   "projects": [
