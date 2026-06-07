@@ -975,6 +975,39 @@
           ]
         }
       }
+    },
+    {
+      "id": "servico-mq3cflku",
+      "category": "diagnostico",
+      "title": "Consultoria e Proposta Técnica Detalhada",
+      "price": 1000,
+      "billing": "once",
+      "summary": "Elaboração de um documento técnico com análise de requisitos, arquitetura da solução, tecnologias propostas e plano de implementação para o chatbot.",
+      "details": [],
+      "allowQuantity": false,
+      "startingAt": false
+    },
+    {
+      "id": "servico-mq3cfmdh",
+      "category": "sites",
+      "title": "Desenvolvimento de Chatbot WhatsApp Personalizado",
+      "price": 5000,
+      "billing": "once",
+      "summary": "Criação e implementação de um chatbot robusto para WhatsApp, automatizando respostas, fornecendo informações e otimizando a comunicação com clientes.",
+      "details": [],
+      "allowQuantity": false,
+      "startingAt": false
+    },
+    {
+      "id": "servico-mq3cfmyd",
+      "category": "diagnostico",
+      "title": "Módulo de Análise e Sugestão de Vendas",
+      "price": 3000,
+      "billing": "once",
+      "summary": "Integração de funcionalidades para coletar dados das interações, identificar padrões e gerar insights para novas estratégias e oportunidades de vendas.",
+      "details": [],
+      "allowQuantity": false,
+      "startingAt": false
     }
   ],
   "projects": [
