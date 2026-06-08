@@ -300,6 +300,18 @@
           "label": "Diagnóstico y correcciones"
         }
       }
+    },
+    {
+      "id": "ia",
+      "label": "Inteligência Artificial",
+      "i18n": {
+        "en": {
+          "label": "Artificial Intelligence"
+        },
+        "es": {
+          "label": "Inteligencia Artificial"
+        }
+      }
     }
   ],
   "technologies": [
@@ -1037,6 +1049,76 @@
       "billing": "once",
       "summary": "Configuração completa do ambiente de build EAS/Expo, resolução de dependências e geração do arquivo APK para seu aplicativo Android em React Native.",
       "details": [],
+      "allowQuantity": false,
+      "startingAt": false
+    },
+    {
+      "id": "ia-chatbot-site",
+      "category": "ia",
+      "title": "Assistente de IA no site (chatbot)",
+      "price": 1200,
+      "billing": "once",
+      "summary": "Um assistente de IA no seu site que responde dúvidas 24/7, recomenda seus serviços ou produtos e capta leads automaticamente.",
+      "details": [
+        "Treinado com as informações do seu negócio (serviços, preços, FAQ)",
+        "Responde os visitantes na hora, a qualquer hora",
+        "Captação de leads (nome e contato) direto pelo chat",
+        "Opção de atendimento em português, inglês e espanhol",
+        "Instalação e configuração no seu site",
+        "Requer o Plano de IA mensal (cobre o uso da IA e os ajustes)"
+      ],
+      "allowQuantity": false,
+      "startingAt": true
+    },
+    {
+      "id": "ia-agente-orcamento",
+      "category": "ia",
+      "title": "Agente de orçamento por IA",
+      "price": 1500,
+      "billing": "once",
+      "summary": "Um agente que conversa com o cliente, entende a necessidade, recomenda os serviços certos e monta uma estimativa na hora — qualificando o lead pra você.",
+      "details": [
+        "Conversa natural que identifica o que o cliente precisa",
+        "Recomenda serviços ou produtos e mostra os mais relevantes",
+        "Monta uma estimativa automática com base na sua tabela de preços",
+        "Anota os pontos importantes que o cliente menciona",
+        "Qualifica o lead antes de chegar até você",
+        "Requer o Plano de IA mensal"
+      ],
+      "allowQuantity": false,
+      "startingAt": true
+    },
+    {
+      "id": "ia-site-multilingue",
+      "category": "ia",
+      "title": "Site multilíngue (tradução por IA)",
+      "price": 600,
+      "billing": "once",
+      "summary": "Seu site em vários idiomas automaticamente: a IA traduz o conteúdo para inglês e espanhol, ampliando seu alcance.",
+      "details": [
+        "Tradução automática do conteúdo para inglês e espanhol",
+        "Seletor de idioma no site",
+        "Mantém o visual e a estrutura originais",
+        "Ideal para vender ou atender fora do Brasil",
+        "Adicional a um site novo ou já existente"
+      ],
+      "allowQuantity": false,
+      "startingAt": true
+    },
+    {
+      "id": "ia-plano-mensal",
+      "category": "ia",
+      "title": "Plano de IA (mensal)",
+      "price": 197,
+      "billing": "monthly",
+      "summary": "Mantém seu assistente ou agente de IA no ar: cobre o uso da IA, o monitoramento e os ajustes contínuos.",
+      "details": [
+        "Cobre o custo de uso da IA (API)",
+        "Monitoramento e pequenos ajustes mensais",
+        "Atualização das informações do negócio quando precisar",
+        "Suporte para manter a IA respondendo bem",
+        "Necessário para os serviços de chatbot e agente de IA"
+      ],
       "allowQuantity": false,
       "startingAt": false
     }
