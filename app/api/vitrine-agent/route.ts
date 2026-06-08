@@ -59,9 +59,17 @@ function systemPrompt(lang: string): string {
     "- No começo, se ainda não souber a necessidade, faça uma pergunta e deixe as listas vazias.",
     "- Quando já entender, recomende a melhor combinação (serviços e/ou 1 pacote).",
     "",
+    "CLIENTE LEIGO — MUITO IMPORTANTE:",
+    "- Boa parte dos clientes NÃO sabe o que quer, nem por onde começar, nem o que precisa. TOME A FRENTE: explique em linguagem simples (sem termos técnicos), dê dicas e recomendações e conduza passo a passo.",
+    "- Sempre que ajudar, ofereça OPÇÕES CLICÁVEIS no campo \"options\" (2 a 5 opções curtas) pra facilitar pra quem não sabe explicar. Inclua uma opção tipo 'Não sei, me ajuda' quando fizer sentido.",
+    "- Use \"multi\": true quando o cliente pode marcar VÁRIAS (ex: 'quais funcionalidades você precisa?'); use false pra escolha ÚNICA (ex: 'que tipo de projeto?').",
+    "- Dê dicas proativas (ex: 'pra captar clientes, uma página única costuma converter mais que um site grande').",
+    "",
     "FORMATO DE SAÍDA (responda APENAS este JSON):",
-    '{"reply": "sua fala curta", "notes": ["pontos que o cliente mencionou"], "serviceIds": ["ids recomendados AGORA"], "packageIds": ["ids recomendados AGORA"]}',
-    '- "notes": lista CUMULATIVA e curta do que o cliente disse que importa (necessidades, requisitos, quantidades, prazos, preferências). Mantenha os pontos anteriores e some os novos a cada turno. Frases de 2 a 6 palavras, no idioma da conversa. Vazia se ele ainda não deu detalhes.',
+    '{"reply": "sua fala curta", "options": ["opção curta clicável"], "multi": false, "notes": ["pontos que o cliente mencionou"], "serviceIds": ["ids recomendados AGORA"], "packageIds": ["ids recomendados AGORA"]}',
+    '- "options": de 0 a 5 opções curtas pra o cliente CLICAR (o texto que ele "responderia"). Use pra guiar leigos. Deixe [] quando fizer mais sentido ele digitar livre.',
+    '- "multi": true se ele pode escolher várias das options ao mesmo tempo; false se é escolha única.',
+    '- "notes": lista CUMULATIVA e curta do que o cliente disse que importa. Mantenha os anteriores e some os novos. Frases de 2 a 6 palavras, no idioma da conversa. Vazia se ainda não deu detalhes.',
     "- serviceIds/packageIds refletem o que deve aparecer na tela neste momento (podem ficar vazios no início e mudar a cada turno).",
   ].join("\n");
 }
@@ -138,6 +146,8 @@ export async function POST(request: Request) {
     const slice = text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1);
     const parsed = JSON.parse(slice) as {
       reply?: string;
+      options?: string[];
+      multi?: boolean;
       notes?: string[];
       serviceIds?: string[];
       packageIds?: string[];
@@ -145,6 +155,12 @@ export async function POST(request: Request) {
 
     const reply = String(parsed.reply || "").slice(0, 700);
     if (!reply) return NextResponse.json({ error: "Sem resposta da IA." }, { status: 502 });
+
+    const options = (Array.isArray(parsed.options) ? parsed.options : [])
+      .map((o) => String(o).trim())
+      .filter(Boolean)
+      .slice(0, 5);
+    const multi = Boolean(parsed.multi);
 
     const notes = (Array.isArray(parsed.notes) ? parsed.notes : [])
       .map((n) => String(n).trim())
@@ -158,7 +174,7 @@ export async function POST(request: Request) {
       (siteData.packages || []).some((p) => p.id === id)
     );
 
-    return NextResponse.json({ reply, notes, serviceIds, packageIds });
+    return NextResponse.json({ reply, options, multi, notes, serviceIds, packageIds });
   } catch (error) {
     const aborted = error instanceof DOMException && error.name === "AbortError";
     return NextResponse.json(

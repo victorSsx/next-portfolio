@@ -39,6 +39,8 @@ const STR = {
     copy: "Copiar estimativa",
     copied: "Copiado! Cole no chat da plataforma.",
     note: "Estimativa aproximada — o valor final a gente alinha por aqui.",
+    confirm: "Confirmar",
+    starters: ["Quero um site", "Quero uma loja virtual", "Quero captar clientes", "Não sei por onde começar"],
   },
   en: {
     eyebrow: "Quote assistant",
@@ -63,6 +65,8 @@ const STR = {
     copy: "Copy estimate",
     copied: "Copied! Paste it in the platform chat.",
     note: "Approximate estimate — we align the final price right here.",
+    confirm: "Confirm",
+    starters: ["I want a website", "I want an online store", "I want to get clients", "I don't know where to start"],
   },
   es: {
     eyebrow: "Asistente de presupuesto",
@@ -87,6 +91,8 @@ const STR = {
     copy: "Copiar estimación",
     copied: "¡Copiado! Pégalo en el chat de la plataforma.",
     note: "Estimación aproximada — el valor final lo alineamos aquí.",
+    confirm: "Confirmar",
+    starters: ["Quiero un sitio", "Quiero una tienda online", "Quiero captar clientes", "No sé por dónde empezar"],
   },
 } as const;
 
@@ -130,6 +136,9 @@ export function VitrineAssistant() {
   const [notes, setNotes] = useState<string[]>([]);
   const [cards, setCards] = useState<Card[]>([]);
   const [copied, setCopied] = useState(false);
+  const [options, setOptions] = useState<string[]>([]);
+  const [optMulti, setOptMulti] = useState(false);
+  const [picked, setPicked] = useState<string[]>([]);
   const scrollRef = useRef<HTMLDivElement>(null);
   const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -163,12 +172,14 @@ export function VitrineAssistant() {
     }, 480);
   }
 
-  async function send() {
-    const text = input.trim();
+  async function send(override?: string) {
+    const text = (override ?? input).trim();
     if (!text || loading) return;
     const next: Msg[] = [...messages, { role: "user", content: text }];
     setMessages(next);
     setInput("");
+    setOptions([]);
+    setPicked([]);
     setLoading(true);
     setError("");
     try {
@@ -179,6 +190,8 @@ export function VitrineAssistant() {
       });
       const json = (await res.json()) as {
         reply?: string;
+        options?: string[];
+        multi?: boolean;
         notes?: string[];
         serviceIds?: string[];
         packageIds?: string[];
@@ -186,6 +199,8 @@ export function VitrineAssistant() {
       };
       if (!res.ok || !json.reply) throw new Error(json.error || t.error);
       setMessages((m) => [...m, { role: "assistant", content: json.reply as string }]);
+      setOptions(Array.isArray(json.options) ? json.options : []);
+      setOptMulti(Boolean(json.multi));
       if (Array.isArray(json.notes)) setNotes(json.notes);
       applyRecommendation({ serviceIds: json.serviceIds ?? [], packageIds: json.packageIds ?? [] });
     } catch (e) {
@@ -282,6 +297,11 @@ export function VitrineAssistant() {
     );
   }
 
+  // Antes da conversa começar, mostra as opções iniciais (starters) pra guiar o leigo.
+  const greetingStarters = messages.length <= 1 && !loading;
+  const shownOptions = greetingStarters && options.length === 0 ? [...t.starters] : options;
+  const shownMulti = greetingStarters && options.length === 0 ? false : optMulti;
+
   return (
     <section className="vagent" id="orcamento">
       <div className="vagent__intro" data-animate>
@@ -326,6 +346,38 @@ export function VitrineAssistant() {
               </div>
             ) : null}
           </div>
+          {shownOptions.length > 0 && !loading ? (
+            <div className="vagent__options">
+              {shownMulti
+                ? shownOptions.map((opt) => (
+                    <button
+                      key={opt}
+                      type="button"
+                      className={`vagent-opt vagent-opt--check${picked.includes(opt) ? " is-on" : ""}`}
+                      onClick={() =>
+                        setPicked((p) => (p.includes(opt) ? p.filter((x) => x !== opt) : [...p, opt]))
+                      }
+                    >
+                      {opt}
+                    </button>
+                  ))
+                : shownOptions.map((opt) => (
+                    <button key={opt} type="button" className="vagent-opt" onClick={() => send(opt)}>
+                      {opt}
+                    </button>
+                  ))}
+              {shownMulti ? (
+                <button
+                  type="button"
+                  className="vagent-opt vagent-opt--confirm"
+                  disabled={picked.length === 0}
+                  onClick={() => send(picked.join(", "))}
+                >
+                  {t.confirm}
+                </button>
+              ) : null}
+            </div>
+          ) : null}
           {error ? <p className="vagent__error">{error}</p> : null}
           <div className="vagent__input">
             <textarea
@@ -335,7 +387,7 @@ export function VitrineAssistant() {
               placeholder={t.placeholder}
               rows={1}
             />
-            <button type="button" onClick={send} disabled={!input.trim() || loading} aria-label={t.send}>
+            <button type="button" onClick={() => send()} disabled={!input.trim() || loading} aria-label={t.send}>
               <span aria-hidden="true">➤</span>
             </button>
           </div>
