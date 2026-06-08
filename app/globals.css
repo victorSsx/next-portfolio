@@ -448,17 +448,30 @@ a {
   scroll-behavior: smooth;
   padding: 8px 6px 18px;
   scrollbar-width: none;
-  -webkit-mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
-  mask-image: linear-gradient(to right, transparent, #000 7%, #000 93%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 2.5%, #000 97.5%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 2.5%, #000 97.5%, transparent);
 }
 .projects-carousel__viewport::-webkit-scrollbar {
   display: none;
 }
 
+/* 1 card por vez (destaque) — o card já é horizontal, então ganha um ótimo visual com a largura toda */
 .projects-carousel__viewport > .project-card {
-  flex: 0 0 calc((100% - 36px) / 3);
+  flex: 0 0 100%;
   min-width: 0;
-  scroll-snap-align: start;
+  scroll-snap-align: center;
+}
+
+.projects-carousel .project-card {
+  border: 1px solid rgba(199, 164, 71, 0.22);
+  border-radius: 14px;
+  background: linear-gradient(150deg, rgba(199, 164, 71, 0.06), rgba(245, 242, 236, 0.015));
+  padding: 22px;
+  gap: 28px;
+}
+.projects-carousel .project-card__media,
+.projects-carousel .project-card__media img {
+  min-height: 360px;
 }
 
 .projects-carousel__arrow {
@@ -481,21 +494,20 @@ a {
   transform: scale(1.06);
 }
 
-@media (max-width: 900px) {
-  .projects-carousel__viewport > .project-card {
-    flex-basis: calc((100% - 18px) / 2);
+@media (max-width: 760px) {
+  /* No mobile o card empilha (imagem em cima, conteúdo embaixo) e as setas somem (swipe). */
+  .projects-carousel .project-card {
+    grid-template-columns: 1fr;
+    padding: 16px;
+    gap: 14px;
   }
-}
-@media (max-width: 600px) {
-  .projects-carousel__viewport > .project-card {
-    flex-basis: 84%;
+  .projects-carousel .project-card__media,
+  .projects-carousel .project-card__media img {
+    grid-row: auto;
+    min-height: 210px;
   }
   .projects-carousel__arrow {
     display: none;
-  }
-  .projects-carousel__viewport {
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
-    mask-image: linear-gradient(to right, transparent, #000 4%, #000 96%, transparent);
   }
 }
 
