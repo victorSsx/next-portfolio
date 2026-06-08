@@ -2834,6 +2834,18 @@ a {
   color: var(--gold-strong);
 }
 
+.admin-login__links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.admin-login__vitrine {
+  width: 100%;
+  justify-content: center;
+}
+
 .admin-header {
   display: flex;
   gap: 16px;

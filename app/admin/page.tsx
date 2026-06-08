@@ -951,7 +951,18 @@ export default function AdminPage() {
           </form>
 
           {message ? <p className="admin-status admin-status--error">{message}</p> : null}
-          <a className="admin-login__back" href="/">Voltar para o site</a>
+
+          <div className="admin-login__links">
+            <a
+              className="button button--ghost admin-login__vitrine"
+              href="/vitrine"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Ver vitrine (para plataformas) <span aria-hidden="true">↗</span>
+            </a>
+            <a className="admin-login__back" href="/">Voltar para o site</a>
+          </div>
         </section>
       </main>
     );

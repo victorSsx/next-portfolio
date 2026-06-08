@@ -45,7 +45,7 @@ export default function VitrinePage() {
         </div>
       </div>
 
-      <ProjectsSection carousel />
+      <ProjectsSection carousel showFilter />
       <BudgetSection showcase />
     </main>
   );

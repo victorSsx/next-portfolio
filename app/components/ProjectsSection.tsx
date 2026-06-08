@@ -192,6 +192,13 @@ export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: Pr
     return () => window.clearInterval(id);
   }, [carousel, carouselPaused]);
 
+  // Ao trocar o filtro, volta o carrossel pro início (mantém os dots em sincronia).
+  useEffect(() => {
+    if (!carousel) return;
+    setCarouselIndex(0);
+    carouselRef.current?.scrollTo({ left: 0 });
+  }, [activeTag, carousel]);
+
   const activeProjectVideos = useMemo(
     () => (activeProject ? getProjectVideos(activeProject) : []),
     [activeProject]
