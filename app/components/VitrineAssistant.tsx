@@ -24,7 +24,8 @@ const STR = {
     send: "Enviar",
     thinking: "Pensando...",
     error: "Não consegui responder agora. Tente de novo.",
-    stageHint: "As recomendações aparecem aqui conforme a gente conversa.",
+    stageHint: "Suas necessidades e as recomendações aparecem aqui conforme a gente conversa.",
+    noted: "O que eu anotei",
     recommended: "Recomendado pra você",
     estimate: "Estimativa",
     from: "A partir de",
@@ -45,7 +46,8 @@ const STR = {
     send: "Send",
     thinking: "Thinking...",
     error: "I couldn't reply now. Please try again.",
-    stageHint: "Recommendations show up here as we talk.",
+    stageHint: "Your needs and recommendations show up here as we talk.",
+    noted: "What I noted",
     recommended: "Recommended for you",
     estimate: "Estimate",
     from: "From",
@@ -66,7 +68,8 @@ const STR = {
     send: "Enviar",
     thinking: "Pensando...",
     error: "No pude responder ahora. Inténtalo de nuevo.",
-    stageHint: "Las recomendaciones aparecen aquí mientras hablamos.",
+    stageHint: "Tus necesidades y recomendaciones aparecen aquí mientras hablamos.",
+    noted: "Lo que anoté",
     recommended: "Recomendado para ti",
     estimate: "Estimación",
     from: "Desde",
@@ -117,6 +120,7 @@ export function VitrineAssistant() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [rec, setRec] = useState<Rec>({ serviceIds: [], packageIds: [] });
+  const [notes, setNotes] = useState<string[]>([]);
   const [cards, setCards] = useState<Card[]>([]);
   const [copied, setCopied] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -166,9 +170,16 @@ export function VitrineAssistant() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: next, lang }),
       });
-      const json = (await res.json()) as { reply?: string; serviceIds?: string[]; packageIds?: string[]; error?: string };
+      const json = (await res.json()) as {
+        reply?: string;
+        notes?: string[];
+        serviceIds?: string[];
+        packageIds?: string[];
+        error?: string;
+      };
       if (!res.ok || !json.reply) throw new Error(json.error || t.error);
       setMessages((m) => [...m, { role: "assistant", content: json.reply as string }]);
+      if (Array.isArray(json.notes)) setNotes(json.notes);
       applyRecommendation({ serviceIds: json.serviceIds ?? [], packageIds: json.packageIds ?? [] });
     } catch (e) {
       setError(e instanceof Error ? e.message : t.error);
@@ -308,6 +319,16 @@ export function VitrineAssistant() {
 
         {/* Palco de recomendações */}
         <div className="vagent__panel" data-animate>
+          {notes.length > 0 ? (
+            <div className="vagent__notes">
+              <strong className="vagent__panel-title">{t.noted}</strong>
+              <ul>
+                {notes.map((n, i) => (
+                  <li key={`${n}-${i}`}>{n}</li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
           {cards.length > 0 ? (
             <>
               <strong className="vagent__panel-title">{t.recommended}</strong>
@@ -328,9 +349,10 @@ export function VitrineAssistant() {
               ) : null}
               <p className="vagent__note">{t.note}</p>
             </>
-          ) : (
+          ) : null}
+          {notes.length === 0 && cards.length === 0 ? (
             <div className="vagent__empty">{t.stageHint}</div>
-          )}
+          ) : null}
         </div>
       </div>
     </section>

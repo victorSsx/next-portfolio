@@ -2,13 +2,14 @@
 
 import { ProjectsSection } from "../components/ProjectsSection";
 import { VitrineAssistant } from "../components/VitrineAssistant";
+import { VitrineReviews } from "../components/VitrineReviews";
 import { useLanguage } from "../lib/LanguageContext";
 
 const LOGO = "/images/logo-victor-ai-transparent.png";
 
 // Página "vitrine" para divulgar em plataformas (Workana, Upwork...) — sem nenhum contato.
 export default function VitrinePage() {
-  const { t, lang, setLang } = useLanguage();
+  const { lang, setLang } = useLanguage();
 
   return (
     <main className="next-portfolio vitrine-page">
@@ -34,19 +35,9 @@ export default function VitrinePage() {
         </div>
       </header>
 
-      <div className="vitrine-proof">
-        <div className="workana-badge workana-badge--static" data-animate>
-          <span className="workana-badge__score">5,0</span>
-          <span className="workana-badge__main">
-            <span className="workana-badge__stars" aria-hidden="true">★★★★★</span>
-            <span className="workana-badge__label">{t.testimonials.workana.label}</span>
-            <span className="workana-badge__reviews">2 {t.testimonials.workana.reviewsSuffix}</span>
-          </span>
-        </div>
-      </div>
-
-      <ProjectsSection carousel showFilter />
       <VitrineAssistant />
+      <ProjectsSection carousel showFilter />
+      <VitrineReviews />
     </main>
   );
 }

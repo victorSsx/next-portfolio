@@ -60,8 +60,9 @@ function systemPrompt(lang: string): string {
     "- Quando já entender, recomende a melhor combinação (serviços e/ou 1 pacote).",
     "",
     "FORMATO DE SAÍDA (responda APENAS este JSON):",
-    '{"reply": "sua fala curta", "serviceIds": ["ids dos serviços recomendados AGORA"], "packageIds": ["ids dos pacotes recomendados AGORA"]}',
-    "Os arrays refletem o que deve aparecer na tela neste momento (podem ficar vazios no início e mudar a cada turno).",
+    '{"reply": "sua fala curta", "notes": ["pontos que o cliente mencionou"], "serviceIds": ["ids recomendados AGORA"], "packageIds": ["ids recomendados AGORA"]}',
+    '- "notes": lista CUMULATIVA e curta do que o cliente disse que importa (necessidades, requisitos, quantidades, prazos, preferências). Mantenha os pontos anteriores e some os novos a cada turno. Frases de 2 a 6 palavras, no idioma da conversa. Vazia se ele ainda não deu detalhes.',
+    "- serviceIds/packageIds refletem o que deve aparecer na tela neste momento (podem ficar vazios no início e mudar a cada turno).",
   ].join("\n");
 }
 
@@ -135,10 +136,20 @@ export async function POST(request: Request) {
 
     const text = data?.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || "";
     const slice = text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1);
-    const parsed = JSON.parse(slice) as { reply?: string; serviceIds?: string[]; packageIds?: string[] };
+    const parsed = JSON.parse(slice) as {
+      reply?: string;
+      notes?: string[];
+      serviceIds?: string[];
+      packageIds?: string[];
+    };
 
     const reply = String(parsed.reply || "").slice(0, 700);
     if (!reply) return NextResponse.json({ error: "Sem resposta da IA." }, { status: 502 });
+
+    const notes = (Array.isArray(parsed.notes) ? parsed.notes : [])
+      .map((n) => String(n).trim())
+      .filter(Boolean)
+      .slice(0, 10);
 
     const serviceIds = (Array.isArray(parsed.serviceIds) ? parsed.serviceIds : []).filter((id) =>
       (siteData.services || []).some((s) => s.id === id)
@@ -147,7 +158,7 @@ export async function POST(request: Request) {
       (siteData.packages || []).some((p) => p.id === id)
     );
 
-    return NextResponse.json({ reply, serviceIds, packageIds });
+    return NextResponse.json({ reply, notes, serviceIds, packageIds });
   } catch (error) {
     const aborted = error instanceof DOMException && error.name === "AbortError";
     return NextResponse.json(

@@ -927,6 +927,87 @@ a {
   font-size: 0.9rem;
   line-height: 1.5;
 }
+.vagent__notes {
+  padding: 14px 16px;
+  border: 1px solid rgba(199, 164, 71, 0.2);
+  border-radius: 12px;
+  background: rgba(199, 164, 71, 0.05);
+}
+.vagent__notes ul {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.vagent__notes li {
+  position: relative;
+  padding-left: 24px;
+  color: rgba(245, 242, 236, 0.85);
+  font-size: 0.9rem;
+  line-height: 1.4;
+  animation: vagentNoteIn 0.35s ease both;
+}
+.vagent__notes li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--gold);
+  font-weight: 800;
+}
+@keyframes vagentNoteIn {
+  from {
+    opacity: 0;
+    transform: translateX(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* ── Avaliações da vitrine ─────────────────────────────────────────────────── */
+.vreviews {
+  max-width: 1000px;
+  margin: 64px auto 0;
+  padding: 0 24px 24px;
+}
+.vreviews__intro {
+  text-align: center;
+  margin-bottom: 22px;
+}
+.vreviews__intro .eyebrow {
+  color: var(--gold);
+}
+.vreviews__intro h2 {
+  color: var(--white);
+  font-size: 2rem;
+  margin: 8px 0 10px;
+}
+.vreviews__intro p {
+  color: var(--muted);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+.vreviews__badge {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+.vreviews__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 18px;
+}
+.vreviews__grid .testimonial-card {
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+}
 .vagent__cards {
   display: flex;
   flex-direction: column;
