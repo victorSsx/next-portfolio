@@ -979,6 +979,7 @@ export default function AdminPage() {
         </div>
         <div className="admin-header__actions">
           <a className="admin-link" href="/">Ver site</a>
+          <a className="admin-link" href="/social" target="_blank" rel="noopener noreferrer">Kit de mídias</a>
           <button
             className="button button--ghost"
             disabled={translating || status === "saving" || status === "uploading"}
