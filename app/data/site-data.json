@@ -312,6 +312,18 @@
           "label": "Inteligencia Artificial"
         }
       }
+    },
+    {
+      "id": "marketing",
+      "label": "Marketing",
+      "i18n": {
+        "en": {
+          "label": "Marketing"
+        },
+        "es": {
+          "label": "Marketing"
+        }
+      }
     }
   ],
   "technologies": [
@@ -1121,6 +1133,176 @@
       ],
       "allowQuantity": false,
       "startingAt": false
+    },
+    {
+      "id": "plano-seo-mensal",
+      "category": "seo",
+      "title": "Plano de SEO mensal",
+      "price": 297,
+      "billing": "monthly",
+      "summary": "Trabalho contínuo de SEO pra seu site subir no Google mês a mês: otimização, conteúdo e acompanhamento.",
+      "details": [
+        "Otimização contínua de páginas e palavras-chave",
+        "Acompanhamento de posições e tráfego",
+        "Recomendações e ajustes técnicos mensais",
+        "Relatório simples de resultados",
+        "Ideal pra quem quer crescer de forma constante"
+      ],
+      "allowQuantity": false,
+      "startingAt": false
+    },
+    {
+      "id": "hospedagem-gerenciada",
+      "category": "suporte",
+      "title": "Hospedagem gerenciada",
+      "price": 97,
+      "billing": "monthly",
+      "summary": "Eu cuido da hospedagem do seu site pra você não se preocupar: servidor, SSL, atualizações e estabilidade.",
+      "details": [
+        "Hospedagem rápida e estável incluída",
+        "Certificado SSL (cadeado de segurança)",
+        "Atualizações de plugins e do sistema",
+        "Monitoramento de disponibilidade",
+        "Você não mexe em nada técnico"
+      ],
+      "allowQuantity": false,
+      "startingAt": false
+    },
+    {
+      "id": "backup-seguranca-mensal",
+      "category": "suporte",
+      "title": "Backup + segurança mensal",
+      "price": 127,
+      "billing": "monthly",
+      "summary": "Seu site protegido: backups automáticos, atualizações de segurança e monitoramento contra ataques.",
+      "details": [
+        "Backups automáticos periódicos",
+        "Restauração rápida se algo der errado",
+        "Atualizações de segurança",
+        "Monitoramento contra malware e invasões",
+        "Tranquilidade pra focar no seu negócio"
+      ],
+      "allowQuantity": false,
+      "startingAt": false
+    },
+    {
+      "id": "ia-chatbot-whatsapp",
+      "category": "ia",
+      "title": "Chatbot de IA no WhatsApp",
+      "price": 1500,
+      "billing": "once",
+      "summary": "Um atendente de IA no seu WhatsApp que responde clientes 24/7, tira dúvidas e qualifica leads automaticamente.",
+      "details": [
+        "Atendimento automático no WhatsApp, a qualquer hora",
+        "Treinado com as informações do seu negócio",
+        "Tira dúvidas e direciona o cliente",
+        "Captura e qualifica leads",
+        "Requer o Plano de IA mensal (cobre o uso da IA)"
+      ],
+      "allowQuantity": false,
+      "startingAt": true
+    },
+    {
+      "id": "cardapio-digital-qr",
+      "category": "sites",
+      "title": "Cardápio / catálogo digital com QR Code",
+      "price": 700,
+      "billing": "once",
+      "summary": "Seu cardápio ou catálogo online: o cliente escaneia um QR Code e vê tudo no celular, sempre atualizado.",
+      "details": [
+        "Cardápio ou catálogo responsivo (mobile)",
+        "QR Code personalizado pra imprimir e colar",
+        "Fácil de atualizar preços e itens",
+        "Fotos, categorias e descrições",
+        "Ideal pra restaurantes, lanchonetes e lojas"
+      ],
+      "allowQuantity": false,
+      "startingAt": true
+    },
+    {
+      "id": "pacote-midias-instagram",
+      "category": "marketing",
+      "title": "Pacote de mídias para Instagram",
+      "price": 450,
+      "billing": "once",
+      "summary": "Posts e artes prontos na identidade do seu negócio pra você manter o Instagram ativo e profissional.",
+      "details": [
+        "Pacote de artes/posts na sua marca",
+        "Formatos para feed e stories",
+        "Visual consistente e profissional",
+        "Arquivos prontos pra postar",
+        "Opção de pacote mensal recorrente"
+      ],
+      "allowQuantity": false,
+      "startingAt": true
+    },
+    {
+      "id": "agendamento-online",
+      "category": "sites",
+      "title": "Sistema de agendamento online",
+      "price": 900,
+      "billing": "once",
+      "summary": "Seus clientes marcam horário sozinhos pelo site, com confirmações automáticas — menos no-show e menos WhatsApp.",
+      "details": [
+        "Agenda online integrada ao seu site",
+        "Cliente escolhe serviço, dia e horário",
+        "Confirmações e lembretes automáticos",
+        "Você controla a disponibilidade",
+        "Ideal pra clínicas, salões e profissionais"
+      ],
+      "allowQuantity": false,
+      "startingAt": true
+    },
+    {
+      "id": "migracao-site",
+      "category": "suporte",
+      "title": "Migração de site",
+      "price": 600,
+      "billing": "once",
+      "summary": "Levo seu site de Wix, Squarespace ou outro lugar pra WordPress (ou pra uma hospedagem melhor), sem perder nada.",
+      "details": [
+        "Migração de conteúdo e estrutura",
+        "De Wix/Squarespace/outros para WordPress",
+        "Ou troca de hospedagem com segurança",
+        "Sem perder SEO nem links",
+        "Preço varia conforme o tamanho do site"
+      ],
+      "allowQuantity": false,
+      "startingAt": true
+    },
+    {
+      "id": "area-membros",
+      "category": "sites",
+      "title": "Área de membros / curso online",
+      "price": 1800,
+      "billing": "once",
+      "summary": "Uma plataforma pra você vender e entregar cursos ou conteúdo exclusivo, com login e acesso protegido.",
+      "details": [
+        "Área protegida por login",
+        "Organização de aulas/módulos ou conteúdos",
+        "Controle de quem tem acesso",
+        "Integração com pagamento",
+        "Ideal pra cursos, mentorias e conteúdo premium"
+      ],
+      "allowQuantity": false,
+      "startingAt": true
+    },
+    {
+      "id": "automacoes",
+      "category": "suporte",
+      "title": "Automações (Make.com / n8n)",
+      "price": 800,
+      "billing": "once",
+      "summary": "Conecto seus sistemas e automatizo tarefas repetitivas: formulários, planilhas, e-mails, CRM e WhatsApp trabalhando sozinhos.",
+      "details": [
+        "Integração entre seus aplicativos e sistemas",
+        "Automação de tarefas repetitivas",
+        "Ex: lead do site cai na planilha e no WhatsApp",
+        "Menos trabalho manual, menos erro",
+        "Preço varia conforme a complexidade"
+      ],
+      "allowQuantity": false,
+      "startingAt": true
     }
   ],
   "projects": [
