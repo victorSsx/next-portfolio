@@ -150,20 +150,40 @@ export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: Pr
   const [deviceTab, setDeviceTab] = useState<DeviceTab>("desktop");
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
 
-  // Carrossel (modo vitrine): rolagem horizontal com auto-avanço.
+  // Carrossel (modo vitrine): rolagem horizontal com auto-avanço + dots de progresso.
   const carouselRef = useRef<HTMLDivElement>(null);
   const [carouselPaused, setCarouselPaused] = useState(false);
+  const [carouselIndex, setCarouselIndex] = useState(0);
+
+  const carouselStep = () => {
+    const vp = carouselRef.current;
+    if (!vp) return 0;
+    const card = vp.querySelector<HTMLElement>(".project-card");
+    return card ? card.offsetWidth + 18 : vp.clientWidth;
+  };
 
   const scrollCarousel = (dir: 1 | -1) => {
     const vp = carouselRef.current;
     if (!vp) return;
-    const card = vp.querySelector<HTMLElement>(".project-card");
-    const step = card ? card.offsetWidth + 18 : vp.clientWidth * 0.8;
+    const step = carouselStep() || vp.clientWidth * 0.8;
     const atEnd = vp.scrollLeft + vp.clientWidth >= vp.scrollWidth - 4;
     const atStart = vp.scrollLeft <= 4;
     if (dir === 1 && atEnd) vp.scrollTo({ left: 0, behavior: "smooth" });
     else if (dir === -1 && atStart) vp.scrollTo({ left: vp.scrollWidth, behavior: "smooth" });
     else vp.scrollBy({ left: step * dir, behavior: "smooth" });
+  };
+
+  const scrollToIndex = (i: number) => {
+    const vp = carouselRef.current;
+    if (!vp) return;
+    vp.scrollTo({ left: i * carouselStep(), behavior: "smooth" });
+  };
+
+  const onCarouselScroll = () => {
+    const vp = carouselRef.current;
+    const step = carouselStep();
+    if (!vp || !step) return;
+    setCarouselIndex(Math.round(vp.scrollLeft / step));
   };
 
   useEffect(() => {
@@ -299,6 +319,7 @@ export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: Pr
         )}
 
         {carousel ? (
+          <div className="projects-carousel-wrap">
           <div
             className="projects-carousel"
             onMouseEnter={() => setCarouselPaused(true)}
@@ -313,7 +334,7 @@ export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: Pr
             >
               ←
             </button>
-            <div className="projects-carousel__viewport" ref={carouselRef}>
+            <div className="projects-carousel__viewport" ref={carouselRef} onScroll={onCarouselScroll}>
               {displayedProjects.map(renderCard)}
             </div>
             <button
@@ -324,6 +345,19 @@ export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: Pr
             >
               →
             </button>
+          </div>
+          <div className="projects-carousel__dots" role="tablist" aria-label="Navegação de projetos">
+            {displayedProjects.map((_, i) => (
+              <button
+                key={i}
+                type="button"
+                className={`projects-carousel__dot${i === carouselIndex ? " is-active" : ""}`}
+                aria-label={`Projeto ${i + 1}`}
+                aria-current={i === carouselIndex}
+                onClick={() => scrollToIndex(i)}
+              />
+            ))}
+          </div>
           </div>
         ) : (
           <div className="project-grid">{displayedProjects.map(renderCard)}</div>

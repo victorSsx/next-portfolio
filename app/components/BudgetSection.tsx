@@ -821,15 +821,21 @@ export function BudgetSection({ showcase = false }: { showcase?: boolean } = {})
           >
             {sendStatus === "sending"
               ? t.budget.preparing
-              : budgetChannel === "direto"
-                ? t.budget.copyAndWhatsApp
-                : t.budget.copyMessage}
+              : showcase
+                ? t.budget.copyQuote
+                : budgetChannel === "direto"
+                  ? t.budget.copyAndWhatsApp
+                  : t.budget.copyMessage}
             <span aria-hidden="true">-&gt;</span>
           </button>
 
           {sendStatus === "sent" ? (
             <p className="budget-status">
-              {budgetChannel === "direto" ? t.budget.copiedWhatsApp : t.budget.copiedMessage}
+              {showcase
+                ? t.budget.copiedQuote
+                : budgetChannel === "direto"
+                  ? t.budget.copiedWhatsApp
+                  : t.budget.copiedMessage}
             </p>
           ) : null}
           {sendStatus === "error" ? (

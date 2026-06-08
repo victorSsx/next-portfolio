@@ -494,6 +494,48 @@ a {
   transform: scale(1.06);
 }
 
+.projects-carousel-wrap {
+  display: flex;
+  flex-direction: column;
+}
+
+.projects-carousel__dots {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 16px;
+}
+.projects-carousel__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: none;
+  border-radius: 999px;
+  background: rgba(245, 242, 236, 0.25);
+  cursor: pointer;
+  transition: background 0.2s, width 0.2s;
+}
+.projects-carousel__dot:hover {
+  background: rgba(245, 242, 236, 0.45);
+}
+.projects-carousel__dot.is-active {
+  background: var(--gold);
+  width: 22px;
+}
+
+.vitrine-proof {
+  margin-top: 6px;
+}
+.workana-badge--static {
+  cursor: default;
+}
+.workana-badge--static:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: rgba(199, 164, 71, 0.28);
+}
+
 @media (max-width: 760px) {
   /* No mobile o card empilha (imagem em cima, conteúdo embaixo) e as setas somem (swipe). */
   .projects-carousel .project-card {

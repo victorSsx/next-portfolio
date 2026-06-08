@@ -60,8 +60,10 @@ export type Translations = {
     preparing: string;
     copyAndWhatsApp: string;
     copyMessage: string;
+    copyQuote: string;
     copiedWhatsApp: string;
     copiedMessage: string;
+    copiedQuote: string;
     couldNotCopy: string;
     decrease: string;
     remove: string;
@@ -264,8 +266,10 @@ export const translations: Record<Language, Translations> = {
       preparing: "Preparando...",
       copyAndWhatsApp: "Copiar e abrir WhatsApp",
       copyMessage: "Copiar mensagem",
+      copyQuote: "Copiar orçamento",
       copiedWhatsApp: "Mensagem copiada e WhatsApp aberto.",
       copiedMessage: "Mensagem copiada para o chat.",
+      copiedQuote: "Orçamento copiado! Cole no chat da plataforma.",
       couldNotCopy: "Não consegui copiar automaticamente. Selecione o texto e copie manualmente.",
       decrease: "Diminuir",
       remove: "Remover",
@@ -490,8 +494,10 @@ export const translations: Record<Language, Translations> = {
       preparing: "Preparing...",
       copyAndWhatsApp: "Copy & open WhatsApp",
       copyMessage: "Copy message",
+      copyQuote: "Copy quote",
       copiedWhatsApp: "Message copied and WhatsApp opened.",
       copiedMessage: "Message copied to clipboard.",
+      copiedQuote: "Quote copied! Paste it in the platform chat.",
       couldNotCopy: "Could not copy automatically. Select the text and copy manually.",
       decrease: "Decrease",
       remove: "Remove",
@@ -716,8 +722,10 @@ export const translations: Record<Language, Translations> = {
       preparing: "Preparando...",
       copyAndWhatsApp: "Copiar y abrir WhatsApp",
       copyMessage: "Copiar mensaje",
+      copyQuote: "Copiar presupuesto",
       copiedWhatsApp: "Mensaje copiado y WhatsApp abierto.",
       copiedMessage: "Mensaje copiado al portapapeles.",
+      copiedQuote: "¡Presupuesto copiado! Pégalo en el chat de la plataforma.",
       couldNotCopy: "No pude copiar automáticamente. Selecciona el texto y cópialo manualmente.",
       decrease: "Disminuir",
       remove: "Quitar",

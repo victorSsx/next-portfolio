@@ -8,7 +8,7 @@ const LOGO = "/images/logo-victor-ai-transparent.png";
 
 // Página "vitrine" para divulgar em plataformas (Workana, Upwork...) — sem nenhum contato.
 export default function VitrinePage() {
-  const { lang, setLang } = useLanguage();
+  const { t, lang, setLang } = useLanguage();
 
   return (
     <main className="next-portfolio vitrine-page">
@@ -33,6 +33,17 @@ export default function VitrinePage() {
           ))}
         </div>
       </header>
+
+      <div className="vitrine-proof">
+        <div className="workana-badge workana-badge--static" data-animate>
+          <span className="workana-badge__score">5,0</span>
+          <span className="workana-badge__main">
+            <span className="workana-badge__stars" aria-hidden="true">★★★★★</span>
+            <span className="workana-badge__label">{t.testimonials.workana.label}</span>
+            <span className="workana-badge__reviews">2 {t.testimonials.workana.reviewsSuffix}</span>
+          </span>
+        </div>
+      </div>
 
       <ProjectsSection carousel />
       <BudgetSection showcase />
