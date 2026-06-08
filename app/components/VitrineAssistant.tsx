@@ -6,6 +6,7 @@ import { useLanguage } from "../lib/LanguageContext";
 
 const services: BudgetService[] = siteData.services;
 const packages: Package[] = siteData.packages ?? [];
+const AGENT_AVATAR = "/images/logo-victor-ai-transparent.png";
 
 const fmt = (v: number) =>
   v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
@@ -17,6 +18,8 @@ type Card = { key: string; id: string; type: "service" | "package"; leaving: boo
 const STR = {
   pt: {
     eyebrow: "Assistente de orçamento",
+    agentName: "Assistente IA",
+    online: "online agora",
     title: "Vamos montar sua solução?",
     lead: "Me conta o que você precisa. Eu entendo, recomendo os serviços ideais e mostro aqui do lado.",
     greeting: "Oi! Pra te ajudar a montar o orçamento certo, me conta: qual é o seu projeto? (ex: um site, uma loja virtual, uma landing page...)",
@@ -39,6 +42,8 @@ const STR = {
   },
   en: {
     eyebrow: "Quote assistant",
+    agentName: "AI Assistant",
+    online: "online now",
     title: "Let's build your solution?",
     lead: "Tell me what you need. I'll understand it, recommend the right services and show them here.",
     greeting: "Hi! To help you put together the right quote, tell me: what's your project? (e.g. a website, an online store, a landing page...)",
@@ -61,6 +66,8 @@ const STR = {
   },
   es: {
     eyebrow: "Asistente de presupuesto",
+    agentName: "Asistente IA",
+    online: "en línea ahora",
     title: "¿Armamos tu solución?",
     lead: "Cuéntame qué necesitas. Lo entiendo, recomiendo los servicios ideales y los muestro aquí.",
     greeting: "¡Hola! Para ayudarte a armar el presupuesto correcto, cuéntame: ¿cuál es tu proyecto? (ej: un sitio, una tienda online, una landing page...)",
@@ -286,14 +293,31 @@ export function VitrineAssistant() {
       <div className="vagent__cols">
         {/* Chat */}
         <div className="vagent__chat" data-animate>
+          <div className="vagent__agent">
+            <span className="vagent-avatar vagent-avatar--lg" aria-hidden="true">
+              <img src={AGENT_AVATAR} alt="" />
+            </span>
+            <div className="vagent__agent-id">
+              <strong>{t.agentName}</strong>
+              <span className="vagent__status">{t.online}</span>
+            </div>
+          </div>
           <div className="vagent__messages" ref={scrollRef}>
             {messages.map((m, i) => (
               <div key={i} className={`vagent-msg vagent-msg--${m.role}`}>
+                {m.role === "assistant" ? (
+                  <span className="vagent-avatar" aria-hidden="true">
+                    <img src={AGENT_AVATAR} alt="" />
+                  </span>
+                ) : null}
                 <div className="vagent-msg__bubble">{m.content}</div>
               </div>
             ))}
             {loading ? (
               <div className="vagent-msg vagent-msg--assistant">
+                <span className="vagent-avatar" aria-hidden="true">
+                  <img src={AGENT_AVATAR} alt="" />
+                </span>
                 <div className="vagent-msg__bubble vagent-typing">
                   <span />
                   <span />
@@ -317,43 +341,42 @@ export function VitrineAssistant() {
           </div>
         </div>
 
-        {/* Palco de recomendações */}
-        <div className="vagent__panel" data-animate>
-          {notes.length > 0 ? (
-            <div className="vagent__notes">
-              <strong className="vagent__panel-title">{t.noted}</strong>
-              <ul>
-                {notes.map((n, i) => (
-                  <li key={`${n}-${i}`}>{n}</li>
-                ))}
-              </ul>
-            </div>
-          ) : null}
-          {cards.length > 0 ? (
-            <>
-              <strong className="vagent__panel-title">{t.recommended}</strong>
-              <div className="vagent__cards">{cards.map(renderCard)}</div>
-              {est.count > 0 ? (
-                <div className="vagent__estimate">
-                  <div>
-                    <span>{t.estimate}</span>
-                    <strong>
-                      {t.from} {fmt(est.once)}
-                      {est.monthly ? ` + ${fmt(est.monthly)}${t.perMonth}` : ""}
-                    </strong>
+        {/* Palco de necessidades + recomendações — aparece só quando tem conteúdo */}
+        {notes.length > 0 || cards.length > 0 ? (
+          <div className="vagent__panel">
+            {notes.length > 0 ? (
+              <div className="vagent__notes">
+                <strong className="vagent__panel-title">{t.noted}</strong>
+                <ul>
+                  {notes.map((n, i) => (
+                    <li key={`${n}-${i}`}>{n}</li>
+                  ))}
+                </ul>
+              </div>
+            ) : null}
+            {cards.length > 0 ? (
+              <>
+                <strong className="vagent__panel-title">{t.recommended}</strong>
+                <div className="vagent__cards">{cards.map(renderCard)}</div>
+                {est.count > 0 ? (
+                  <div className="vagent__estimate">
+                    <div>
+                      <span>{t.estimate}</span>
+                      <strong>
+                        {t.from} {fmt(est.once)}
+                        {est.monthly ? ` + ${fmt(est.monthly)}${t.perMonth}` : ""}
+                      </strong>
+                    </div>
+                    <button type="button" className="button button--primary" onClick={copyEstimate}>
+                      {copied ? t.copied : t.copy}
+                    </button>
                   </div>
-                  <button type="button" className="button button--primary" onClick={copyEstimate}>
-                    {copied ? t.copied : t.copy}
-                  </button>
-                </div>
-              ) : null}
-              <p className="vagent__note">{t.note}</p>
-            </>
-          ) : null}
-          {notes.length === 0 && cards.length === 0 ? (
-            <div className="vagent__empty">{t.stageHint}</div>
-          ) : null}
-        </div>
+                ) : null}
+                <p className="vagent__note">{t.note}</p>
+              </>
+            ) : null}
+          </div>
+        ) : null}
       </div>
     </section>
   );
