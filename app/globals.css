@@ -751,6 +751,314 @@ a {
   }
 }
 
+
+/* ── Agente de orçamento por IA (vitrine) ──────────────────────────────────── */
+.vagent {
+  max-width: 1100px;
+  margin: 64px auto 0;
+  padding: 0 24px;
+}
+.vagent__intro {
+  text-align: center;
+  margin-bottom: 26px;
+}
+.vagent__intro .eyebrow {
+  color: var(--gold);
+}
+.vagent__intro h2 {
+  color: var(--white);
+  font-size: 2rem;
+  margin: 8px 0 10px;
+}
+.vagent__intro p {
+  color: var(--muted);
+  line-height: 1.6;
+  max-width: 580px;
+  margin: 0 auto;
+}
+.vagent__cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: 22px;
+  align-items: start;
+}
+.vagent__chat {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--panel);
+  overflow: hidden;
+  min-height: 440px;
+}
+.vagent__messages {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px;
+  overflow-y: auto;
+  max-height: 460px;
+}
+.vagent-msg {
+  display: flex;
+}
+.vagent-msg--user {
+  justify-content: flex-end;
+}
+.vagent-msg__bubble {
+  max-width: 85%;
+  padding: 11px 14px;
+  border-radius: 14px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.vagent-msg--assistant .vagent-msg__bubble {
+  background: rgba(245, 242, 236, 0.05);
+  color: rgba(245, 242, 236, 0.9);
+  border-bottom-left-radius: 4px;
+}
+.vagent-msg--user .vagent-msg__bubble {
+  background: rgba(199, 164, 71, 0.16);
+  color: var(--white);
+  border: 1px solid rgba(199, 164, 71, 0.3);
+  border-bottom-right-radius: 4px;
+}
+.vagent-typing {
+  display: inline-flex;
+  gap: 5px;
+  align-items: center;
+}
+.vagent-typing span {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: vagentDot 1s infinite;
+}
+.vagent-typing span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.vagent-typing span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+@keyframes vagentDot {
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+.vagent__error {
+  color: #e2766b;
+  font-size: 0.84rem;
+  margin: 0;
+  padding: 0 18px;
+}
+.vagent__input {
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--line);
+}
+.vagent__input textarea {
+  flex: 1;
+  resize: none;
+  min-height: 44px;
+  max-height: 120px;
+  padding: 11px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(245, 242, 236, 0.16);
+  background: rgba(8, 9, 9, 0.5);
+  color: var(--white);
+  font: inherit;
+  font-size: 0.95rem;
+  line-height: 1.4;
+}
+.vagent__input textarea:focus {
+  outline: none;
+  border-color: rgba(199, 164, 71, 0.6);
+}
+.vagent__input button {
+  flex-shrink: 0;
+  width: 46px;
+  border: none;
+  border-radius: 10px;
+  background: var(--gold);
+  color: #1a1407;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.vagent__input button:hover:not(:disabled) {
+  background: var(--gold-strong);
+}
+.vagent__input button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.vagent__panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-height: 440px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: rgba(245, 242, 236, 0.015);
+}
+.vagent__panel-title {
+  color: var(--gold);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.vagent__empty {
+  margin: auto;
+  max-width: 240px;
+  padding: 40px 0;
+  text-align: center;
+  color: rgba(245, 242, 236, 0.4);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.vagent__cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.vagent-card {
+  overflow: hidden;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  animation: vagentCardIn 0.42s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.vagent-card.is-leaving {
+  animation: vagentCardOut 0.42s ease forwards;
+  pointer-events: none;
+}
+.vagent-card h4 {
+  margin: 0 0 6px;
+  color: var(--white);
+  font-size: 1.02rem;
+}
+.vagent-card__desc {
+  margin: 0 0 10px;
+  color: rgba(245, 242, 236, 0.6);
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+.vagent-card__foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.vagent-card__foot strong {
+  color: var(--gold-strong);
+  font-size: 1.05rem;
+}
+.vagent-card--pkg {
+  border-color: rgba(199, 164, 71, 0.45);
+  background: linear-gradient(160deg, rgba(199, 164, 71, 0.1), rgba(245, 242, 236, 0.015));
+}
+.vagent-card__tag {
+  display: inline-block;
+  margin-bottom: 8px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--gold);
+  color: #1a1407;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.vagent-card__incl {
+  margin: 0 0 10px;
+  color: rgba(245, 242, 236, 0.72);
+  font-size: 0.82rem;
+  line-height: 1.5;
+}
+.vagent-card__incl span {
+  color: var(--gold);
+  font-weight: 700;
+}
+.vagent-card__save {
+  color: #5fbf86;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.vagent__estimate {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 4px;
+  padding: 14px 16px;
+  border: 1px solid rgba(199, 164, 71, 0.3);
+  border-radius: 12px;
+  background: rgba(199, 164, 71, 0.06);
+}
+.vagent__estimate span {
+  display: block;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+.vagent__estimate strong {
+  color: var(--gold-strong);
+  font-size: 1.25rem;
+}
+.vagent__note {
+  margin: 0;
+  color: rgba(245, 242, 236, 0.45);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
+@keyframes vagentCardIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes vagentCardOut {
+  from {
+    opacity: 1;
+    max-height: 400px;
+    transform: translateY(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    max-height: 0;
+    margin: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    transform: scale(0.94);
+  }
+}
+@media (max-width: 800px) {
+  .vagent__cols {
+    grid-template-columns: 1fr;
+  }
+  .vagent__chat,
+  .vagent__panel {
+    min-height: 0;
+  }
+}
+
 .projects-viewall {
   display: flex;
   justify-content: center;

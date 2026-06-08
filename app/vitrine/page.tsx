@@ -1,7 +1,7 @@
 "use client";
 
-import { BudgetSection } from "../components/BudgetSection";
 import { ProjectsSection } from "../components/ProjectsSection";
+import { VitrineAssistant } from "../components/VitrineAssistant";
 import { useLanguage } from "../lib/LanguageContext";
 
 const LOGO = "/images/logo-victor-ai-transparent.png";
@@ -46,7 +46,7 @@ export default function VitrinePage() {
       </div>
 
       <ProjectsSection carousel showFilter />
-      <BudgetSection showcase />
+      <VitrineAssistant />
     </main>
   );
 }
