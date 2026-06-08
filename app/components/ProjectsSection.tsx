@@ -114,9 +114,10 @@ type ProjectsSectionProps = {
   limit?: number;
   showAllLink?: boolean;
   showFilter?: boolean;
+  carousel?: boolean;
 };
 
-export function ProjectsSection({ limit, showAllLink, showFilter }: ProjectsSectionProps = {}) {
+export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: ProjectsSectionProps = {}) {
   const { t, lang } = useLanguage();
   // Newest first, so recently added projects surface automatically (localized to the UI language)
   const orderedProjects = useMemo(() => [...projects].reverse().map((p) => localizeContent(p, lang)), [lang]);
@@ -143,10 +144,33 @@ export function ProjectsSection({ limit, showAllLink, showFilter }: ProjectsSect
     [filteredProjects, limit, activeTag]
   );
 
-  const hasMore = Boolean(showAllLink) && !activeTag && projects.length > (limit ?? projects.length);
+  // Nunca mostra o link "ver todos" (vai para /projetos, que tem contato) no modo vitrine/carrossel.
+  const hasMore = !carousel && Boolean(showAllLink) && !activeTag && projects.length > (limit ?? projects.length);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [deviceTab, setDeviceTab] = useState<DeviceTab>("desktop");
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
+
+  // Carrossel (modo vitrine): rolagem horizontal com auto-avanço.
+  const carouselRef = useRef<HTMLDivElement>(null);
+  const [carouselPaused, setCarouselPaused] = useState(false);
+
+  const scrollCarousel = (dir: 1 | -1) => {
+    const vp = carouselRef.current;
+    if (!vp) return;
+    const card = vp.querySelector<HTMLElement>(".project-card");
+    const step = card ? card.offsetWidth + 18 : vp.clientWidth * 0.8;
+    const atEnd = vp.scrollLeft + vp.clientWidth >= vp.scrollWidth - 4;
+    const atStart = vp.scrollLeft <= 4;
+    if (dir === 1 && atEnd) vp.scrollTo({ left: 0, behavior: "smooth" });
+    else if (dir === -1 && atStart) vp.scrollTo({ left: vp.scrollWidth, behavior: "smooth" });
+    else vp.scrollBy({ left: step * dir, behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    if (!carousel || carouselPaused) return;
+    const id = window.setInterval(() => scrollCarousel(1), 4500);
+    return () => window.clearInterval(id);
+  }, [carousel, carouselPaused]);
 
   const activeProjectVideos = useMemo(
     () => (activeProject ? getProjectVideos(activeProject) : []),
@@ -195,12 +219,45 @@ export function ProjectsSection({ limit, showAllLink, showFilter }: ProjectsSect
     setLightboxIdx(null);
   }, [deviceTab]);
 
+  const renderCard = (project: Project, i: number) => (
+    <article
+      className="project-card"
+      key={project.title}
+      data-animate={carousel ? undefined : true}
+      style={{ "--animate-delay": `${i * 100}ms` } as React.CSSProperties}
+    >
+      <div className="project-card__media">
+        <img src={project.mainImage.src} alt={project.mainImage.alt} />
+      </div>
+      <p>{project.category}</p>
+      <h3>{project.title}</h3>
+      <p>{project.summary}</p>
+      <strong>{project.status}</strong>
+      <ul>
+        {project.stack.map((item) => (
+          <li key={item}>{item}</li>
+        ))}
+      </ul>
+      <div className="project-card__actions">
+        <button className="project-card__button" onClick={() => openProject(project)} type="button">
+          {t.projects.viewDetails} <span aria-hidden="true">→</span>
+        </button>
+        {project.link && (
+          <a className="project-card__live" href={project.link} target="_blank" rel="noopener noreferrer">
+            {t.projects.viewLive} <span aria-hidden="true">↗</span>
+          </a>
+        )}
+      </div>
+    </article>
+  );
+
   return (
     <>
       <section className="section projects" id="projetos">
         <div className="section__intro projects__intro">
           <p className="eyebrow" data-animate>{t.projects.eyebrow}</p>
           <WordRevealTitle text={t.projects.title} />
+          {!carousel && (
           <div className="projects-stats" data-animate>
             {t.projects.stats.map((stat, i) => {
               const override = siteData.projectStats?.[i];
@@ -214,6 +271,7 @@ export function ProjectsSection({ limit, showAllLink, showFilter }: ProjectsSect
               );
             })}
           </div>
+          )}
         </div>
 
         {showFilter && allTags.length > 1 && (
@@ -240,44 +298,36 @@ export function ProjectsSection({ limit, showAllLink, showFilter }: ProjectsSect
           </div>
         )}
 
-        <div className="project-grid">
-          {displayedProjects.map((project, i) => (
-            <article
-              className="project-card"
-              key={project.title}
-              data-animate
-              style={{ "--animate-delay": `${i * 100}ms` } as React.CSSProperties}
+        {carousel ? (
+          <div
+            className="projects-carousel"
+            onMouseEnter={() => setCarouselPaused(true)}
+            onMouseLeave={() => setCarouselPaused(false)}
+            data-animate
+          >
+            <button
+              className="projects-carousel__arrow"
+              type="button"
+              aria-label="Anterior"
+              onClick={() => scrollCarousel(-1)}
             >
-              <div className="project-card__media">
-                <img src={project.mainImage.src} alt={project.mainImage.alt} />
-              </div>
-              <p>{project.category}</p>
-              <h3>{project.title}</h3>
-              <p>{project.summary}</p>
-              <strong>{project.status}</strong>
-              <ul>
-                {project.stack.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-              <div className="project-card__actions">
-                <button className="project-card__button" onClick={() => openProject(project)} type="button">
-                  {t.projects.viewDetails} <span aria-hidden="true">→</span>
-                </button>
-                {project.link && (
-                  <a
-                    className="project-card__live"
-                    href={project.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {t.projects.viewLive} <span aria-hidden="true">↗</span>
-                  </a>
-                )}
-              </div>
-            </article>
-          ))}
-        </div>
+              ←
+            </button>
+            <div className="projects-carousel__viewport" ref={carouselRef}>
+              {displayedProjects.map(renderCard)}
+            </div>
+            <button
+              className="projects-carousel__arrow"
+              type="button"
+              aria-label="Próximo"
+              onClick={() => scrollCarousel(1)}
+            >
+              →
+            </button>
+          </div>
+        ) : (
+          <div className="project-grid">{displayedProjects.map(renderCard)}</div>
+        )}
 
         {hasMore && (
           <div className="projects-viewall" data-animate>

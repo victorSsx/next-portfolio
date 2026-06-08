@@ -179,9 +179,9 @@ function buildBudgetMessage(
     .join("\n");
 }
 
-export function BudgetSection() {
+export function BudgetSection({ showcase = false }: { showcase?: boolean } = {}) {
   const { t, lang } = useLanguage();
-  const [channelStep, setChannelStep] = useState<ChannelStep>("selecting");
+  const [channelStep, setChannelStep] = useState<ChannelStep>(showcase ? "browsing" : "selecting");
   const [budgetChannel, setBudgetChannel] = useState<BudgetChannel>("workana");
   const [detectedCurrency, setDetectedCurrency] = useState<Currency | null>(null);
   const [isDetecting, setIsDetecting] = useState(false);
@@ -249,10 +249,11 @@ export function BudgetSection() {
 
   // Message language: Workana → always PT, Upwork → always EN, direto → follows UI lang
   const messageLang: Language = useMemo(() => {
+    if (showcase) return lang; // vitrine: segue o idioma da interface
     if (budgetChannel === "workana") return "pt";
     if (budgetChannel === "upwork") return "en";
     return lang;
-  }, [budgetChannel, lang]);
+  }, [budgetChannel, lang, showcase]);
 
   async function selectChannel(channel: BudgetChannel) {
     if (channel === "direto") {
@@ -508,13 +509,15 @@ export function BudgetSection() {
 
       <div className="budget-layout">
         <div className="service-browser">
-          <button className="channel-back" type="button" onClick={goBack}>
-            ← {activeChannel.label}
-            {budgetChannel === "direto" && detectedCurrency
-              ? ` · ${detectedCurrency === "USD" ? "USD $" : "BRL R$"}`
-              : ""}
-            {" "}— {t.budget.change}
-          </button>
+          {!showcase && (
+            <button className="channel-back" type="button" onClick={goBack}>
+              ← {activeChannel.label}
+              {budgetChannel === "direto" && detectedCurrency
+                ? ` · ${detectedCurrency === "USD" ? "USD $" : "BRL R$"}`
+                : ""}
+              {" "}— {t.budget.change}
+            </button>
+          )}
 
           <div className="category-tabs" aria-label="Categorias de serviços">
             {categories.map((category) => (
@@ -716,6 +719,7 @@ export function BudgetSection() {
             ))}
           </div>
 
+          {!showcase && (
           <div className="budget-coupon">
             <label htmlFor="budget-coupon">{t.budget.coupon.label}</label>
             {appliedCoupon ? (
@@ -755,6 +759,7 @@ export function BudgetSection() {
               </>
             )}
           </div>
+          )}
 
           <div className="totals">
             {packageDiscount > 0 && (
