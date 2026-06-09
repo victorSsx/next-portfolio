@@ -9,7 +9,7 @@ type Msg = { role: "user" | "assistant"; content: string };
 type LeadStatus = "idle" | "sending" | "sent" | "error";
 
 export function ChatAssistant() {
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
@@ -82,7 +82,7 @@ export function ChatAssistant() {
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next }),
+        body: JSON.stringify({ messages: next, lang }),
       });
       const json = (await res.json()) as { reply?: string; error?: string };
       if (!res.ok || !json.reply) throw new Error(json.error || "erro");

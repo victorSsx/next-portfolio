@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { siteData } from "../../lib/site-data";
+import { friendlyAIError } from "../../lib/ai-errors";
 
 export const runtime = "nodejs";
 export const maxDuration = 30;
@@ -136,7 +137,7 @@ export async function POST(request: Request) {
       const msg = data?.error?.message || "";
       const retryable = res.status === 503 || res.status === 429 || /overload|high demand|unavailable|try again|resource exhausted/i.test(msg);
       if (!retryable || attempt === 2) {
-        return NextResponse.json({ error: msg || "Falha na IA." }, { status: 502 });
+        return NextResponse.json({ error: friendlyAIError(res.status, msg, lang) }, { status: 502 });
       }
       await new Promise((r) => setTimeout(r, 900 * (attempt + 1)));
     }
