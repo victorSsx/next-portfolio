@@ -1,5 +1,5 @@
 {
-  "availability": "busy",
+  "availability": "available",
   "packages": [
     {
       "id": "inicio-online",
@@ -2133,6 +2133,138 @@
           ]
         }
       }
+    },
+    {
+      "id": "projeto-mq65oipv",
+      "title": "Juntos, Pod+ — Portal de Conteúdo para Podcast",
+      "category": "Desenvolvimento Web · Portal de conteúdo e mídia (WordPress) · UX/UI · SEO",
+      "status": "Protótipo funcional concluído e publicado",
+      "stack": [
+        "WordPress",
+        "PHP 8.2",
+        "MySQL 8.4",
+        "Tema próprio (classic, compatível com Elementor)",
+        "Plugin próprio (CPTs/meta/busca/schema)",
+        "HTML5 + CSS3 (design system próprio, sem framework)",
+        "JavaScript (vanilla)",
+        "Custom Post Types & Taxonomias",
+        "Schema.org (JSON-LD)",
+        "Rank Math-ready",
+        "LocalWP",
+        "Export estático + deploy no Vercel/Netlify",
+        "Google Fonts (Sora/Inter)"
+      ],
+      "summary": "Portal de conteúdo premium para o podcast \"Juntos, Pod+\"\n centralizando episódios, artigos e entrevistas sobre seguros e proteção veicular\n Visual corporativo (azul-escuro, branco e dourado) focado em credibilidade\n SEO estruturado\nbusca global e arquitetura preparada para monetização\n Entregue como protótipo navegável e publicado em URL pública.",
+      "workDone": [
+        "Arquitetura de conteúdo: Custom Post Types de Episódios (vídeo YouTube, resumo, tags, relacionados) e Entrevistas (player de áudio, biografia, conteúdo complementar) + Blog (categorias, tags, autor, relacionados) e taxonomia de Temporadas.",
+        "Home completa: hero do episódio mais recente, seções de Últimos Episódios / Artigos / Entrevistas, área de patrocinadores, newsletter, CTAs de WhatsApp e footer institucional.",
+        "Tema próprio premium: design system em azul-escuro + dourado, totalmente responsivo (desktop/tablet/mobile), com Single Templates para episódios, artigos e entrevistas — e compatível com Elementor (Theme Builder).",
+        "Busca global unificada (artigos + episódios + entrevistas) e SEO: URLs amigáveis, breadcrumbs e Schema.org (VideoObject, PodcastEpisode, Article, BreadcrumbList), pronto para Rank Math.",
+        "Conteúdo demonstrativo: 6 episódios, 6 artigos e 3 entrevistas fictícios, com imagens.",
+        "Publicação: export estático do site e deploy em URL pública (host estático), com busca client-side (índice JSON + JS) e links de compartilhamento dinâmicos.",
+        "Material de apresentação: screenshots \"above the fold\" e vídeos de walkthrough para portfólio."
+      ],
+      "mainImage": {
+        "src": "/projects/admin-uploads/projeto-mq65oipv/mq65pufs-01-home.png",
+        "alt": "Novo projeto - imagem principal"
+      },
+      "gallery": [
+        {
+          "src": "/projects/admin-uploads/projeto-mq65oipv/mq65rtbx-01-home.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 1"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq65oipv/mq65ryel-02-episodio-single.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 2"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq65oipv/mq65s3w4-03-entrevista-single.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 3"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq65oipv/mq65s8ht-04-artigo-single.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 4"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq65oipv/mq65scgu-05-episodios-arquivo.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 5"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq65oipv/mq65si4t-06-blog.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 6"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq65oipv/mq65so24-07-busca.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 7"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq65oipv/mq65t238-10-entrevistas-arquivo.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 8"
+        }
+      ],
+      "video": {
+        "src": "/projects/admin-uploads/projeto-mq65oipv/mq65q3o9-01-home.mp4",
+        "poster": "/projects/admin-uploads/projeto-mq65oipv/mq65pufs-01-home.png",
+        "label": "Video demo 1 de Novo projeto"
+      },
+      "videos": [
+        {
+          "src": "/projects/admin-uploads/projeto-mq65oipv/mq65q3o9-01-home.mp4",
+          "poster": "/projects/admin-uploads/projeto-mq65oipv/mq65pufs-01-home.png",
+          "label": "Video demo 1 de Novo projeto"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq65oipv/mq65qeel-02-episodio.mp4",
+          "poster": "/projects/admin-uploads/projeto-mq65oipv/mq65pufs-01-home.png",
+          "label": "Video demo 2 de Novo projeto"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq65oipv/mq65qprt-03-entrevista.mp4",
+          "poster": "/projects/admin-uploads/projeto-mq65oipv/mq65pufs-01-home.png",
+          "label": "Video demo 3 de Novo projeto"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq65oipv/mq65qvrz-04-artigo.mp4",
+          "poster": "/projects/admin-uploads/projeto-mq65oipv/mq65pufs-01-home.png",
+          "label": "Video demo 4 de Novo projeto"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq65oipv/mq65r1gl-05-episodios.mp4",
+          "poster": "/projects/admin-uploads/projeto-mq65oipv/mq65pufs-01-home.png",
+          "label": "Video demo 5 de Novo projeto"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq65oipv/mq65rcl4-06-blog.mp4",
+          "poster": "/projects/admin-uploads/projeto-mq65oipv/mq65pufs-01-home.png",
+          "label": "Video demo 6 de Novo projeto"
+        }
+      ],
+      "deviceViews": [
+        {
+          "device": "mobile",
+          "images": [
+            {
+              "src": "/projects/admin-uploads/projeto-mq65oipv/mq65t9ko-08-home-mobile.png",
+              "alt": "Novo projeto - vista mobile",
+              "label": "mobile 1"
+            },
+            {
+              "src": "/projects/admin-uploads/projeto-mq65oipv/mq65tdvw-09-episodio-mobile.png",
+              "alt": "Novo projeto - vista mobile",
+              "label": "mobile 2"
+            }
+          ]
+        }
+      ],
+      "link": "https://juntos-pod.vercel.app/"
     }
   ]
 }
