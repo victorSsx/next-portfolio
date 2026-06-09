@@ -1,6 +1,7 @@
 // Analisador de escopo (100% local, sem IA): compara um texto de escopo com os
 // serviços oferecidos por palavras-chave/sinônimos e monta uma proposta.
 import type { BudgetService, Package } from "./site-data";
+import { VITRINE_URL } from "./site-url";
 
 const normalize = (s: string) =>
   s.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
@@ -119,7 +120,9 @@ export function computeTotals(
   return { items, onceTotal, monthlyTotal, discount };
 }
 
-export function buildProposal(result: ScopeResult): string {
+// Monta uma proposta pronta pra enviar ao cliente (ex.: colar na plataforma).
+// vitrineUrl: link do portfólio + consulta de orçamento (some o parágrafo se vazio).
+export function buildProposal(result: ScopeResult, vitrineUrl: string = VITRINE_URL): string {
   const { items, onceTotal, monthlyTotal, discount } = result;
   if (items.length === 0) return "";
 
@@ -133,12 +136,12 @@ export function buildProposal(result: ScopeResult): string {
     .join("\n");
 
   const lines = [
-    "Olá! Analisei o escopo do seu projeto e já preparei uma proposta.",
+    "Olá! Analisei o escopo do seu projeto e preparei uma proposta.",
     "",
-    "📋 O QUE ENTENDI DO ESCOPO:",
+    "O que entendi do escopo:",
     scopeLines,
     "",
-    "💰 INVESTIMENTO:",
+    "Investimento:",
     priceLines,
   ];
   if (discount > 0) lines.push(`• Desconto de pacote: -${formatBRL(discount)}`);
@@ -147,11 +150,16 @@ export function buildProposal(result: ScopeResult): string {
     `Total: ${formatBRL(onceTotal)}${monthlyTotal > 0 ? ` + ${formatBRL(monthlyTotal)}/mês` : ""}`
   );
   lines.push("");
-  lines.push("⏱️ Prazo: a combinar conforme o escopo final (normalmente de 5 a 14 dias úteis).");
-  lines.push("✅ Inclui 7 dias de ajustes grátis após a entrega.");
-  lines.push("✅ Comunicação direta comigo durante todo o projeto.");
+  lines.push("Prazo: normalmente de 5 a 14 dias úteis, conforme o escopo final.");
+  lines.push("Inclui 7 dias de ajustes grátis após a entrega e comunicação direta comigo durante todo o projeto.");
+  if (vitrineUrl) {
+    lines.push("");
+    lines.push(
+      `Se quiser conhecer melhor meu trabalho, tenho um portfólio com projetos e uma consulta de orçamento: ${vitrineUrl} — lá você também vê os pacotes de serviços, que podem sair com desconto quando combinados. É uma página apenas de portfólio e consulta de orçamento; todo o nosso combinado, contrato e pagamento seguem normalmente por aqui pela plataforma.`
+    );
+  }
   lines.push("");
-  lines.push("Posso começar assim que aprovado. Qualquer ajuste no escopo, é só falar!");
+  lines.push("Posso começar assim que aprovado. Qualquer ajuste no escopo, é só falar.");
 
   return lines.join("\n");
 }

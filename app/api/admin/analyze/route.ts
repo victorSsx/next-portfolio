@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import defaultSiteData from "../../../data/site-data.json";
+import { VITRINE_URL } from "../../../lib/site-url";
 
 export const runtime = "nodejs";
 
@@ -95,7 +96,8 @@ export async function POST(request: Request) {
     "- Se todos os serviços de um PACOTE forem selecionados, mencione o desconto do pacote na proposta.",
     "- Preços em reais (BRL). billing 'monthly' = valor mensal; 'once' = valor único. Use exatamente os preços fornecidos para os serviços existentes.",
     "- SERVIÇOS NOVOS: se o escopo pedir algo que NENHUM serviço da lista cobre, proponha em 'newServices'. NÃO proponha se já existir um serviço equivalente. Cada novo serviço deve ter: title (curto e claro), price (número em BRL, estimativa realista de mercado para freelancer BR), billing ('once' ou 'monthly'), summary (1 frase do que inclui) e category (use um id de CATEGORIAS; se nenhum servir bem, use o mais próximo). Se tudo já estiver coberto, devolva newServices como lista vazia.",
-    "- A proposta deve: saudar, listar o que será feito, mostrar o investimento, citar prazo (5 a 14 dias úteis) e a garantia de 7 dias de ajustes grátis. Tom confiante e direto, sem exagero. Pode considerar os serviços novos na proposta.",
+    "- A proposta é uma MENSAGEM PRONTA pra enviar ao cliente direto na plataforma (Workana/Upwork/e-mail). Deve: saudar, listar o que será feito, mostrar o INVESTIMENTO com o total bem claro, citar prazo (5 a 14 dias úteis) e a garantia de 7 dias de ajustes grátis. Tom consultivo, confiante e direto, SEM emojis e sem exagero. Pode considerar os serviços novos na proposta.",
+    `- Encerre a proposta com um convite curto pra conhecer o portfólio e a consulta de orçamento do Victor: ${VITRINE_URL} . Mencione que lá há PACOTES de serviços que podem sair com DESCONTO quando combinados. Deixe CLARO que é apenas uma página de portfólio e consulta de orçamento, e que todo o combinado, contrato e pagamento continuam pela própria plataforma. NÃO peça contato externo nem sugira fechar negócio fora da plataforma.`,
     "",
     "SERVIÇOS (JSON):",
     JSON.stringify(servicesForPrompt),
