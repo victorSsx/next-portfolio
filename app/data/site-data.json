@@ -2265,6 +2265,136 @@
         }
       ],
       "link": "https://juntos-pod.vercel.app/"
+    },
+    {
+      "id": "projeto-mq67d3cu",
+      "title": "BVL Livros — Portal Literário & Vitrine de E-books",
+      "category": "Desenvolvimento Web / WordPress — site de conteúdo (blog editorial) + vitrine de vendas",
+      "status": "Protótipo funcional concluído (pré-lançamento — pronto para receber produtos e links reais)",
+      "stack": [
+        "WordPress",
+        "Astra (tema-pai) + tema-filho próprio",
+        "PHP",
+        "HTML5",
+        "CSS3 (custom properties, CSS Grid, responsivo mobile-first)",
+        "JavaScript (vanilla, sem framework)",
+        "Rank Math (SEO)",
+        "WPForms",
+        "LiteSpeed Cache",
+        "Gumroad (checkout)",
+        "Local (ambiente de desenvolvimento)"
+      ],
+      "summary": "Portal literário em WordPress que reúne blog editorial e vitrine de e-books com checkout via Gumroad\n Construído como tema-filho do Astra, com identidade visual própria de livraria (verde-floresta, bordô e dourado) e uma experiência de leitura cuidada.",
+      "workDone": [
+        "Tema-filho do Astra desenvolvido do zero: header e rodapé próprios, menu responsivo acessível, paleta e tipografia de marca.",
+        "Home modular: hero, métricas, vitrine de livros (shortcode reutilizável integrado ao Gumroad), grade de posts recentes, categorias e faixa de contato.",
+        "Experiência de leitura de artigo: índice automático (TOC), tempo de leitura, barra de progresso e navegação entre artigos.",
+        "6 páginas (Home, Livros, Sobre, Blog, Contato, Política de Privacidade) + formulário de contato (WPForms).",
+        "SEO (Rank Math, Open Graph) e internacionalização (i18n) preparados.",
+        "Otimização de performance (preload do LCP, scroll com requestAnimationFrame) e acessibilidade (contraste WCAG AA, foco visível, prefers-reduced-motion).",
+        "Refatoração do CSS com consolidação de regras duplicadas (~2.580 → ~2.470 linhas), validada por testes de regressão visual por diff de pixels (0% de alteração indesejada)."
+      ],
+      "mainImage": {
+        "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67gfxz-home.png",
+        "alt": "Novo projeto - imagem principal"
+      },
+      "gallery": [
+        {
+          "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67dqks-home.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 1"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67e40j-livros.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 2"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67eb7p-sobre.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 3"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67egc1-blog.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 4"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67eluy-artigo.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 5"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67erpx-contato.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 6"
+        }
+      ],
+      "video": {
+        "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67guaw-tour-desktop-01.mp4",
+        "poster": "/projects/admin-uploads/projeto-mq67d3cu/mq67gfxz-home.png",
+        "label": "Video demo 1 de Novo projeto"
+      },
+      "videos": [
+        {
+          "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67guaw-tour-desktop-01.mp4",
+          "poster": "/projects/admin-uploads/projeto-mq67d3cu/mq67gfxz-home.png",
+          "label": "Video demo 1 de Novo projeto"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67h5lg-tour-desktop-02.mp4",
+          "poster": "/projects/admin-uploads/projeto-mq67d3cu/mq67gfxz-home.png",
+          "label": "Video demo 2 de Novo projeto"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67hhtg-tour-desktop-03.mp4",
+          "poster": "/projects/admin-uploads/projeto-mq67d3cu/mq67gfxz-home.png",
+          "label": "Video demo 3 de Novo projeto"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67hrzs-tour-desktop-04.mp4",
+          "poster": "/projects/admin-uploads/projeto-mq67d3cu/mq67gfxz-home.png",
+          "label": "Video demo 4 de Novo projeto"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67hz0v-tour-desktop-05.mp4",
+          "poster": "/projects/admin-uploads/projeto-mq67d3cu/mq67gfxz-home.png",
+          "label": "Video demo 5 de Novo projeto"
+        }
+      ],
+      "deviceViews": [
+        {
+          "device": "mobile",
+          "images": [],
+          "videos": [
+            {
+              "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67liq2-tour-mobile-01.mp4",
+              "poster": "/projects/admin-uploads/projeto-mq67d3cu/mq67gfxz-home.png",
+              "label": "Video mobile de BVL Livros — Portal Literário & Vitrine de E-books"
+            },
+            {
+              "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67lqsn-tour-mobile-02.mp4",
+              "poster": "/projects/admin-uploads/projeto-mq67d3cu/mq67gfxz-home.png",
+              "label": "Video mobile de BVL Livros — Portal Literário & Vitrine de E-books"
+            },
+            {
+              "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67lz90-tour-mobile-03.mp4",
+              "poster": "/projects/admin-uploads/projeto-mq67d3cu/mq67gfxz-home.png",
+              "label": "Video mobile de BVL Livros — Portal Literário & Vitrine de E-books"
+            },
+            {
+              "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67mas0-tour-mobile-04.mp4",
+              "poster": "/projects/admin-uploads/projeto-mq67d3cu/mq67gfxz-home.png",
+              "label": "Video mobile de BVL Livros — Portal Literário & Vitrine de E-books"
+            },
+            {
+              "src": "/projects/admin-uploads/projeto-mq67d3cu/mq67mifc-tour-mobile-05.mp4",
+              "poster": "/projects/admin-uploads/projeto-mq67d3cu/mq67gfxz-home.png",
+              "label": "Video mobile de BVL Livros — Portal Literário & Vitrine de E-books"
+            }
+          ]
+        }
+      ]
     }
   ]
 }
