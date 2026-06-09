@@ -2,6 +2,7 @@
 
 import { ProjectsSection } from "../components/ProjectsSection";
 import { VitrineAssistant } from "../components/VitrineAssistant";
+import { VitrineBudget } from "../components/VitrineBudget";
 import { VitrineReviews } from "../components/VitrineReviews";
 import { useLanguage } from "../lib/LanguageContext";
 
@@ -36,6 +37,7 @@ export default function VitrinePage() {
       </header>
 
       <VitrineAssistant />
+      <VitrineBudget />
       <ProjectsSection carousel showFilter />
       <VitrineReviews />
     </main>

@@ -1179,6 +1179,114 @@ a {
   border-radius: 14px;
   background: var(--panel);
 }
+
+/* ── Vitrine: plano B discreto — montar o próprio orçamento ──────────────── */
+.vbudget {
+  display: flex;
+  justify-content: center;
+  padding: 18px 24px 0;
+}
+.vbudget--open {
+  padding-top: 8px;
+}
+.vbudget__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  max-width: 460px;
+  padding: 12px 18px;
+  border: 1px solid rgba(199, 164, 71, 0.26);
+  border-radius: 14px;
+  background: rgba(199, 164, 71, 0.04);
+  color: var(--muted);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease, color 0.2s ease;
+}
+.vbudget__toggle:hover {
+  border-color: rgba(199, 164, 71, 0.6);
+  background: rgba(199, 164, 71, 0.08);
+  color: var(--white);
+  transform: translateY(-1px);
+}
+.vbudget__toggle-icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: 0 0 auto;
+  border-radius: 10px;
+  background: rgba(199, 164, 71, 0.12);
+  color: var(--gold);
+}
+.vbudget__toggle-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.vbudget__toggle-text strong {
+  color: var(--white);
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.vbudget__toggle-text small {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+.vbudget__toggle-chevron {
+  margin-left: auto;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--gold);
+  transition: transform 0.2s ease;
+}
+.vbudget__toggle:hover .vbudget__toggle-chevron {
+  transform: translateX(3px);
+}
+.vbudget__panel {
+  width: 100%;
+  animation: vbudgetIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.vbudget__hint {
+  max-width: 620px;
+  margin: 0 auto;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.55;
+  padding: 0 24px;
+}
+.vbudget__foot {
+  display: flex;
+  justify-content: center;
+  padding: 4px 24px 8px;
+}
+.vbudget__close {
+  padding: 9px 18px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+.vbudget__close:hover {
+  border-color: rgba(199, 164, 71, 0.6);
+  color: var(--white);
+}
+@keyframes vbudgetIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .vagent__cards {
   display: flex;
   flex-direction: column;
