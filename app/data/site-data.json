@@ -11,7 +11,7 @@
         "landing-page",
         "seo-essencial"
       ],
-      "discount": 50,
+      "discount": 35,
       "i18n": {
         "en": {
           "title": "Online start",
@@ -36,7 +36,7 @@
         "seo-essencial",
         "suporte-30"
       ],
-      "discount": 50,
+      "discount": 35,
       "i18n": {
         "en": {
           "title": "Complete presence",
@@ -61,7 +61,7 @@
         "seo-tecnico",
         "manutencao"
       ],
-      "discount": 100,
+      "discount": 70,
       "i18n": {
         "en": {
           "title": "Digital authority",
@@ -87,7 +87,7 @@
         "performance",
         "manutencao"
       ],
-      "discount": 200,
+      "discount": 140,
       "i18n": {
         "en": {
           "title": "Ready store",
@@ -112,7 +112,7 @@
         "correcao-pack",
         "performance"
       ],
-      "discount": 130,
+      "discount": 90,
       "i18n": {
         "en": {
           "title": "Website rescue",
@@ -137,7 +137,7 @@
         "manutencao",
         "suporte-30"
       ],
-      "discount": 100,
+      "discount": 70,
       "i18n": {
         "en": {
           "title": "Pro Maintenance",
@@ -329,7 +329,7 @@
       "id": "landing-page",
       "category": "sites",
       "title": "Página de conversão",
-      "price": 500,
+      "price": 350,
       "billing": "once",
       "summary": "Uma página focada em transformar visitantes em clientes — com estrutura de vendas, proposta de valor clara e chamada para ação forte.",
       "details": [
@@ -376,7 +376,7 @@
       "id": "site-institucional",
       "category": "sites",
       "title": "Site institucional",
-      "price": 900,
+      "price": 630,
       "billing": "once",
       "summary": "Site completo para apresentar seu negócio com profissionalismo, gerar credibilidade e receber contatos de clientes.",
       "details": [
@@ -423,7 +423,7 @@
       "id": "site-com-blog",
       "category": "sites",
       "title": "Site com blog",
-      "price": 1200,
+      "price": 840,
       "billing": "once",
       "summary": "Site institucional com blog integrado para atrair visitantes pelo Google, construir autoridade no seu nicho e gerar leads de forma contínua.",
       "details": [
@@ -467,54 +467,10 @@
       }
     },
     {
-      "id": "blog-site-existente",
-      "category": "sites",
-      "title": "Blog em site existente",
-      "price": 450,
-      "billing": "once",
-      "summary": "Adiciono ou reformulo o blog de um site que você já tem — estrutura de categorias, template de artigo, estilo e SEO básico do blog.",
-      "details": [
-        "Para sites que já existem (não é um site novo)",
-        "Estrutura de categorias e tags",
-        "Template de artigo com boa leitura",
-        "Estilo alinhado ao visual do seu site",
-        "SEO básico do blog configurado",
-        "Preço varia conforme a plataforma do site atual"
-      ],
-      "allowQuantity": false,
-      "startingAt": true,
-      "i18n": {
-        "en": {
-          "title": "Blog on existing website",
-          "summary": "I add or redesign the blog of an existing website — category structure, article template, style, and basic blog SEO.",
-          "details": [
-            "For existing websites (not a new website)",
-            "Category and tag structure",
-            "Article template with good readability",
-            "Style aligned with your site's visual identity",
-            "Basic blog SEO configured",
-            "Price varies according to the current site's platform"
-          ]
-        },
-        "es": {
-          "title": "Blog en sitio existente",
-          "summary": "Añado o reformulo el blog de un sitio que ya tiene — estructura de categorías, plantilla de artículo, estilo y SEO básico del blog.",
-          "details": [
-            "Para sitios que ya existen (no es un sitio nuevo)",
-            "Estructura de categorías y etiquetas",
-            "Plantilla de artículo con buena lectura",
-            "Estilo alineado al visual de su sitio",
-            "SEO básico del blog configurado",
-            "El precio varía según la plataforma del sitio actual"
-          ]
-        }
-      }
-    },
-    {
       "id": "pagina-adicional",
       "category": "sites",
       "title": "Página extra",
-      "price": 150,
+      "price": 105,
       "billing": "once",
       "summary": "Para projetos que precisam de mais páginas além das incluídas no pacote base.",
       "details": [
@@ -555,7 +511,7 @@
       "id": "loja-woocommerce",
       "category": "ecommerce",
       "title": "Loja WooCommerce",
-      "price": 1800,
+      "price": 1260,
       "billing": "once",
       "summary": "Loja virtual completa no WordPress para vender produtos físicos ou digitais — com carrinho, checkout e painel de pedidos fácil de gerenciar.",
       "details": [
@@ -599,7 +555,7 @@
       "id": "produto-adicional",
       "category": "ecommerce",
       "title": "Produtos adicionais",
-      "price": 30,
+      "price": 20,
       "billing": "once",
       "summary": "Cadastro de produtos extras além dos 10 incluídos no pacote de loja.",
       "details": [
@@ -637,7 +593,7 @@
       "id": "seo-essencial",
       "category": "seo",
       "title": "Setup Google",
-      "price": 300,
+      "price": 210,
       "billing": "once",
       "summary": "Configuração completa para o Google entender, indexar e começar a mostrar seu site nas buscas — base para qualquer estratégia de SEO.",
       "details": [
@@ -684,7 +640,7 @@
       "id": "performance",
       "category": "seo",
       "title": "Site rápido no mobile",
-      "price": 380,
+      "price": 270,
       "billing": "once",
       "summary": "Otimização focada em velocidade real — para o site carregar rápido no celular, melhorar o PageSpeed e parar de perder visitas pela lentidão.",
       "details": [
@@ -725,7 +681,7 @@
       "id": "seo-tecnico",
       "category": "seo",
       "title": "SEO técnico",
-      "price": 500,
+      "price": 350,
       "billing": "once",
       "summary": "Auditoria e correção dos problemas técnicos que impedem seu site de subir no Google — indexação, estrutura, rastreamento e velocidade.",
       "details": [
@@ -766,7 +722,7 @@
       "id": "manutencao",
       "category": "suporte",
       "title": "Plano mensal",
-      "price": 350,
+      "price": 245,
       "billing": "monthly",
       "summary": "Seu site funcionando sempre: atualizações, backups, segurança e pequenos ajustes todo mês — sem precisar chamar ninguém para cada coisa.",
       "details": [
@@ -807,7 +763,7 @@
       "id": "suporte-30",
       "category": "suporte",
       "title": "Suporte pós-entrega",
-      "price": 200,
+      "price": 140,
       "billing": "once",
       "summary": "30 dias de acompanhamento após a entrega — para corrigir, ajustar e garantir que tudo está funcionando como esperado.",
       "details": [
@@ -845,7 +801,7 @@
       "id": "atualizacao-site",
       "category": "suporte",
       "title": "Atualização de site antigo",
-      "price": 400,
+      "price": 280,
       "billing": "once",
       "summary": "Para sites desatualizados, lentos ou com visual ultrapassado — atualizo plugins, modernizo o layout e corrijo os problemas acumulados.",
       "details": [
@@ -886,7 +842,7 @@
       "id": "diagnostico-site",
       "category": "diagnostico",
       "title": "Diagnóstico de site",
-      "price": 200,
+      "price": 140,
       "billing": "once",
       "summary": "Análise técnica completa do seu site — velocidade, SEO, erros, usabilidade e segurança — com relatório detalhado e lista priorizada do que corrigir.",
       "details": [
@@ -930,7 +886,7 @@
       "id": "correcao-bug",
       "category": "diagnostico",
       "title": "Correção de bug pontual",
-      "price": 150,
+      "price": 100,
       "billing": "once",
       "summary": "Resolução de um problema específico no seu site — erro de exibição, funcionalidade quebrada, bug em formulário ou comportamento inesperado.",
       "details": [
@@ -971,7 +927,7 @@
       "id": "correcao-pack",
       "category": "diagnostico",
       "title": "Pacote de correções",
-      "price": 400,
+      "price": 280,
       "billing": "once",
       "summary": "Para quem acumulou vários problemas — resolve até 5 bugs ou ajustes por um preço fixo, sem surpresas no final.",
       "details": [
@@ -1009,54 +965,10 @@
       }
     },
     {
-      "id": "servico-mq3cflku",
-      "category": "diagnostico",
-      "title": "Consultoria e Proposta Técnica Detalhada",
-      "price": 1000,
-      "billing": "once",
-      "summary": "Elaboração de um documento técnico com análise de requisitos, arquitetura da solução, tecnologias propostas e plano de implementação para o chatbot.",
-      "details": [],
-      "allowQuantity": false,
-      "startingAt": false
-    },
-    {
-      "id": "servico-mq3cfmdh",
-      "category": "sites",
-      "title": "Desenvolvimento de Chatbot WhatsApp Personalizado",
-      "price": 5000,
-      "billing": "once",
-      "summary": "Criação e implementação de um chatbot robusto para WhatsApp, automatizando respostas, fornecendo informações e otimizando a comunicação com clientes.",
-      "details": [],
-      "allowQuantity": false,
-      "startingAt": false
-    },
-    {
-      "id": "servico-mq3cfmyd",
-      "category": "diagnostico",
-      "title": "Módulo de Análise e Sugestão de Vendas",
-      "price": 3000,
-      "billing": "once",
-      "summary": "Integração de funcionalidades para coletar dados das interações, identificar padrões e gerar insights para novas estratégias e oportunidades de vendas.",
-      "details": [],
-      "allowQuantity": false,
-      "startingAt": false
-    },
-    {
-      "id": "servico-mq3g7yvy",
-      "category": "suporte",
-      "title": "Configuração e Build de App Mobile (React Native/Expo)",
-      "price": 800,
-      "billing": "once",
-      "summary": "Configuração completa do ambiente de build EAS/Expo, resolução de dependências e geração do arquivo APK para seu aplicativo Android em React Native.",
-      "details": [],
-      "allowQuantity": false,
-      "startingAt": false
-    },
-    {
       "id": "ia-chatbot-site",
       "category": "ia",
       "title": "Assistente de IA no site (chatbot)",
-      "price": 1200,
+      "price": 840,
       "billing": "once",
       "summary": "Um assistente de IA no seu site que responde dúvidas 24/7, recomenda seus serviços ou produtos e capta leads automaticamente.",
       "details": [
@@ -1071,45 +983,10 @@
       "startingAt": true
     },
     {
-      "id": "ia-agente-orcamento",
-      "category": "ia",
-      "title": "Agente de orçamento por IA",
-      "price": 1500,
-      "billing": "once",
-      "summary": "Um agente que conversa com o cliente, entende a necessidade, recomenda os serviços certos e monta uma estimativa na hora — qualificando o lead pra você.",
-      "details": [
-        "Conversa natural que identifica o que o cliente precisa",
-        "Recomenda serviços ou produtos e mostra os mais relevantes",
-        "Monta uma estimativa automática com base na sua tabela de preços",
-        "Anota os pontos importantes que o cliente menciona",
-        "Qualifica o lead antes de chegar até você",
-        "Requer o Plano de IA mensal"
-      ],
-      "allowQuantity": false,
-      "startingAt": true
-    },
-    {
-      "id": "ia-site-multilingue",
-      "category": "ia",
-      "title": "Site multilíngue (tradução por IA)",
-      "price": 600,
-      "billing": "once",
-      "summary": "Seu site em vários idiomas automaticamente: a IA traduz o conteúdo para inglês e espanhol, ampliando seu alcance.",
-      "details": [
-        "Tradução automática do conteúdo para inglês e espanhol",
-        "Seletor de idioma no site",
-        "Mantém o visual e a estrutura originais",
-        "Ideal para vender ou atender fora do Brasil",
-        "Adicional a um site novo ou já existente"
-      ],
-      "allowQuantity": false,
-      "startingAt": true
-    },
-    {
       "id": "ia-plano-mensal",
       "category": "ia",
       "title": "Plano de IA (mensal)",
-      "price": 197,
+      "price": 138,
       "billing": "monthly",
       "summary": "Mantém seu assistente ou agente de IA no ar: cobre o uso da IA, o monitoramento e os ajustes contínuos.",
       "details": [
@@ -1123,112 +1000,10 @@
       "startingAt": false
     },
     {
-      "id": "plano-seo-mensal",
-      "category": "seo",
-      "title": "Plano de SEO mensal",
-      "price": 297,
-      "billing": "monthly",
-      "summary": "Trabalho contínuo de SEO pra seu site subir no Google mês a mês: otimização, conteúdo e acompanhamento.",
-      "details": [
-        "Otimização contínua de páginas e palavras-chave",
-        "Acompanhamento de posições e tráfego",
-        "Recomendações e ajustes técnicos mensais",
-        "Relatório simples de resultados",
-        "Ideal pra quem quer crescer de forma constante"
-      ],
-      "allowQuantity": false,
-      "startingAt": false
-    },
-    {
-      "id": "hospedagem-gerenciada",
-      "category": "suporte",
-      "title": "Hospedagem gerenciada",
-      "price": 97,
-      "billing": "monthly",
-      "summary": "Eu cuido da hospedagem do seu site pra você não se preocupar: servidor, SSL, atualizações e estabilidade.",
-      "details": [
-        "Hospedagem rápida e estável incluída",
-        "Certificado SSL (cadeado de segurança)",
-        "Atualizações de plugins e do sistema",
-        "Monitoramento de disponibilidade",
-        "Você não mexe em nada técnico"
-      ],
-      "allowQuantity": false,
-      "startingAt": false
-    },
-    {
-      "id": "backup-seguranca-mensal",
-      "category": "suporte",
-      "title": "Backup + segurança mensal",
-      "price": 127,
-      "billing": "monthly",
-      "summary": "Seu site protegido: backups automáticos, atualizações de segurança e monitoramento contra ataques.",
-      "details": [
-        "Backups automáticos periódicos",
-        "Restauração rápida se algo der errado",
-        "Atualizações de segurança",
-        "Monitoramento contra malware e invasões",
-        "Tranquilidade pra focar no seu negócio"
-      ],
-      "allowQuantity": false,
-      "startingAt": false
-    },
-    {
-      "id": "ia-chatbot-whatsapp",
-      "category": "ia",
-      "title": "Chatbot de IA no WhatsApp",
-      "price": 1500,
-      "billing": "once",
-      "summary": "Um atendente de IA no seu WhatsApp que responde clientes 24/7, tira dúvidas e qualifica leads automaticamente.",
-      "details": [
-        "Atendimento automático no WhatsApp, a qualquer hora",
-        "Treinado com as informações do seu negócio",
-        "Tira dúvidas e direciona o cliente",
-        "Captura e qualifica leads",
-        "Requer o Plano de IA mensal (cobre o uso da IA)"
-      ],
-      "allowQuantity": false,
-      "startingAt": true
-    },
-    {
-      "id": "cardapio-digital-qr",
-      "category": "sites",
-      "title": "Cardápio / catálogo digital com QR Code",
-      "price": 700,
-      "billing": "once",
-      "summary": "Seu cardápio ou catálogo online: o cliente escaneia um QR Code e vê tudo no celular, sempre atualizado.",
-      "details": [
-        "Cardápio ou catálogo responsivo (mobile)",
-        "QR Code personalizado pra imprimir e colar",
-        "Fácil de atualizar preços e itens",
-        "Fotos, categorias e descrições",
-        "Ideal pra restaurantes, lanchonetes e lojas"
-      ],
-      "allowQuantity": false,
-      "startingAt": true
-    },
-    {
-      "id": "agendamento-online",
-      "category": "sites",
-      "title": "Sistema de agendamento online",
-      "price": 900,
-      "billing": "once",
-      "summary": "Seus clientes marcam horário sozinhos pelo site, com confirmações automáticas — menos no-show e menos WhatsApp.",
-      "details": [
-        "Agenda online integrada ao seu site",
-        "Cliente escolhe serviço, dia e horário",
-        "Confirmações e lembretes automáticos",
-        "Você controla a disponibilidade",
-        "Ideal pra clínicas, salões e profissionais"
-      ],
-      "allowQuantity": false,
-      "startingAt": true
-    },
-    {
       "id": "migracao-site",
       "category": "suporte",
       "title": "Migração de site",
-      "price": 600,
+      "price": 420,
       "billing": "once",
       "summary": "Levo seu site de Wix, Squarespace ou outro lugar pra WordPress (ou pra uma hospedagem melhor), sem perder nada.",
       "details": [
@@ -1237,40 +1012,6 @@
         "Ou troca de hospedagem com segurança",
         "Sem perder SEO nem links",
         "Preço varia conforme o tamanho do site"
-      ],
-      "allowQuantity": false,
-      "startingAt": true
-    },
-    {
-      "id": "area-membros",
-      "category": "sites",
-      "title": "Área de membros / curso online",
-      "price": 1800,
-      "billing": "once",
-      "summary": "Uma plataforma pra você vender e entregar cursos ou conteúdo exclusivo, com login e acesso protegido.",
-      "details": [
-        "Área protegida por login",
-        "Organização de aulas/módulos ou conteúdos",
-        "Controle de quem tem acesso",
-        "Integração com pagamento",
-        "Ideal pra cursos, mentorias e conteúdo premium"
-      ],
-      "allowQuantity": false,
-      "startingAt": true
-    },
-    {
-      "id": "automacoes",
-      "category": "suporte",
-      "title": "Automações (Make.com / n8n)",
-      "price": 800,
-      "billing": "once",
-      "summary": "Conecto seus sistemas e automatizo tarefas repetitivas: formulários, planilhas, e-mails, CRM e WhatsApp trabalhando sozinhos.",
-      "details": [
-        "Integração entre seus aplicativos e sistemas",
-        "Automação de tarefas repetitivas",
-        "Ex: lead do site cai na planilha e no WhatsApp",
-        "Menos trabalho manual, menos erro",
-        "Preço varia conforme a complexidade"
       ],
       "allowQuantity": false,
       "startingAt": true
