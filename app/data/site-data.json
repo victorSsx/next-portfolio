@@ -312,18 +312,6 @@
           "label": "Inteligencia Artificial"
         }
       }
-    },
-    {
-      "id": "marketing",
-      "label": "Marketing",
-      "i18n": {
-        "en": {
-          "label": "Marketing"
-        },
-        "es": {
-          "label": "Marketing"
-        }
-      }
     }
   ],
   "technologies": [
@@ -1215,23 +1203,6 @@
         "Fácil de atualizar preços e itens",
         "Fotos, categorias e descrições",
         "Ideal pra restaurantes, lanchonetes e lojas"
-      ],
-      "allowQuantity": false,
-      "startingAt": true
-    },
-    {
-      "id": "pacote-midias-instagram",
-      "category": "marketing",
-      "title": "Pacote de mídias para Instagram",
-      "price": 450,
-      "billing": "once",
-      "summary": "Posts e artes prontos na identidade do seu negócio pra você manter o Instagram ativo e profissional.",
-      "details": [
-        "Pacote de artes/posts na sua marca",
-        "Formatos para feed e stories",
-        "Visual consistente e profissional",
-        "Arquivos prontos pra postar",
-        "Opção de pacote mensal recorrente"
       ],
       "allowQuantity": false,
       "startingAt": true
