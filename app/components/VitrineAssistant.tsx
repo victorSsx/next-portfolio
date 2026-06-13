@@ -8,7 +8,6 @@ import { useVoice } from "../lib/useVoice";
 
 const services: BudgetService[] = siteData.services;
 const packages: Package[] = siteData.packages ?? [];
-const AGENT_AVATAR = "/images/logo-victor-ai-transparent.png";
 
 const fmt = (v: number) =>
   v.toLocaleString("pt-BR", { style: "currency", currency: "BRL", maximumFractionDigits: 0 });
@@ -328,16 +327,11 @@ export function VitrineAssistant() {
       <div className="vagent__cols">
         {/* Chat */}
         <div className="vagent__chat" data-animate>
-          <div className="vagent__agent">
-            <div className="vagent__agent-id">
-              <strong>{t.agentName}</strong>
-              <span className="vagent__status">{t.online}</span>
-            </div>
-            {voice.supportsTTS ? (
-              <div className="vagent__voice">
-                <button
-                  type="button"
-                  className={`vagent__voicebtn${voice.enabled ? " is-on" : ""}`}
+          {voice.supportsTTS ? (
+            <div className="vagent__toolbar">
+              <button
+                type="button"
+                className={`vagent__voicebtn${voice.enabled ? " is-on" : ""}`}
                   onClick={() => {
                     if (voice.enabled) voice.stopSpeaking();
                     voice.setEnabled(!voice.enabled);
@@ -359,23 +353,14 @@ export function VitrineAssistant() {
                 </button>
               </div>
             ) : null}
-          </div>
           <div className="vagent__messages" ref={scrollRef}>
             {messages.map((m, i) => (
               <div key={i} className={`vagent-msg vagent-msg--${m.role}`}>
-                {m.role === "assistant" ? (
-                  <span className="vagent-avatar" aria-hidden="true">
-                    <img src={AGENT_AVATAR} alt="" />
-                  </span>
-                ) : null}
                 <div className="vagent-msg__bubble">{m.content}</div>
               </div>
             ))}
             {loading ? (
               <div className="vagent-msg vagent-msg--assistant">
-                <span className="vagent-avatar" aria-hidden="true">
-                  <img src={AGENT_AVATAR} alt="" />
-                </span>
                 <div className="vagent-msg__bubble vagent-typing">
                   <span />
                   <span />
