@@ -1082,6 +1082,7 @@ a {
   display: flex;
   justify-content: center;
   margin: 4px 0 20px;
+  perspective: 820px;
 }
 .vagent__hero::before {
   content: "";
@@ -1098,6 +1099,9 @@ a {
   --s: 150px;
   width: var(--s);
   height: var(--s);
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.2s ease-out;
+  will-change: transform;
 }
 .holo--hero .holo__halo {
   width: 190px;
