@@ -3,6 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { siteData, localizeContent, type BudgetService, type Package } from "../lib/site-data";
 import { useLanguage } from "../lib/LanguageContext";
+import { HoloAvatar, type HoloState } from "./HoloAvatar";
+import { useVoice } from "../lib/useVoice";
 
 const services: BudgetService[] = siteData.services;
 const packages: Package[] = siteData.packages ?? [];
@@ -127,6 +129,7 @@ function estimate(rec: Rec) {
 export function VitrineAssistant() {
   const { lang } = useLanguage();
   const t = STR[lang] ?? STR.pt;
+  const voice = useVoice(lang);
 
   const [messages, setMessages] = useState<Msg[]>([{ role: "assistant", content: STR.pt.greeting }]);
   const [input, setInput] = useState("");
@@ -199,6 +202,7 @@ export function VitrineAssistant() {
       };
       if (!res.ok || !json.reply) throw new Error(json.error || t.error);
       setMessages((m) => [...m, { role: "assistant", content: json.reply as string }]);
+      voice.speak(json.reply as string);
       setOptions(Array.isArray(json.options) ? json.options : []);
       setOptMulti(Boolean(json.multi));
       if (Array.isArray(json.notes)) setNotes(json.notes);
@@ -302,6 +306,14 @@ export function VitrineAssistant() {
   const shownOptions = greetingStarters && options.length === 0 ? [...t.starters] : options;
   const shownMulti = greetingStarters && options.length === 0 ? false : optMulti;
 
+  const avatarState: HoloState = voice.listening
+    ? "listening"
+    : loading
+      ? "thinking"
+      : voice.speaking
+        ? "speaking"
+        : "idle";
+
   return (
     <section className="vagent" id="orcamento">
       <div className="vagent__intro" data-animate>
@@ -314,13 +326,37 @@ export function VitrineAssistant() {
         {/* Chat */}
         <div className="vagent__chat" data-animate>
           <div className="vagent__agent">
-            <span className="vagent-avatar vagent-avatar--lg" aria-hidden="true">
-              <img src={AGENT_AVATAR} alt="" />
-            </span>
+            <HoloAvatar state={avatarState} />
             <div className="vagent__agent-id">
               <strong>{t.agentName}</strong>
               <span className="vagent__status">{t.online}</span>
             </div>
+            {voice.supportsTTS ? (
+              <div className="vagent__voice">
+                <button
+                  type="button"
+                  className={`vagent__voicebtn${voice.enabled ? " is-on" : ""}`}
+                  onClick={() => {
+                    if (voice.enabled) voice.stopSpeaking();
+                    voice.setEnabled(!voice.enabled);
+                  }}
+                  aria-label={voice.enabled ? "Desligar voz da IA" : "Ligar voz da IA"}
+                  title={voice.enabled ? "Voz ligada" : "Voz desligada"}
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <path d="M4 9v6h4l5 4V5L8 9H4z" />
+                    {voice.enabled ? (
+                      <>
+                        <path d="M16 9.5a3 3 0 0 1 0 5" />
+                        <path d="M19 7a7 7 0 0 1 0 10" />
+                      </>
+                    ) : (
+                      <path d="M22 9l-5 5M17 9l5 5" />
+                    )}
+                  </svg>
+                </button>
+              </div>
+            ) : null}
           </div>
           <div className="vagent__messages" ref={scrollRef}>
             {messages.map((m, i) => (
@@ -380,6 +416,28 @@ export function VitrineAssistant() {
           ) : null}
           {error ? <p className="vagent__error">{error}</p> : null}
           <div className="vagent__input">
+            {voice.supportsSTT ? (
+              <button
+                type="button"
+                className={`vagent__mic${voice.listening ? " is-rec" : ""}`}
+                onClick={() => {
+                  if (voice.listening) {
+                    voice.stopListening();
+                    return;
+                  }
+                  voice.setEnabled(true);
+                  voice.listen((text) => send(text));
+                }}
+                aria-label={voice.listening ? "Parar de ouvir" : "Falar no microfone"}
+                title={voice.listening ? "Ouvindo…" : "Falar no microfone"}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="9" y="3" width="6" height="11" rx="3" />
+                  <path d="M5 11a7 7 0 0 0 14 0" />
+                  <path d="M12 18v3" />
+                </svg>
+              </button>
+            ) : null}
             <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
