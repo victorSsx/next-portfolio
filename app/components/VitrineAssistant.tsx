@@ -317,6 +317,9 @@ export function VitrineAssistant() {
   return (
     <section className="vagent" id="orcamento">
       <div className="vagent__intro" data-animate>
+        <div className="vagent__hero">
+          <HoloAvatar state={avatarState} size="hero" />
+        </div>
         <p className="eyebrow">{t.eyebrow}</p>
         <h2>{t.title}</h2>
         <p>{t.lead}</p>
@@ -326,7 +329,6 @@ export function VitrineAssistant() {
         {/* Chat */}
         <div className="vagent__chat" data-animate>
           <div className="vagent__agent">
-            <HoloAvatar state={avatarState} />
             <div className="vagent__agent-id">
               <strong>{t.agentName}</strong>
               <span className="vagent__status">{t.online}</span>

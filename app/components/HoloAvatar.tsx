@@ -6,9 +6,9 @@ const LOGO = "/images/logo-victor-ai-transparent.png";
 
 // Avatar holográfico reativo da IA — a logo dourada flutua dentro de anéis,
 // scanlines e brilho que mudam conforme o estado da conversa (gold "JARVIS").
-export function HoloAvatar({ state = "idle" }: { state?: HoloState }) {
+export function HoloAvatar({ state = "idle", size = "sm" }: { state?: HoloState; size?: "sm" | "hero" }) {
   return (
-    <div className="holo" data-state={state} aria-hidden="true">
+    <div className={`holo${size === "hero" ? " holo--hero" : ""}`} data-state={state} aria-hidden="true">
       <span className="holo__halo" />
       <span className="holo__ring holo__ring--1" />
       <span className="holo__ring holo__ring--2" />

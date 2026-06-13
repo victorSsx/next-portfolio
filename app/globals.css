@@ -788,9 +788,12 @@ a {
   max-width: 600px;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: var(--panel);
+  border: 1px solid rgba(199, 164, 71, 0.18);
+  border-radius: 20px;
+  background: rgba(21, 22, 22, 0.5);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  box-shadow: 0 24px 70px -28px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(245, 242, 236, 0.05);
   overflow: hidden;
   min-height: 440px;
 }
@@ -799,9 +802,9 @@ a {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--line);
-  background: rgba(199, 164, 71, 0.05);
+  padding: 13px 16px;
+  border-bottom: 1px solid rgba(199, 164, 71, 0.12);
+  background: linear-gradient(180deg, rgba(199, 164, 71, 0.06), transparent);
 }
 .vagent__agent-id {
   display: flex;
@@ -1074,6 +1077,62 @@ a {
     animation: none !important;
   }
 }
+.vagent__hero {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 4px 0 20px;
+}
+.vagent__hero::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 280px;
+  height: 280px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(199, 164, 71, 0.14), transparent 68%);
+  pointer-events: none;
+}
+.holo--hero {
+  --s: 150px;
+  width: var(--s);
+  height: var(--s);
+}
+.holo--hero .holo__halo {
+  width: 190px;
+  height: 190px;
+}
+.holo--hero .holo__ring--1 {
+  width: 162px;
+  height: 162px;
+}
+.holo--hero .holo__ring--2 {
+  width: 120px;
+  height: 120px;
+}
+.holo--hero .holo__ring--3 {
+  width: 92px;
+  height: 92px;
+}
+.holo--hero .holo__core {
+  width: 96px;
+  height: 96px;
+  filter: drop-shadow(0 0 12px var(--hc)) drop-shadow(0 0 30px color-mix(in srgb, var(--hc) 55%, transparent));
+}
+.holo--hero .holo__base {
+  width: 150px;
+  height: 22px;
+  top: 88%;
+}
+.holo--hero .holo__eq {
+  bottom: 10px;
+  height: 22px;
+  gap: 4px;
+}
+.holo--hero .holo__eq i {
+  width: 4px;
+}
 .vagent__voice {
   margin-left: auto;
   display: inline-flex;
@@ -1167,14 +1226,15 @@ a {
   line-height: 1.5;
 }
 .vagent-msg--assistant .vagent-msg__bubble {
-  background: rgba(245, 242, 236, 0.05);
-  color: rgba(245, 242, 236, 0.9);
+  background: rgba(245, 242, 236, 0.07);
+  color: rgba(245, 242, 236, 0.92);
+  border: 1px solid rgba(245, 242, 236, 0.08);
   border-bottom-left-radius: 4px;
 }
 .vagent-msg--user .vagent-msg__bubble {
-  background: rgba(199, 164, 71, 0.16);
+  background: linear-gradient(135deg, rgba(199, 164, 71, 0.22), rgba(199, 164, 71, 0.1));
   color: var(--white);
-  border: 1px solid rgba(199, 164, 71, 0.3);
+  border: 1px solid rgba(225, 184, 66, 0.35);
   border-bottom-right-radius: 4px;
 }
 .vagent-typing {
@@ -1224,9 +1284,11 @@ a {
   min-height: 44px;
   max-height: 120px;
   padding: 11px 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(245, 242, 236, 0.16);
-  background: rgba(8, 9, 9, 0.5);
+  border-radius: 12px;
+  border: 1px solid rgba(245, 242, 236, 0.12);
+  background: rgba(8, 9, 9, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   color: var(--white);
   font: inherit;
   font-size: 0.95rem;
