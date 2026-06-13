@@ -59,8 +59,8 @@ function pickVoice(voices: SpeechSynthesisVoice[], lang: Lang): SpeechSynthesisV
   return ranked[0].v;
 }
 
-// Encapsula a Web Speech API: fala as respostas (TTS, escolhendo a voz mais
-// natural disponível) e ouve o microfone (STT). Degrada com elegância.
+// Encapsula a voz da IA: tenta a voz neural humana (rota /api/tts via ElevenLabs)
+// e cai de volta na voz do navegador se não estiver configurada. Ouve o microfone (STT).
 export function useVoice(lang: Lang) {
   const [mounted, setMounted] = useState(false);
   const [speaking, setSpeaking] = useState(false);
@@ -68,6 +68,8 @@ export function useVoice(lang: Lang) {
   const [enabled, setEnabled] = useState(false);
   const recRef = useRef<SpeechRecognitionLike | null>(null);
   const voicesRef = useRef<SpeechSynthesisVoice[]>([]);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const ttsServerRef = useRef<boolean | null>(null); // null=desconhecido, true=disponível, false=usar navegador
   const enabledRef = useRef(enabled);
   enabledRef.current = enabled;
 
@@ -85,10 +87,10 @@ export function useVoice(lang: Lang) {
   const supportsTTS = mounted && typeof window !== "undefined" && "speechSynthesis" in window;
   const supportsSTT = mounted && getRecognitionCtor() !== null;
 
-  const speak = useCallback(
+  // Voz do navegador (fallback).
+  const speakBrowser = useCallback(
     (text: string) => {
       if (typeof window === "undefined" || !("speechSynthesis" in window)) return;
-      if (!enabledRef.current || !text) return;
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = LANG_MAP[lang];
@@ -106,9 +108,61 @@ export function useVoice(lang: Lang) {
   );
 
   const stopSpeaking = useCallback(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current = null;
+    }
     if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
     setSpeaking(false);
   }, []);
+
+  // Voz da IA: tenta a neural (humana) e cai no navegador se indisponível.
+  const speak = useCallback(
+    (text: string) => {
+      if (!enabledRef.current || !text) return;
+      if (ttsServerRef.current === false) {
+        speakBrowser(text);
+        return;
+      }
+      fetch("/api/tts", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ text, lang }),
+      })
+        .then((r) => {
+          if (r.status === 503) {
+            ttsServerRef.current = false;
+            throw new Error("tts-not-configured");
+          }
+          if (!r.ok) throw new Error("tts-" + r.status);
+          ttsServerRef.current = true;
+          return r.blob();
+        })
+        .then((blob) => {
+          if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
+          if (audioRef.current) audioRef.current.pause();
+          const url = URL.createObjectURL(blob);
+          const audio = new Audio(url);
+          audioRef.current = audio;
+          audio.onplay = () => setSpeaking(true);
+          audio.onended = () => {
+            setSpeaking(false);
+            URL.revokeObjectURL(url);
+          };
+          audio.onerror = () => {
+            setSpeaking(false);
+            URL.revokeObjectURL(url);
+          };
+          audio.play().catch(() => {
+            setSpeaking(false);
+            URL.revokeObjectURL(url);
+            speakBrowser(text);
+          });
+        })
+        .catch(() => speakBrowser(text));
+    },
+    [lang, speakBrowser]
+  );
 
   const listen = useCallback(
     (onResult: (text: string) => void) => {
