@@ -784,24 +784,26 @@ a {
   gap: 22px;
 }
 .vagent__chat {
-  flex: 1 1 480px;
-  max-width: 600px;
+  flex: 1 1 460px;
+  max-width: 580px;
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--line);
-  border-radius: 16px;
-  background: var(--panel);
-  overflow: hidden;
-  min-height: 440px;
+  gap: 6px;
+  background: transparent;
+}
+.vagent__toolbar {
+  display: flex;
+  justify-content: flex-end;
+  min-height: 18px;
 }
 /* Cabeçalho do agente: avatar IA + nome + status */
 .vagent__agent {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 14px 16px;
-  border-bottom: 1px solid var(--line);
-  background: rgba(199, 164, 71, 0.05);
+  padding: 13px 16px;
+  border-bottom: 1px solid rgba(199, 164, 71, 0.12);
+  background: linear-gradient(180deg, rgba(199, 164, 71, 0.06), transparent);
 }
 .vagent__agent-id {
   display: flex;
@@ -880,14 +882,326 @@ a {
     transform: scale(1.7);
   }
 }
+
+/* === Avatar holográfico reativo (gold "JARVIS") + controles de voz === */
+.holo {
+  --hc: var(--gold);
+  --hc2: var(--gold-strong);
+  position: relative;
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+}
+.holo[data-state="listening"] {
+  --hc: #e7c45a;
+  --hc2: #f3dd9a;
+}
+.holo[data-state="thinking"] {
+  --hc: #f0d486;
+  --hc2: #fff0c2;
+}
+.holo[data-state="speaking"] {
+  --hc: #ffe6a3;
+  --hc2: #fff6dc;
+}
+.holo > * {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.holo__halo {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: radial-gradient(circle, color-mix(in srgb, var(--hc) 45%, transparent), transparent 65%);
+  animation: holoHalo 4s ease-in-out infinite;
+}
+.holo__ring {
+  border-radius: 50%;
+  border: 1.5px solid var(--hc);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--hc) 55%, transparent);
+}
+.holo__ring--1 {
+  width: 78px;
+  height: 78px;
+  border-color: var(--hc) transparent var(--hc) transparent;
+  animation: holoSpin 16s linear infinite;
+}
+.holo__ring--2 {
+  width: 58px;
+  height: 58px;
+  border-color: transparent var(--hc) transparent var(--hc);
+  animation: holoSpin 10s linear infinite reverse;
+}
+.holo__ring--3 {
+  width: 44px;
+  height: 44px;
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--hc) 65%, transparent);
+  animation: holoSpin 24s linear infinite;
+}
+.holo[data-state="thinking"] .holo__ring--1 {
+  animation-duration: 5s;
+}
+.holo[data-state="thinking"] .holo__ring--2 {
+  animation-duration: 3.2s;
+}
+.holo[data-state="speaking"] .holo__ring--1 {
+  animation-duration: 8s;
+}
+.holo__core {
+  width: 46px;
+  height: 46px;
+  display: grid;
+  place-items: center;
+  filter: drop-shadow(0 0 6px var(--hc)) drop-shadow(0 0 14px color-mix(in srgb, var(--hc) 55%, transparent));
+  animation: holoFloat 5s ease-in-out infinite, holoFlicker 7s steps(1) infinite;
+}
+.holo__core img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.holo__scan {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: repeating-linear-gradient(to bottom, transparent 0 3px, rgba(245, 242, 236, 0.12) 3px 4px);
+  -webkit-mask: radial-gradient(circle, #000 55%, transparent 72%);
+  mask: radial-gradient(circle, #000 55%, transparent 72%);
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: holoScan 4.5s linear infinite;
+}
+.holo__base {
+  width: 70px;
+  height: 12px;
+  top: 86%;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, color-mix(in srgb, var(--hc) 70%, transparent), transparent 70%);
+  animation: holoHalo 4s ease-in-out infinite;
+}
+.holo__eq {
+  top: auto;
+  bottom: 6px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  height: 14px;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.holo[data-state="speaking"] .holo__eq {
+  opacity: 1;
+}
+.holo__eq i {
+  width: 3px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--hc2);
+  box-shadow: 0 0 6px var(--hc);
+  animation: holoEq 0.8s ease-in-out infinite;
+}
+.holo__eq i:nth-child(2) {
+  animation-delay: 0.15s;
+}
+.holo__eq i:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.holo__eq i:nth-child(4) {
+  animation-delay: 0.45s;
+}
+.holo__eq i:nth-child(5) {
+  animation-delay: 0.22s;
+}
+@keyframes holoSpin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+@keyframes holoFloat {
+  0%,
+  100% {
+    transform: translate(-50%, -54%);
+  }
+  50% {
+    transform: translate(-50%, -46%);
+  }
+}
+@keyframes holoHalo {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(1.07);
+  }
+}
+@keyframes holoFlicker {
+  0%,
+  93%,
+  100% {
+    opacity: 1;
+  }
+  94% {
+    opacity: 0.75;
+  }
+  96% {
+    opacity: 0.95;
+  }
+}
+@keyframes holoScan {
+  from {
+    transform: translateY(-3px);
+  }
+  to {
+    transform: translateY(3px);
+  }
+}
+@keyframes holoEq {
+  0%,
+  100% {
+    height: 4px;
+  }
+  50% {
+    height: 13px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .holo * {
+    animation: none !important;
+  }
+}
+.vagent__hero {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: 4px 0 20px;
+  perspective: 820px;
+}
+.vagent__hero::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 280px;
+  height: 280px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(199, 164, 71, 0.14), transparent 68%);
+  pointer-events: none;
+}
+.holo--hero {
+  --s: 150px;
+  width: var(--s);
+  height: var(--s);
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 0.2s ease-out;
+  will-change: transform;
+}
+.holo--hero .holo__halo {
+  width: 190px;
+  height: 190px;
+}
+.holo--hero .holo__ring--1 {
+  width: 162px;
+  height: 162px;
+}
+.holo--hero .holo__ring--2 {
+  width: 120px;
+  height: 120px;
+}
+.holo--hero .holo__ring--3 {
+  width: 92px;
+  height: 92px;
+}
+.holo--hero .holo__core {
+  width: 96px;
+  height: 96px;
+  filter: drop-shadow(0 0 12px var(--hc)) drop-shadow(0 0 30px color-mix(in srgb, var(--hc) 55%, transparent));
+}
+.holo--hero .holo__base {
+  width: 150px;
+  height: 22px;
+  top: 88%;
+}
+.holo--hero .holo__eq {
+  bottom: 10px;
+  height: 22px;
+  gap: 4px;
+}
+.holo--hero .holo__eq i {
+  width: 4px;
+}
+.vagent__voice {
+  margin-left: auto;
+  display: inline-flex;
+  gap: 6px;
+}
+.vagent__voicebtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  background: rgba(199, 164, 71, 0.06);
+  color: var(--muted);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.18s, border-color 0.18s, background 0.18s;
+}
+.vagent__voicebtn:hover {
+  color: var(--white);
+  border-color: rgba(199, 164, 71, 0.5);
+}
+.vagent__voicebtn.is-on {
+  color: var(--black);
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.vagent__voicebtn svg {
+  width: 17px;
+  height: 17px;
+}
+.vagent__input .vagent__mic {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(199, 164, 71, 0.35);
+  border-radius: 13px;
+  background: rgba(199, 164, 71, 0.08);
+  color: var(--gold);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+.vagent__input .vagent__mic:hover {
+  background: rgba(199, 164, 71, 0.16);
+  color: var(--gold-strong);
+}
+.vagent__input .vagent__mic.is-rec {
+  background: var(--gold);
+  color: var(--black);
+  border-color: var(--gold);
+  animation: holoHalo 1.2s ease-in-out infinite;
+}
+.vagent__input .vagent__mic svg {
+  width: 18px;
+  height: 18px;
+}
 .vagent__messages {
-  flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 12px;
-  padding: 18px;
+  gap: 10px;
+  padding: 4px 2px 8px;
   overflow-y: auto;
-  max-height: 460px;
+  min-height: 140px;
+  max-height: 380px;
 }
 .vagent-msg {
   display: flex;
@@ -909,22 +1223,22 @@ a {
   }
 }
 .vagent-msg__bubble {
-  max-width: 85%;
-  padding: 11px 14px;
-  border-radius: 14px;
+  max-width: 86%;
+  padding: 11px 15px;
+  border-radius: 16px;
   font-size: 0.92rem;
   line-height: 1.5;
 }
 .vagent-msg--assistant .vagent-msg__bubble {
-  background: rgba(245, 242, 236, 0.05);
-  color: rgba(245, 242, 236, 0.9);
-  border-bottom-left-radius: 4px;
+  background: rgba(245, 242, 236, 0.06);
+  color: rgba(245, 242, 236, 0.92);
+  border-bottom-left-radius: 5px;
 }
 .vagent-msg--user .vagent-msg__bubble {
-  background: rgba(199, 164, 71, 0.16);
+  background: linear-gradient(135deg, rgba(199, 164, 71, 0.24), rgba(199, 164, 71, 0.1));
   color: var(--white);
-  border: 1px solid rgba(199, 164, 71, 0.3);
-  border-bottom-right-radius: 4px;
+  border: 1px solid rgba(225, 184, 66, 0.32);
+  border-bottom-right-radius: 5px;
 }
 .vagent-typing {
   display: inline-flex;
@@ -963,19 +1277,30 @@ a {
 }
 .vagent__input {
   display: flex;
+  align-items: flex-end;
   gap: 8px;
-  padding: 12px;
-  border-top: 1px solid var(--line);
+  padding: 8px;
+  margin-top: 6px;
+  border: 1px solid rgba(199, 164, 71, 0.25);
+  border-radius: 18px;
+  background: rgba(18, 18, 18, 0.42);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  box-shadow: 0 14px 44px -20px rgba(0, 0, 0, 0.85);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.vagent__input:focus-within {
+  border-color: rgba(225, 184, 66, 0.55);
+  box-shadow: 0 0 0 3px rgba(199, 164, 71, 0.12), 0 14px 44px -20px rgba(0, 0, 0, 0.85);
 }
 .vagent__input textarea {
   flex: 1;
   resize: none;
-  min-height: 44px;
+  min-height: 40px;
   max-height: 120px;
-  padding: 11px 14px;
-  border-radius: 10px;
-  border: 1px solid rgba(245, 242, 236, 0.16);
-  background: rgba(8, 9, 9, 0.5);
+  padding: 9px 8px;
+  border: none;
+  background: transparent;
   color: var(--white);
   font: inherit;
   font-size: 0.95rem;
@@ -987,9 +1312,10 @@ a {
 }
 .vagent__input button {
   flex-shrink: 0;
-  width: 46px;
+  width: 42px;
+  height: 42px;
   border: none;
-  border-radius: 10px;
+  border-radius: 13px;
   background: var(--gold);
   color: #1a1407;
   font-size: 1rem;
@@ -1008,23 +1334,25 @@ a {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  padding: 0 12px 12px;
+  padding: 2px 2px 8px;
 }
 .vagent-opt {
-  padding: 8px 14px;
-  border: 1px solid rgba(199, 164, 71, 0.45);
+  padding: 8px 15px;
+  border: 1px solid rgba(199, 164, 71, 0.32);
   border-radius: 999px;
-  background: rgba(199, 164, 71, 0.08);
+  background: rgba(199, 164, 71, 0.05);
   color: var(--gold);
   font-size: 0.86rem;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  transition: background 0.16s, border-color 0.16s, color 0.16s, transform 0.1s;
+  transition: background 0.16s, border-color 0.16s, box-shadow 0.16s, transform 0.12s;
   animation: vagentMsgIn 0.3s ease both;
 }
 .vagent-opt:hover {
-  background: rgba(199, 164, 71, 0.18);
-  border-color: rgba(199, 164, 71, 0.7);
+  background: rgba(199, 164, 71, 0.13);
+  border-color: rgba(225, 184, 66, 0.7);
+  box-shadow: 0 6px 18px -8px rgba(199, 164, 71, 0.55);
+  transform: translateY(-2px);
 }
 .vagent-opt:active {
   transform: translateY(1px);
