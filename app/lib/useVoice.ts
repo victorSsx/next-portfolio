@@ -95,7 +95,7 @@ export function useVoice(lang: Lang) {
       const voices = voicesRef.current.length ? voicesRef.current : window.speechSynthesis.getVoices();
       const voice = pickVoice(voices, lang);
       if (voice) utterance.voice = voice;
-      utterance.rate = 1;
+      utterance.rate = 0.97;
       utterance.pitch = 1;
       utterance.onstart = () => setSpeaking(true);
       utterance.onend = () => setSpeaking(false);

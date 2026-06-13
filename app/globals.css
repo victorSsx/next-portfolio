@@ -1188,7 +1188,16 @@ a {
   background: var(--gold);
   color: var(--black);
   border-color: var(--gold);
-  animation: holoHalo 1.2s ease-in-out infinite;
+  animation: vagentMicRec 1.4s ease-out infinite;
+}
+@keyframes vagentMicRec {
+  0% {
+    box-shadow: 0 0 0 0 rgba(225, 184, 66, 0.55);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 9px rgba(225, 184, 66, 0);
+  }
 }
 .vagent__input .vagent__mic svg {
   width: 18px;
