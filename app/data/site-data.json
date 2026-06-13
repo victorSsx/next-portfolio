@@ -329,7 +329,7 @@
       "id": "landing-page",
       "category": "sites",
       "title": "Página de conversão",
-      "price": 350,
+      "price": 347,
       "billing": "once",
       "summary": "Uma página focada em transformar visitantes em clientes — com estrutura de vendas, proposta de valor clara e chamada para ação forte.",
       "details": [
@@ -376,7 +376,7 @@
       "id": "site-institucional",
       "category": "sites",
       "title": "Site institucional",
-      "price": 630,
+      "price": 597,
       "billing": "once",
       "summary": "Site completo para apresentar seu negócio com profissionalismo, gerar credibilidade e receber contatos de clientes.",
       "details": [
@@ -423,7 +423,7 @@
       "id": "site-com-blog",
       "category": "sites",
       "title": "Site com blog",
-      "price": 840,
+      "price": 797,
       "billing": "once",
       "summary": "Site institucional com blog integrado para atrair visitantes pelo Google, construir autoridade no seu nicho e gerar leads de forma contínua.",
       "details": [
@@ -470,7 +470,7 @@
       "id": "pagina-adicional",
       "category": "sites",
       "title": "Página extra",
-      "price": 105,
+      "price": 97,
       "billing": "once",
       "summary": "Para projetos que precisam de mais páginas além das incluídas no pacote base.",
       "details": [
@@ -511,7 +511,7 @@
       "id": "loja-woocommerce",
       "category": "ecommerce",
       "title": "Loja WooCommerce",
-      "price": 1260,
+      "price": 1197,
       "billing": "once",
       "summary": "Loja virtual completa no WordPress para vender produtos físicos ou digitais — com carrinho, checkout e painel de pedidos fácil de gerenciar.",
       "details": [
@@ -555,7 +555,7 @@
       "id": "produto-adicional",
       "category": "ecommerce",
       "title": "Produtos adicionais",
-      "price": 20,
+      "price": 19,
       "billing": "once",
       "summary": "Cadastro de produtos extras além dos 10 incluídos no pacote de loja.",
       "details": [
@@ -593,7 +593,7 @@
       "id": "seo-essencial",
       "category": "seo",
       "title": "Setup Google",
-      "price": 210,
+      "price": 197,
       "billing": "once",
       "summary": "Configuração completa para o Google entender, indexar e começar a mostrar seu site nas buscas — base para qualquer estratégia de SEO.",
       "details": [
@@ -640,7 +640,7 @@
       "id": "performance",
       "category": "seo",
       "title": "Site rápido no mobile",
-      "price": 270,
+      "price": 247,
       "billing": "once",
       "summary": "Otimização focada em velocidade real — para o site carregar rápido no celular, melhorar o PageSpeed e parar de perder visitas pela lentidão.",
       "details": [
@@ -681,7 +681,7 @@
       "id": "seo-tecnico",
       "category": "seo",
       "title": "SEO técnico",
-      "price": 350,
+      "price": 347,
       "billing": "once",
       "summary": "Auditoria e correção dos problemas técnicos que impedem seu site de subir no Google — indexação, estrutura, rastreamento e velocidade.",
       "details": [
@@ -722,7 +722,7 @@
       "id": "manutencao",
       "category": "suporte",
       "title": "Plano mensal",
-      "price": 245,
+      "price": 237,
       "billing": "monthly",
       "summary": "Seu site funcionando sempre: atualizações, backups, segurança e pequenos ajustes todo mês — sem precisar chamar ninguém para cada coisa.",
       "details": [
@@ -763,7 +763,7 @@
       "id": "suporte-30",
       "category": "suporte",
       "title": "Suporte pós-entrega",
-      "price": 140,
+      "price": 137,
       "billing": "once",
       "summary": "30 dias de acompanhamento após a entrega — para corrigir, ajustar e garantir que tudo está funcionando como esperado.",
       "details": [
@@ -801,7 +801,7 @@
       "id": "atualizacao-site",
       "category": "suporte",
       "title": "Atualização de site antigo",
-      "price": 280,
+      "price": 277,
       "billing": "once",
       "summary": "Para sites desatualizados, lentos ou com visual ultrapassado — atualizo plugins, modernizo o layout e corrijo os problemas acumulados.",
       "details": [
@@ -842,7 +842,7 @@
       "id": "diagnostico-site",
       "category": "diagnostico",
       "title": "Diagnóstico de site",
-      "price": 140,
+      "price": 137,
       "billing": "once",
       "summary": "Análise técnica completa do seu site — velocidade, SEO, erros, usabilidade e segurança — com relatório detalhado e lista priorizada do que corrigir.",
       "details": [
@@ -886,7 +886,7 @@
       "id": "correcao-bug",
       "category": "diagnostico",
       "title": "Correção de bug pontual",
-      "price": 100,
+      "price": 97,
       "billing": "once",
       "summary": "Resolução de um problema específico no seu site — erro de exibição, funcionalidade quebrada, bug em formulário ou comportamento inesperado.",
       "details": [
@@ -927,7 +927,7 @@
       "id": "correcao-pack",
       "category": "diagnostico",
       "title": "Pacote de correções",
-      "price": 280,
+      "price": 277,
       "billing": "once",
       "summary": "Para quem acumulou vários problemas — resolve até 5 bugs ou ajustes por um preço fixo, sem surpresas no final.",
       "details": [
@@ -968,7 +968,7 @@
       "id": "ia-chatbot-site",
       "category": "ia",
       "title": "Assistente de IA no site (chatbot)",
-      "price": 840,
+      "price": 797,
       "billing": "once",
       "summary": "Um assistente de IA no seu site que responde dúvidas 24/7, recomenda seus serviços ou produtos e capta leads automaticamente.",
       "details": [
@@ -986,7 +986,7 @@
       "id": "ia-plano-mensal",
       "category": "ia",
       "title": "Plano de IA (mensal)",
-      "price": 138,
+      "price": 137,
       "billing": "monthly",
       "summary": "Mantém seu assistente ou agente de IA no ar: cobre o uso da IA, o monitoramento e os ajustes contínuos.",
       "details": [
@@ -1003,7 +1003,7 @@
       "id": "migracao-site",
       "category": "suporte",
       "title": "Migração de site",
-      "price": 420,
+      "price": 397,
       "billing": "once",
       "summary": "Levo seu site de Wix, Squarespace ou outro lugar pra WordPress (ou pra uma hospedagem melhor), sem perder nada.",
       "details": [
