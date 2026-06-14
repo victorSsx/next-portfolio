@@ -173,6 +173,10 @@ export default function AdminPage() {
   const [scopeAnalyzed, setScopeAnalyzed] = useState(false);
   const [scopeCopied, setScopeCopied] = useState(false);
   const [aiProposal, setAiProposal] = useState<string | null>(null);
+  const [questionsText, setQuestionsText] = useState<string | null>(null);
+  const [questionsLoading, setQuestionsLoading] = useState(false);
+  const [questionsError, setQuestionsError] = useState("");
+  const [questionsCopied, setQuestionsCopied] = useState(false);
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState("");
   const [aiNewServices, setAiNewServices] = useState<NewServiceSuggestion[]>([]);
@@ -693,6 +697,37 @@ export default function AdminPage() {
       await navigator.clipboard.writeText(aiProposal ?? scopeProposal);
       setScopeCopied(true);
       setTimeout(() => setScopeCopied(false), 2000);
+    } catch {
+      // clipboard indisponível — ignore
+    }
+  };
+
+  const runQuestions = async () => {
+    setQuestionsLoading(true);
+    setQuestionsError("");
+    setQuestionsCopied(false);
+    try {
+      const res = await fetch("/api/admin/questions", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", "x-admin-password": password },
+        body: JSON.stringify({ scope: scopeText }),
+      });
+      const json = (await res.json()) as { message?: string; error?: string };
+      if (!res.ok) throw new Error(json.error ?? "Erro ao gerar perguntas.");
+      setQuestionsText(json.message && json.message.trim() ? json.message : null);
+    } catch (err) {
+      setQuestionsError(err instanceof Error ? err.message : "Erro ao gerar perguntas.");
+    } finally {
+      setQuestionsLoading(false);
+    }
+  };
+
+  const copyQuestions = async () => {
+    if (!questionsText) return;
+    try {
+      await navigator.clipboard.writeText(questionsText);
+      setQuestionsCopied(true);
+      setTimeout(() => setQuestionsCopied(false), 2000);
     } catch {
       // clipboard indisponível — ignore
     }
@@ -2349,9 +2384,32 @@ export default function AdminPage() {
               >
                 {aiLoading ? "Analisando com IA…" : "Analisar com IA"}
               </button>
+              <button
+                className="button button--ghost"
+                type="button"
+                disabled={!scopeText.trim() || questionsLoading}
+                onClick={runQuestions}
+              >
+                {questionsLoading ? "Gerando perguntas…" : "Gerar perguntas"}
+              </button>
             </div>
             {aiError ? <p className="admin-status admin-status--error">{aiError}</p> : null}
+            {questionsError ? <p className="admin-status admin-status--error">{questionsError}</p> : null}
           </div>
+
+          {questionsText ? (
+            <div className="admin-card">
+              <div className="admin-card__head">
+                <p className="eyebrow">Pra enviar ao cliente</p>
+                <h2>Perguntas matadoras</h2>
+              </div>
+              <p className="scope-ai-hint">Geradas por IA a partir do escopo — revise antes de enviar.</p>
+              <textarea className="scope-proposal" readOnly rows={10} value={questionsText} />
+              <button className="button button--primary" type="button" onClick={copyQuestions}>
+                {questionsCopied ? "✓ Copiado!" : "Copiar perguntas"}
+              </button>
+            </div>
+          ) : null}
 
           {scopeAnalyzed ? (
             <>
