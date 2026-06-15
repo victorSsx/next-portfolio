@@ -7,8 +7,7 @@ import type { Testimonial } from "../lib/site-data";
 
 const approvedTestimonials = (siteData.testimonials ?? []) as Testimonial[];
 
-// Real, verifiable Workana rating
-const WORKANA_URL = "https://www.workana.com/freelancer/d6e8a59b03761470ce1e4c7707997550";
+// Real, verifiable Workana rating (selo estático na home — prova social, sem link pra Workana)
 const WORKANA_REVIEWS = 2;
 
 // Bandeira por código ISO do país (imagens — funcionam em qualquer sistema, inclusive Windows)
@@ -209,8 +208,8 @@ export function TestimonialsSection() {
           <p>{t.testimonials.lead}</p>
         </div>
 
-        {/* Verified Workana rating badge */}
-        <a className="workana-badge" href={WORKANA_URL} target="_blank" rel="noreferrer" data-animate>
+        {/* Verified Workana rating badge (estático — prova social, sem link) */}
+        <div className="workana-badge workana-badge--static" data-animate>
           <span className="workana-badge__score">5,0</span>
           <span className="workana-badge__main">
             <span className="workana-badge__stars" aria-hidden="true">★★★★★</span>
@@ -219,10 +218,7 @@ export function TestimonialsSection() {
               {WORKANA_REVIEWS} {t.testimonials.workana.reviewsSuffix}
             </span>
           </span>
-          <span className="workana-badge__link">
-            {t.testimonials.workana.linkLabel} <span aria-hidden="true">↗</span>
-          </span>
-        </a>
+        </div>
 
         {/* Carousel */}
         {total > 0 && (
