@@ -6,8 +6,9 @@ const WHATSAPP_URL = "https://wa.me/5521975990988";
 const EMAIL = "victorspires.dev@gmail.com";
 
 // Preencha com as URLs dos seus perfis para os botões aparecerem automaticamente.
-const WORKANA_URL = "https://www.workana.com/freelancer/d6e8a59b03761470ce1e4c7707997550";
-const UPWORK_URL = "https://www.upwork.com/freelancers/~01de38696555800877";
+// Vazio = não mostra (foco em contratação direta; a vitrine cobre as plataformas).
+const WORKANA_URL = "";
+const UPWORK_URL = "";
 
 export function ContactSection() {
   const { t } = useLanguage();
