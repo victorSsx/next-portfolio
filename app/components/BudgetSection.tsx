@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { siteData, localizeContent, type BudgetService, type CategoryId, type Package } from "../lib/site-data";
 import { useLanguage } from "../lib/LanguageContext";
 import { translations, type Language } from "../lib/translations";
@@ -8,7 +8,6 @@ import { translations, type Language } from "../lib/translations";
 type BudgetChannel = "workana" | "upwork" | "direto";
 type SendStatus = "idle" | "sending" | "sent" | "error";
 type Currency = "BRL" | "USD";
-type ChannelStep = "selecting" | "browsing";
 type HostingOption = "have" | "help" | "acquire-client" | "acquire-victor";
 
 const WHATSAPP_URL = "https://wa.me/5521975990988";
@@ -181,10 +180,8 @@ function buildBudgetMessage(
 
 export function BudgetSection({ showcase = false }: { showcase?: boolean } = {}) {
   const { t, lang } = useLanguage();
-  const [channelStep, setChannelStep] = useState<ChannelStep>(showcase ? "browsing" : "selecting");
-  const [budgetChannel, setBudgetChannel] = useState<BudgetChannel>("workana");
+  const [budgetChannel] = useState<BudgetChannel>(showcase ? "workana" : "direto");
   const [detectedCurrency, setDetectedCurrency] = useState<Currency | null>(null);
-  const [isDetecting, setIsDetecting] = useState(false);
   const [activeCategory, setActiveCategory] = useState<CategoryId | "pacotes">("pacotes");
   const [addedPackageId, setAddedPackageId] = useState<string | null>(null);
   const addedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -214,33 +211,6 @@ export function BudgetSection({ showcase = false }: { showcase?: boolean } = {})
     [lang]
   );
 
-  const channelOptions = useMemo(
-    () => [
-      {
-        id: "workana" as BudgetChannel,
-        label: t.budget.channel.workana.label,
-        description: t.budget.channel.workana.desc,
-        badge: "R$",
-        currencyLabel: t.budget.channel.workana.currency,
-      },
-      {
-        id: "upwork" as BudgetChannel,
-        label: t.budget.channel.upwork.label,
-        description: t.budget.channel.upwork.desc,
-        badge: "$",
-        currencyLabel: t.budget.channel.upwork.currency,
-      },
-      {
-        id: "direto" as BudgetChannel,
-        label: t.budget.channel.direct.label,
-        description: t.budget.channel.direct.desc,
-        badge: "◎",
-        currencyLabel: t.budget.channel.direct.currency,
-      },
-    ],
-    [t]
-  );
-
   const currency: Currency = useMemo(() => {
     if (budgetChannel === "upwork") return "USD";
     if (budgetChannel === "direto") return detectedCurrency ?? "BRL";
@@ -255,29 +225,18 @@ export function BudgetSection({ showcase = false }: { showcase?: boolean } = {})
     return lang;
   }, [budgetChannel, lang, showcase]);
 
-  async function selectChannel(channel: BudgetChannel) {
-    if (channel === "direto") {
-      setIsDetecting(true);
-      const country = await detectCountry();
-      setDetectedCurrency(country === "BR" ? "BRL" : "USD");
-      setIsDetecting(false);
-    }
-    setBudgetChannel(channel);
-    setChannelStep("browsing");
-    setSelectedServices({});
-    setHostingOption("have");
-    setCopyStatus("");
-    setSendStatus("idle");
-  }
-
-  function goBack() {
-    setChannelStep("selecting");
-    setSelectedServices({});
-    setHostingOption("have");
-    setCopyStatus("");
-    setSendStatus("idle");
-    setDetectedCurrency(null);
-  }
+  // Portfólio principal: contratação direta — detecta a moeda (BRL/USD) na carga.
+  // A vitrine (showcase) mantém o comportamento de plataforma, sem detecção.
+  useEffect(() => {
+    if (showcase) return;
+    let active = true;
+    detectCountry().then((country) => {
+      if (active) setDetectedCurrency(country === "BR" ? "BRL" : "USD");
+    });
+    return () => {
+      active = false;
+    };
+  }, [showcase]);
 
   const filteredServices = useMemo(() => {
     const base = activeCategory === "todos" ? services : services.filter((s) => s.category === activeCategory);
@@ -453,51 +412,7 @@ export function BudgetSection({ showcase = false }: { showcase?: boolean } = {})
     setSendStatus("sent");
   }
 
-  const activeChannel = channelOptions.find((c) => c.id === budgetChannel)!;
-
-  // ── Channel selector ────────────────────────────────────────────────────────
-  if (channelStep === "selecting") {
-    return (
-      <section className="section budget" id="orcamento">
-        <div className="channel-selector">
-          <div className="channel-selector__intro" data-animate>
-            <p className="eyebrow">{t.budget.channel.eyebrow}</p>
-            <h2>{t.budget.channel.title}</h2>
-            <p>{t.budget.channel.lead}</p>
-          </div>
-
-          <div className="channel-cards">
-            {channelOptions.map((channel, i) => (
-              <button
-                key={channel.id}
-                className="channel-card"
-                type="button"
-                disabled={isDetecting}
-                onClick={() => selectChannel(channel.id)}
-                data-animate="scale"
-                style={{ "--animate-delay": `${i * 110}ms` } as React.CSSProperties}
-              >
-                <div
-                  className={`channel-card__badge${
-                    isDetecting && channel.id === "direto" ? " channel-card__badge--detecting" : ""
-                  }`}
-                >
-                  {isDetecting && channel.id === "direto" ? "" : channel.badge}
-                </div>
-                <h3>{channel.label}</h3>
-                <p>{channel.description}</p>
-                <span className="channel-card__currency">
-                  {isDetecting && channel.id === "direto"
-                    ? t.budget.channel.direct.detecting
-                    : channel.currencyLabel}
-                </span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
+  // Contratação direta: vai direto pro navegador de serviços (sem seletor de canal).
 
   // ── Service browser ─────────────────────────────────────────────────────────
   return (
@@ -509,16 +424,6 @@ export function BudgetSection({ showcase = false }: { showcase?: boolean } = {})
 
       <div className="budget-layout">
         <div className="service-browser">
-          {!showcase && (
-            <button className="channel-back" type="button" onClick={goBack}>
-              ← {activeChannel.label}
-              {budgetChannel === "direto" && detectedCurrency
-                ? ` · ${detectedCurrency === "USD" ? "USD $" : "BRL R$"}`
-                : ""}
-              {" "}— {t.budget.change}
-            </button>
-          )}
-
           <div className="category-tabs" aria-label="Categorias de serviços">
             {categories.map((category) => (
               <button
