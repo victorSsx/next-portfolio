@@ -4,13 +4,12 @@ import defaultSiteData from "../../../data/site-data.json";
 export const runtime = "nodejs";
 export const maxDuration = 30;
 
-const defaultAdminPassword = "371515victor";
 const MODEL = process.env.GEMINI_MODEL?.trim() || "gemini-2.5-flash";
 
 function authorized(request: Request) {
   const submitted = request.headers.get("x-admin-password") || "";
   const configured = process.env.ADMIN_PASSWORD?.trim();
-  return submitted === defaultAdminPassword || Boolean(configured && submitted === configured);
+  return Boolean(configured && submitted === configured);
 }
 
 type SvcLite = { id: string; title: string; price: number; billing: string; category?: string };

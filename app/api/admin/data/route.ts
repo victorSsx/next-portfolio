@@ -11,8 +11,6 @@ const githubDataPath = "app/data/site-data.json";
 
 type SaveMode = "local-file" | "github";
 
-const defaultAdminPassword = "371515victor";
-
 const unauthorized = () => NextResponse.json({ error: "Senha administrativa inválida." }, { status: 401 });
 
 const getPasswordFromRequest = (request: Request) => request.headers.get("x-admin-password") || "";
@@ -21,7 +19,7 @@ const assertAuthorized = (request: Request) => {
   const configuredPassword = process.env.ADMIN_PASSWORD?.trim();
   const submittedPassword = getPasswordFromRequest(request);
 
-  return submittedPassword === defaultAdminPassword || Boolean(configuredPassword && submittedPassword === configuredPassword);
+  return Boolean(configuredPassword && submittedPassword === configuredPassword);
 };
 
 const normalizeTextArray = (items: unknown) =>

@@ -3,13 +3,12 @@ import { VITRINE_URL } from "../../../lib/site-url";
 
 export const runtime = "nodejs";
 
-const defaultAdminPassword = "371515victor";
 const MODEL = process.env.GEMINI_MODEL?.trim() || "gemini-2.5-flash";
 
 function authorized(request: Request) {
   const submitted = request.headers.get("x-admin-password") || "";
   const configured = process.env.ADMIN_PASSWORD?.trim();
-  return submitted === defaultAdminPassword || Boolean(configured && submitted === configured);
+  return Boolean(configured && submitted === configured);
 }
 
 export async function POST(request: Request) {

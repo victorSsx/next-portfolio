@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
-const defaultAdminPassword = "371515victor";
 const MODEL = process.env.GEMINI_MODEL?.trim() || "gemini-2.5-flash";
 
 const LANG_NAMES: Record<string, string> = {
@@ -14,7 +13,7 @@ const LANG_NAMES: Record<string, string> = {
 function authorized(request: Request) {
   const submitted = request.headers.get("x-admin-password") || "";
   const configured = process.env.ADMIN_PASSWORD?.trim();
-  return submitted === defaultAdminPassword || Boolean(configured && submitted === configured);
+  return Boolean(configured && submitted === configured);
 }
 
 type Item = { id: string; fields: Record<string, string | string[]> };

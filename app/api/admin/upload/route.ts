@@ -7,7 +7,6 @@ export const runtime = "nodejs";
 type UploadKind = "main-image" | "gallery" | "video" | "video-poster";
 type SaveMode = "local-file" | "github";
 
-const defaultAdminPassword = "371515victor";
 const uploadRoot = path.join(process.cwd(), "public", "projects", "admin-uploads");
 const maxImageSize = 8 * 1024 * 1024;
 const maxVideoSize = 4 * 1024 * 1024;
@@ -42,7 +41,7 @@ const assertAuthorized = (request: Request) => {
   const configuredPassword = process.env.ADMIN_PASSWORD?.trim();
   const submittedPassword = getPasswordFromRequest(request);
 
-  return submittedPassword === defaultAdminPassword || Boolean(configuredPassword && submittedPassword === configuredPassword);
+  return Boolean(configuredPassword && submittedPassword === configuredPassword);
 };
 
 const slugify = (value: string) =>
