@@ -120,46 +120,78 @@ export function computeTotals(
   return { items, onceTotal, monthlyTotal, discount };
 }
 
-// Monta uma proposta pronta pra enviar ao cliente (ex.: colar na plataforma).
-// vitrineUrl: link do portfólio + consulta de orçamento (some o parágrafo se vazio).
+// Gancho por serviço principal — vira a 1a linha (faz o cliente parar e ler).
+// Serviço sem entrada cai num gancho genérico com o próprio título.
+const HOOK_BY_ID: Record<string, string> = {
+  "loja-woocommerce": "Sua loja virtual pronta pra vender e aparecer no Google.",
+  "site-institucional": "Seu site profissional pronto pra passar credibilidade e gerar contatos.",
+  "site-com-blog": "Seu site com blog pra crescer no Google e atrair clientes todo mês.",
+  "landing-page": "Uma página feita pra transformar visitantes em clientes.",
+  "atualizacao-site": "Seu site antigo modernizado, rápido e funcionando como novo.",
+  "diagnostico-site": "Vou achar exatamente o que está travando o seu site.",
+  "correcao-bug": "Seu site funcionando direito, sem aquele erro atrapalhando.",
+  "correcao-pack": "Todos aqueles problemas do site resolvidos de uma vez.",
+  "seo-tecnico": "Seu site destravado pra subir nas buscas do Google.",
+  "seo-essencial": "Seu site configurado pro Google encontrar e mostrar nas buscas.",
+  performance: "Seu site voando no celular, sem perder visita por lentidão.",
+  manutencao: "Seu site sempre no ar, atualizado e seguro, sem dor de cabeça.",
+};
+
+// Pergunta de fechamento conforme a categoria do serviço principal.
+const QUESTION_DEFAULT =
+  "Pra eu fechar os detalhes: você já tem os textos e as imagens, ou quer que eu cuide disso também?";
+const QUESTION_BY_CATEGORY: Record<string, string> = {
+  ecommerce: "Pra fechar os detalhes: você já tem as fotos e descrições dos produtos prontas?",
+  sites: "Pra fechar os detalhes: você já tem os textos e as imagens, ou quer que eu ajude com isso?",
+  seo: "Me passa o endereço do site atual pra eu já dar uma olhada no que dá pra melhorar?",
+  diagnostico: "Qual o endereço do site e o principal problema que você está vendo hoje?",
+  suporte: "Seu site é em WordPress? Me conta a plataforma que eu já adianto o setup.",
+};
+
+// Monta uma proposta CURTA pronta pra enviar ao cliente (fallback sem IA).
+// Mesma estrutura da proposta por IA: gancho, apresentação + prova social,
+// o que recebe, valor fechado, pergunta e link. vitrineUrl vazio some o link.
 export function buildProposal(result: ScopeResult, vitrineUrl: string = VITRINE_URL): string {
   const { items, onceTotal, monthlyTotal, discount } = result;
   if (items.length === 0) return "";
 
-  const scopeLines = items.map(({ service }) => `• ${service.title}`).join("\n");
-  const priceLines = items
-    .map(({ service, quantity }) => {
-      const qtyLabel = service.allowQuantity && quantity > 1 ? ` (${quantity} ${service.unitLabel || "un"})` : "";
-      const monthly = service.billing === "monthly" ? "/mês" : "";
-      return `• ${service.title}${qtyLabel}: ${formatBRL(service.price * quantity)}${monthly}`;
-    })
-    .join("\n");
+  // Serviço principal = maior valor único (ou o primeiro item, se só houver mensais).
+  const primary =
+    [...items]
+      .filter((i) => i.service.billing !== "monthly")
+      .sort((a, b) => b.service.price * b.quantity - a.service.price * a.quantity)[0] || items[0];
+
+  const hook =
+    HOOK_BY_ID[primary.service.id] || `${primary.service.title}: montei uma proposta enxuta pra você.`;
+
+  // "O que você recebe" numa linha só, sem fragmentar o preço.
+  const includes = items
+    .map(({ service, quantity }) =>
+      service.allowQuantity && quantity > 1 ? `${quantity} ${service.unitLabel || "un"}` : service.title
+    )
+    .join(", ");
+
+  const monthlyLine = monthlyTotal > 0 ? ` + ${formatBRL(monthlyTotal)}/mês` : "";
+  const discountNote = discount > 0 ? " (já com desconto de pacote)" : "";
+  const question = QUESTION_BY_CATEGORY[primary.service.category] || QUESTION_DEFAULT;
+
+  const valueLine =
+    onceTotal > 0
+      ? `Valor fechado: ${formatBRL(onceTotal)}${monthlyLine}${discountNote}, em 5 a 14 dias úteis, com 7 dias de ajustes grátis.`
+      : `Valor fechado: ${formatBRL(monthlyTotal)}/mês (plano recorrente), com ajustes e suporte inclusos.`;
 
   const lines = [
-    "Olá! Analisei o escopo do seu projeto e preparei uma proposta.",
-    "",
-    "O que entendi do escopo:",
-    scopeLines,
-    "",
-    "Investimento:",
-    priceLines,
+    hook,
+    "Sou o Victor, dev freelancer de sites, WordPress, lojas e SEO — nota 5★ na Workana, com clientes que voltam a contratar e dedicação total em cada projeto.",
+    `O que você recebe: ${includes}.`,
+    valueLine,
+    question,
   ];
-  if (discount > 0) lines.push(`• Desconto de pacote: -${formatBRL(discount)}`);
-  lines.push("");
-  lines.push(
-    `Total: ${formatBRL(onceTotal)}${monthlyTotal > 0 ? ` + ${formatBRL(monthlyTotal)}/mês` : ""}`
-  );
-  lines.push("");
-  lines.push("Prazo: normalmente de 5 a 14 dias úteis, conforme o escopo final.");
-  lines.push("Inclui 7 dias de ajustes grátis após a entrega e comunicação direta comigo durante todo o projeto.");
   if (vitrineUrl) {
-    lines.push("");
     lines.push(
-      `Se quiser conhecer melhor meu trabalho, tenho um portfólio com projetos e uma consulta de orçamento: ${vitrineUrl} — lá você também vê os pacotes de serviços, que podem sair com desconto quando combinados. É uma página apenas de portfólio e consulta de orçamento; todo o nosso combinado, contrato e pagamento seguem normalmente por aqui pela plataforma.`
+      `Meu portfólio e orçamentador: ${vitrineUrl} (é só portfólio/orçamento — combinação, contrato e pagamento seguem por aqui pela plataforma).`
     );
   }
-  lines.push("");
-  lines.push("Posso começar assim que aprovado. Qualquer ajuste no escopo, é só falar.");
 
   return lines.join("\n");
 }
