@@ -180,8 +180,8 @@ export function VitrineAssistant() {
       setIntro(false);
       return;
     }
-    const t1 = window.setTimeout(() => setIntroClosing(true), 2800);
-    const t2 = window.setTimeout(() => setIntro(false), 3250);
+    const t1 = window.setTimeout(() => setIntroClosing(true), 4000);
+    const t2 = window.setTimeout(() => setIntro(false), 4450);
     return () => {
       window.clearTimeout(t1);
       window.clearTimeout(t2);
