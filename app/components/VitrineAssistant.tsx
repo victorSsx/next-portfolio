@@ -41,6 +41,8 @@ const STR = {
     copied: "Copiado! Cole no chat da plataforma.",
     note: "Estimativa aproximada — o valor final a gente alinha por aqui.",
     confirm: "Confirmar",
+    welcome: "Oi! Eu sou o assistente do Victor. Vou te ajudar a montar seu orçamento em segundos.",
+    start: "Começar",
     starters: ["Quero um site", "Quero uma loja virtual", "Quero captar clientes", "Não sei por onde começar"],
   },
   en: {
@@ -67,6 +69,8 @@ const STR = {
     copied: "Copied! Paste it in the platform chat.",
     note: "Approximate estimate — we align the final price right here.",
     confirm: "Confirm",
+    welcome: "Hi! I'm Victor's assistant. I'll help you build your quote in seconds.",
+    start: "Start",
     starters: ["I want a website", "I want an online store", "I want to get clients", "I don't know where to start"],
   },
   es: {
@@ -93,6 +97,8 @@ const STR = {
     copied: "¡Copiado! Pégalo en el chat de la plataforma.",
     note: "Estimación aproximada — el valor final lo alineamos aquí.",
     confirm: "Confirmar",
+    welcome: "¡Hola! Soy el asistente de Victor. Te ayudo a armar tu presupuesto en segundos.",
+    start: "Empezar",
     starters: ["Quiero un sitio", "Quiero una tienda online", "Quiero captar clientes", "No sé por dónde empezar"],
   },
 } as const;
@@ -141,8 +147,12 @@ export function VitrineAssistant() {
   const [options, setOptions] = useState<string[]>([]);
   const [optMulti, setOptMulti] = useState(false);
   const [picked, setPicked] = useState<string[]>([]);
+  const [panelOpen, setPanelOpen] = useState(false);
+  const [intro, setIntro] = useState(true);
+  const [introClosing, setIntroClosing] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const leaveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const hadResults = useRef(false);
 
   // Mantém a saudação no idioma atual enquanto a conversa não começou.
   useEffect(() => {
@@ -152,6 +162,36 @@ export function VitrineAssistant() {
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
   }, [messages, loading]);
+
+  // Abre o overlay de recomendações na primeira vez que elas aparecem.
+  useEffect(() => {
+    const has = notes.length > 0 || cards.length > 0;
+    if (has && !hadResults.current) {
+      setPanelOpen(true);
+      hadResults.current = true;
+    } else if (!has) {
+      hadResults.current = false;
+    }
+  }, [notes.length, cards.length]);
+
+  // Boas-vindas: a IA "acorda" ao entrar e some sozinha (pula em reduced-motion).
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setIntro(false);
+      return;
+    }
+    const t1 = window.setTimeout(() => setIntroClosing(true), 2800);
+    const t2 = window.setTimeout(() => setIntro(false), 3250);
+    return () => {
+      window.clearTimeout(t1);
+      window.clearTimeout(t2);
+    };
+  }, []);
+
+  function dismissIntro() {
+    setIntroClosing(true);
+    window.setTimeout(() => setIntro(false), 450);
+  }
 
   function applyRecommendation(next: Rec) {
     setRec(next);
@@ -311,14 +351,38 @@ export function VitrineAssistant() {
       ? "thinking"
       : voice.speaking
         ? "speaking"
-        : "idle";
+        : input.trim()
+          ? "listening"
+          : "idle";
 
   return (
     <section className="vagent" id="orcamento">
-      <div className="vagent__intro" data-animate>
-        <div className="vagent__hero">
-          <HoloAvatar state={avatarState} size="hero" />
+      {intro ? (
+        <div
+          className={`vagent__welcome${introClosing ? " is-closing" : ""}`}
+          role="status"
+          aria-label={t.welcome}
+          onClick={dismissIntro}
+        >
+          <div className="vagent__welcome-inner">
+            <div className="vagent__welcome-orb">
+              <HoloAvatar state="speaking" size="hero" />
+            </div>
+            <p className="vagent__welcome-text">{t.welcome}</p>
+            <button
+              type="button"
+              className="vagent__welcome-skip"
+              onClick={(e) => {
+                e.stopPropagation();
+                dismissIntro();
+              }}
+            >
+              {t.start}
+            </button>
+          </div>
         </div>
+      ) : null}
+      <div className="vagent__intro" data-animate>
         <p className="eyebrow">{t.eyebrow}</p>
         <h2>{t.title}</h2>
         <p>{t.lead}</p>
@@ -327,32 +391,37 @@ export function VitrineAssistant() {
       <div className="vagent__cols">
         {/* Chat */}
         <div className="vagent__chat" data-animate>
-          {voice.supportsTTS ? (
-            <div className="vagent__toolbar">
+          <div className="vagent__head">
+            <HoloAvatar state={avatarState} size="hero" />
+            <span className="vagent__agent-id">
+              <strong>{t.agentName}</strong>
+              <span className="vagent__status">{t.online}</span>
+            </span>
+            {voice.supportsTTS ? (
               <button
                 type="button"
                 className={`vagent__voicebtn${voice.enabled ? " is-on" : ""}`}
-                  onClick={() => {
-                    if (voice.enabled) voice.stopSpeaking();
-                    voice.setEnabled(!voice.enabled);
-                  }}
-                  aria-label={voice.enabled ? "Desligar voz da IA" : "Ligar voz da IA"}
-                  title={voice.enabled ? "Voz ligada" : "Voz desligada"}
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M4 9v6h4l5 4V5L8 9H4z" />
-                    {voice.enabled ? (
-                      <>
-                        <path d="M16 9.5a3 3 0 0 1 0 5" />
-                        <path d="M19 7a7 7 0 0 1 0 10" />
-                      </>
-                    ) : (
-                      <path d="M22 9l-5 5M17 9l5 5" />
-                    )}
-                  </svg>
-                </button>
-              </div>
+                onClick={() => {
+                  if (voice.enabled) voice.stopSpeaking();
+                  voice.setEnabled(!voice.enabled);
+                }}
+                aria-label={voice.enabled ? "Desligar voz da IA" : "Ligar voz da IA"}
+                title={voice.enabled ? "Voz ligada" : "Voz desligada"}
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M4 9v6h4l5 4V5L8 9H4z" />
+                  {voice.enabled ? (
+                    <>
+                      <path d="M16 9.5a3 3 0 0 1 0 5" />
+                      <path d="M19 7a7 7 0 0 1 0 10" />
+                    </>
+                  ) : (
+                    <path d="M22 9l-5 5M17 9l5 5" />
+                  )}
+                </svg>
+              </button>
             ) : null}
+          </div>
           <div className="vagent__messages" ref={scrollRef}>
             {messages.map((m, i) => (
               <div key={i} className={`vagent-msg vagent-msg--${m.role}`}>
@@ -438,9 +507,43 @@ export function VitrineAssistant() {
           </div>
         </div>
 
-        {/* Palco de necessidades + recomendações — aparece só quando tem conteúdo */}
+        {/* Botão pra reabrir o overlay de recomendações */}
         {notes.length > 0 || cards.length > 0 ? (
-          <div className="vagent__panel">
+          <button type="button" className="vagent__panel-toggle" onClick={() => setPanelOpen(true)}>
+            <span className="vagent__panel-toggle-dot" aria-hidden="true" />
+            {t.recommended}
+            {est.count > 0 ? (
+              <strong>
+                {t.from} {fmt(est.once)}
+                {est.monthly ? ` + ${fmt(est.monthly)}${t.perMonth}` : ""}
+              </strong>
+            ) : null}
+          </button>
+        ) : null}
+      </div>
+
+      {/* Overlay imersivo: recomendações deslizam por cima, sem empurrar o chat */}
+      {notes.length > 0 || cards.length > 0 ? (
+        <>
+          <div
+            className={`vagent__scrim${panelOpen ? " is-open" : ""}`}
+            onClick={() => setPanelOpen(false)}
+            aria-hidden="true"
+          />
+          <aside
+            className={`vagent__panel vagent__panel--drawer${panelOpen ? " is-open" : ""}`}
+            role="dialog"
+            aria-label={t.recommended}
+            aria-hidden={!panelOpen}
+          >
+            <button
+              type="button"
+              className="vagent__panel-close"
+              onClick={() => setPanelOpen(false)}
+              aria-label="Fechar"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
             {notes.length > 0 ? (
               <div className="vagent__notes">
                 <strong className="vagent__panel-title">{t.noted}</strong>
@@ -472,9 +575,9 @@ export function VitrineAssistant() {
                 <p className="vagent__note">{t.note}</p>
               </>
             ) : null}
-          </div>
-        ) : null}
-      </div>
+          </aside>
+        </>
+      ) : null}
     </section>
   );
 }
