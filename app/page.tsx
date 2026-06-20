@@ -8,12 +8,14 @@ import { GuidedTour } from "./components/GuidedTour";
 import { HeroSection } from "./components/HeroSection";
 import { ProcessSection } from "./components/ProcessSection";
 import { ProjectsSection } from "./components/ProjectsSection";
+import { SkillsSection } from "./components/SkillsSection";
 import { TestimonialsSection } from "./components/TestimonialsSection";
 
 export default function Home() {
   return (
     <main className="next-portfolio">
       <HeroSection />
+      <SkillsSection />
       <ProjectsSection limit={7} showAllLink showFilter />
       <FreeToolsSection />
       <BudgetSection />
