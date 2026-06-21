@@ -43,6 +43,7 @@ export async function POST(request: Request) {
     services?: SvcLite[];
     packages?: PkgLite[];
     categories?: { id: string; label: string }[];
+    mode?: "fechado" | "vitrine";
   };
   try {
     body = (await request.json()) as typeof body;
@@ -85,7 +86,9 @@ export async function POST(request: Request) {
       : ((defaultSiteData.serviceCategories as { id: string; label: string }[]) ?? []);
   const categoriesForPrompt = categories.map((c) => ({ id: c.id, label: c.label }));
 
-  const prompt = [
+  const mode = body.mode === "vitrine" ? "vitrine" : "fechado";
+
+  const fechadoPrompt = [
     "Você é o assistente comercial do Victor, desenvolvedor freelancer (sites, WordPress, lojas WooCommerce, SEO, performance e correções).",
     "Analise o ESCOPO de um projeto e selecione, entre os SERVIÇOS oferecidos, os que atendem ao pedido. Depois escreva uma proposta MUITO CURTA e de alto impacto em português do Brasil, em 1a PESSOA (como se o próprio Victor estivesse falando: 'eu', 'sou', 'consigo', 'meu') — feita pra fazer o cliente PARAR de rolar e ler.",
     "",
@@ -118,6 +121,38 @@ export async function POST(request: Request) {
     "",
     'Responda APENAS com um JSON neste formato exato, sem markdown: {"services":[{"id":"string","quantity":number}],"newServices":[{"title":"string","price":number,"billing":"once|monthly","summary":"string","category":"string"}],"proposal":"string"}',
   ].join("\n");
+
+  const vitrinePrompt = [
+    "Você é o assistente comercial do Victor, desenvolvedor freelancer (sites, WordPress, lojas WooCommerce, SEO, performance e correções).",
+    "Analise o ESCOPO de um projeto e selecione, entre os SERVIÇOS oferecidos, os que atendem ao pedido (só pra VOCÊ entender a necessidade — NÃO vai citar preço). Depois escreva uma proposta CONSULTIVA, MUITO CURTA e em 1a PESSOA (como se o próprio Victor estivesse falando), cujo objetivo NÃO é mandar valor, e sim convidar o cliente a entrar na VITRINE pra ver projetos e o orçamento, sem compromisso.",
+    "",
+    "REGRAS:",
+    "- Em 'services', use SOMENTE ids que existem na lista de SERVIÇOS (pra registrar o que cobre a necessidade dele). Não invente ids. Devolva 'newServices' como lista vazia.",
+    "- NUNCA cite preço, valor, 'a partir de R$', faixa de preço ou prazo em dias. O objetivo é levar o cliente pra VITRINE, não cotar aqui.",
+    "- A proposta é uma MENSAGEM PRONTA pra enviar ao cliente. LIMITE RÍGIDO: no máximo ~110 palavras (idealmente 80-100). Frases curtas, escaneável em segundos, SEM emojis e SEM parágrafos longos. Siga ESTA estrutura, nesta ordem:",
+    "  1) GANCHO (1a linha, CURTA — no máximo ~12 palavras): comece DIRETO com um detalhe ESPECÍFICO do problema/objetivo que o cliente descreveu. Tem que fazer ele PARAR de rolar. Sem saudação genérica ('Olá, tudo bem').",
+    "  2) APRESENTAÇÃO + PROVA SOCIAL (1 linha curta e calorosa, em 1a PESSOA): 'Sou o Victor, dev freelancer de sites/WordPress/lojas WooCommerce/SEO', com nota máxima 5 estrelas na Workana e dedicação total em cada projeto. Tom humano, nada robótico.",
+    "  3) O QUE DÁ PRA FAZER JUNTOS: leia o problema dele e diga, de forma CONSULTIVA e de PARCERIA, a solução que faz sentido (ex.: 'dá pra montar uma loja rápida, que vende e aparece no Google'). Foque no RESULTADO que ELE ganha. NÃO cite preço.",
+    "  4) CONVITE PRA VITRINE (a parte mais importante): convide ele a dar uma olhada na vitrine, onde ele pode (a) ver PROJETOS REAIS que já entreguei e (b) usar um orçamentador que monta na hora o ORÇAMENTO que cobre exatamente a necessidade dele — tudo SEM COMPROMISSO, só pra explorar, sem obrigação de fechar nada.",
+    `  5) Inclua o link da vitrine numa linha: ${VITRINE_URL} — e termine com uma pergunta/convite leve (ex.: 'dá uma olhada e me diz o que achou?'). NÃO peça contato externo; combinação e pagamento seguem pela própria plataforma.`,
+    "- Tom acolhedor, parceiro e SEM pressão: a meta é abrir conversa e levar pra vitrine, nunca fechar valor aqui.",
+    "",
+    "SERVIÇOS (JSON):",
+    JSON.stringify(servicesForPrompt),
+    "",
+    "PACOTES (JSON):",
+    JSON.stringify(packagesForPrompt),
+    "",
+    "CATEGORIAS (JSON):",
+    JSON.stringify(categoriesForPrompt),
+    "",
+    "ESCOPO DO PROJETO:",
+    `"""${scope}"""`,
+    "",
+    'Responda APENAS com um JSON neste formato exato, sem markdown: {"services":[{"id":"string","quantity":number}],"newServices":[{"title":"string","price":number,"billing":"once|monthly","summary":"string","category":"string"}],"proposal":"string"}',
+  ].join("\n");
+
+  const prompt = mode === "vitrine" ? vitrinePrompt : fechadoPrompt;
 
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent?key=${encodeURIComponent(key)}`;
   const controller = new AbortController();

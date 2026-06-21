@@ -173,11 +173,12 @@ export default function AdminPage() {
   const [scopeAnalyzed, setScopeAnalyzed] = useState(false);
   const [scopeCopied, setScopeCopied] = useState(false);
   const [aiProposal, setAiProposal] = useState<string | null>(null);
+  const [aiProposalMode, setAiProposalMode] = useState<"fechado" | "vitrine">("fechado");
   const [questionsText, setQuestionsText] = useState<string | null>(null);
   const [questionsLoading, setQuestionsLoading] = useState(false);
   const [questionsError, setQuestionsError] = useState("");
   const [questionsCopied, setQuestionsCopied] = useState(false);
-  const [aiLoading, setAiLoading] = useState(false);
+  const [aiLoading, setAiLoading] = useState<"fechado" | "vitrine" | null>(null);
   const [aiError, setAiError] = useState("");
   const [aiNewServices, setAiNewServices] = useState<NewServiceSuggestion[]>([]);
   const [advisorText, setAdvisorText] = useState("");
@@ -631,8 +632,8 @@ export default function AdminPage() {
     setAiNewServices([]);
   };
 
-  const runAiAnalysis = async () => {
-    setAiLoading(true);
+  const runAiAnalysis = async (mode: "fechado" | "vitrine" = "fechado") => {
+    setAiLoading(mode);
     setAiError("");
     setScopeCopied(false);
     try {
@@ -641,6 +642,7 @@ export default function AdminPage() {
         headers: { "Content-Type": "application/json", "x-admin-password": password },
         body: JSON.stringify({
           scope: scopeText,
+          mode,
           services: data.services,
           packages: data.packages ?? [],
           categories: data.serviceCategories,
@@ -659,6 +661,7 @@ export default function AdminPage() {
       });
       setScopeSelection(selection);
       setAiProposal(json.proposal && json.proposal.trim() ? json.proposal : null);
+      setAiProposalMode(mode);
       setAiNewServices(
         (json.newServices ?? []).map((s, i) => ({
           tempId: `ns-${Date.now()}-${i}`,
@@ -673,7 +676,7 @@ export default function AdminPage() {
     } catch (err) {
       setAiError(err instanceof Error ? err.message : "Erro ao analisar com IA.");
     } finally {
-      setAiLoading(false);
+      setAiLoading(null);
     }
   };
 
@@ -2356,7 +2359,9 @@ export default function AdminPage() {
             </div>
             <p className="admin-card__desc">
               Cole o escopo de um projeto (Workana, e-mail, etc.). Eu comparo com seus serviços e monto a
-              proposta com preço. Tudo roda no seu navegador — nada é enviado.
+              proposta — escolha <strong>Analisar com IA</strong> (com valor fechado, pronta pra enviar) ou{" "}
+              <strong>Proposta vitrine</strong> (consultiva: lê o problema e convida o cliente a ver projetos
+              e o orçamento na vitrine, sem compromisso).
             </p>
             <label>
               Escopo do projeto
@@ -2371,7 +2376,7 @@ export default function AdminPage() {
               <button
                 className="button button--ghost"
                 type="button"
-                disabled={!scopeText.trim() || aiLoading}
+                disabled={!scopeText.trim() || Boolean(aiLoading)}
                 onClick={runScopeAnalysis}
               >
                 Analisar (local)
@@ -2379,10 +2384,20 @@ export default function AdminPage() {
               <button
                 className="button button--primary"
                 type="button"
-                disabled={!scopeText.trim() || aiLoading}
-                onClick={runAiAnalysis}
+                disabled={!scopeText.trim() || Boolean(aiLoading)}
+                onClick={() => runAiAnalysis("fechado")}
+                title="Proposta com valor fechado, pronta pra enviar"
               >
-                {aiLoading ? "Analisando com IA…" : "Analisar com IA"}
+                {aiLoading === "fechado" ? "Analisando com IA…" : "Analisar com IA"}
+              </button>
+              <button
+                className="button button--primary"
+                type="button"
+                disabled={!scopeText.trim() || Boolean(aiLoading)}
+                onClick={() => runAiAnalysis("vitrine")}
+                title="Proposta consultiva: lê o problema e convida o cliente pra vitrine, sem mandar valor"
+              >
+                {aiLoading === "vitrine" ? "Gerando convite…" : "Proposta vitrine"}
               </button>
               <button
                 className="button button--ghost"
@@ -2519,7 +2534,11 @@ export default function AdminPage() {
                 ) : (
                   <>
                     {aiProposal ? (
-                      <p className="scope-ai-hint">Proposta gerada por IA — revise antes de enviar.</p>
+                      <p className="scope-ai-hint">
+                        {aiProposalMode === "vitrine"
+                          ? "Proposta consultiva (convida pra vitrine, sem valor) — revise antes de enviar."
+                          : "Proposta gerada por IA (com valor fechado) — revise antes de enviar."}
+                      </p>
                     ) : null}
                     <textarea className="scope-proposal" readOnly rows={16} value={aiProposal ?? scopeProposal} />
                     <button className="button button--primary" type="button" onClick={copyProposal}>
