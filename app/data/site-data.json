@@ -200,6 +200,13 @@
           "tag": "Finanzas"
         }
       }
+    },
+    {
+      "id": "sistema-mquclt3h",
+      "name": "lista-de-compras",
+      "description": "Aplicação de lista de compras desenvolvida com Next.js, permitindo adicionar, organizar e gerenciar itens de forma simples e intuitiva.",
+      "url": "https://lista-de-compras-sandy-iota.vercel.app/",
+      "icon": "🛒"
     }
   ],
   "leads": [],
