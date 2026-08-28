@@ -201,8 +201,8 @@ export const translations: Record<Language, Translations> = {
       ctaBudget: "Montar orçamento",
     },
     projects: {
-      eyebrow: "Portfólio em vídeo",
-      title: "Projetos prontos para apresentar, vender e validar ideias.",
+      eyebrow: "Portfólio de projetos",
+      title: "Sites, lojas e aplicações que planejei, desenvolvi e coloquei no ar.",
       stats: [
         { value: 10, suffix: "+", label: "Projetos entregues" },
         { value: 5, suffix: "+", label: "Segmentos atendidos" },
@@ -429,8 +429,8 @@ export const translations: Record<Language, Translations> = {
       ctaBudget: "Build a quote",
     },
     projects: {
-      eyebrow: "Video portfolio",
-      title: "Projects ready to present, sell and validate ideas.",
+      eyebrow: "Project portfolio",
+      title: "Websites, stores and applications I planned, built and launched.",
       stats: [
         { value: 10, suffix: "+", label: "Projects delivered" },
         { value: 5, suffix: "+", label: "Segments served" },
@@ -657,8 +657,8 @@ export const translations: Record<Language, Translations> = {
       ctaBudget: "Armar presupuesto",
     },
     projects: {
-      eyebrow: "Portafolio en video",
-      title: "Proyectos listos para presentar, vender y validar ideas.",
+      eyebrow: "Portafolio de proyectos",
+      title: "Sitios, tiendas y aplicaciones que planifiqué, desarrollé y publiqué.",
       stats: [
         { value: 10, suffix: "+", label: "Proyectos entregados" },
         { value: 5, suffix: "+", label: "Segmentos atendidos" },

@@ -115,9 +115,10 @@ type ProjectsSectionProps = {
   showAllLink?: boolean;
   showFilter?: boolean;
   carousel?: boolean;
+  showcase?: boolean;
 };
 
-export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: ProjectsSectionProps = {}) {
+export function ProjectsSection({ limit, showAllLink, showFilter, carousel, showcase }: ProjectsSectionProps = {}) {
   const { t, lang } = useLanguage();
   // Newest first, so recently added projects surface automatically (localized to the UI language)
   const orderedProjects = useMemo(() => [...projects].reverse().map((p) => localizeContent(p, lang)), [lang]);
@@ -145,7 +146,7 @@ export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: Pr
   );
 
   // Nunca mostra o link "ver todos" (vai para /projetos, que tem contato) no modo vitrine/carrossel.
-  const hasMore = !carousel && Boolean(showAllLink) && !activeTag && projects.length > (limit ?? projects.length);
+  const hasMore = !carousel && !showcase && Boolean(showAllLink) && !activeTag && projects.length > (limit ?? projects.length);
   const [activeProject, setActiveProject] = useState<Project | null>(null);
   const [deviceTab, setDeviceTab] = useState<DeviceTab>("desktop");
   const [lightboxIdx, setLightboxIdx] = useState<number | null>(null);
@@ -214,6 +215,17 @@ export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: Pr
     [activeProject, deviceTab]
   );
 
+  const showcaseImages = useMemo(() => {
+    if (!activeProject) return [];
+    if (deviceTab !== "desktop") return galleryImages;
+    return [
+      activeProject.mainImage,
+      ...galleryImages.filter((image) => image.src !== activeProject.mainImage.src),
+    ];
+  }, [activeProject, deviceTab, galleryImages]);
+
+  const lightboxImages = showcase ? showcaseImages : galleryImages;
+
   const deviceVideos = useMemo(
     () => (activeProject ? getDeviceVideos(activeProject, deviceTab) : []),
     [activeProject, deviceTab]
@@ -235,12 +247,12 @@ export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: Pr
     if (lightboxIdx === null) return;
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") setLightboxIdx(null);
-      if (e.key === "ArrowRight") setLightboxIdx((i) => (i !== null ? Math.min(i + 1, galleryImages.length - 1) : i));
+      if (e.key === "ArrowRight") setLightboxIdx((i) => (i !== null ? Math.min(i + 1, lightboxImages.length - 1) : i));
       if (e.key === "ArrowLeft") setLightboxIdx((i) => (i !== null ? Math.max(i - 1, 0) : i));
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
-  }, [lightboxIdx, galleryImages.length]);
+  }, [lightboxIdx, lightboxImages.length]);
 
   useEffect(() => {
     setLightboxIdx(null);
@@ -278,13 +290,55 @@ export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: Pr
     </article>
   );
 
+  const renderShowcaseCard = (project: Project, i: number) => (
+    <article className="showcase-card" key={project.id} data-animate>
+      <div className="showcase-card__media">
+        <img
+          src={project.mainImage.src}
+          alt={project.mainImage.alt}
+          loading={i > 1 ? "lazy" : "eager"}
+        />
+      </div>
+
+      <div className="showcase-card__content">
+        <div className="showcase-card__topline">
+          <span className="showcase-card__number">{String(i + 1).padStart(2, "0")}</span>
+          <span className="showcase-card__category">{project.category}</span>
+        </div>
+
+        <div className="showcase-card__copy">
+          <h3>{project.title}</h3>
+          <p>{project.summary}</p>
+        </div>
+
+        <div className="showcase-card__footer">
+          <ul aria-label={t.projects.modal.technologies}>
+            {project.stack.slice(0, 4).map((item) => (
+              <li key={item}>{item}</li>
+            ))}
+          </ul>
+
+          <div className="showcase-card__actions">
+            <button type="button" onClick={() => openProject(project)}>
+              {t.projects.viewDetails} <span aria-hidden="true">↗</span>
+            </button>
+            {project.link ? (
+              <a href={project.link} target="_blank" rel="noopener noreferrer">
+                {t.projects.viewLive}
+              </a>
+            ) : null}
+          </div>
+        </div>
+      </div>
+    </article>
+  );
+
   return (
     <>
       <section className="section projects" id="projetos">
         <div className="section__intro projects__intro">
           <p className="eyebrow" data-animate>{t.projects.eyebrow}</p>
           <WordRevealTitle text={t.projects.title} />
-          {!carousel && (
           <div className="projects-stats" data-animate>
             {t.projects.stats.map((stat, i) => {
               const override = siteData.projectStats?.[i];
@@ -298,7 +352,6 @@ export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: Pr
               );
             })}
           </div>
-          )}
         </div>
 
         {showFilter && allTags.length > 1 && (
@@ -325,7 +378,11 @@ export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: Pr
           </div>
         )}
 
-        {carousel ? (
+        {showcase ? (
+          <div className="showcase-grid">
+            {displayedProjects.map(renderShowcaseCard)}
+          </div>
+        ) : carousel ? (
           <div className="projects-carousel-wrap">
           <div
             className="projects-carousel"
@@ -402,7 +459,43 @@ export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: Pr
               ×
             </button>
 
-            {activeProjectVideos.length ? (
+            {showcase ? (
+              <section className="project-modal__visual" aria-label={t.projects.modal.galleryLabel}>
+                {availableTabs.length > 1 ? (
+                  <div className="modal-device-tabs" role="tablist" aria-label="Dispositivo">
+                    {availableTabs.map((tab) => (
+                      <button
+                        key={tab}
+                        className={`modal-device-tab${deviceTab === tab ? " is-active" : ""}`}
+                        onClick={() => setDeviceTab(tab)}
+                        type="button"
+                        role="tab"
+                        aria-selected={deviceTab === tab}
+                      >
+                        {tabLabel(tab)}
+                      </button>
+                    ))}
+                  </div>
+                ) : null}
+
+                {showcaseImages[0] ? (
+                  <figure
+                    className="project-modal__hero-image"
+                    onClick={() => setLightboxIdx(0)}
+                    onKeyDown={(event) => event.key === "Enter" && setLightboxIdx(0)}
+                    role="button"
+                    tabIndex={0}
+                    aria-label={showcaseImages[0].alt || showcaseImages[0].label}
+                  >
+                    <img src={showcaseImages[0].src} alt={showcaseImages[0].alt} />
+                    <figcaption>
+                      <span>{showcaseImages[0].label || t.projects.modal.galleryLabel}</span>
+                      <span aria-hidden="true">↗</span>
+                    </figcaption>
+                  </figure>
+                ) : null}
+              </section>
+            ) : activeProjectVideos.length ? (
               <div
                 className="project-modal__videos"
                 aria-label={t.projects.modal.videosLabel}
@@ -464,8 +557,9 @@ export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: Pr
               </section>
             </div>
 
-            <section className="project-modal__gallery" aria-label={t.projects.modal.galleryLabel}>
-              {availableTabs.length > 1 && (
+            {showcase && showcaseImages.length <= 1 ? null : (
+            <section className={`project-modal__gallery${showcase ? " project-modal__gallery--showcase" : ""}`} aria-label={t.projects.modal.galleryLabel}>
+              {!showcase && availableTabs.length > 1 && (
                 <div className="modal-device-tabs" role="tablist" aria-label="Dispositivo">
                   {availableTabs.map((tab) => (
                     <button
@@ -482,28 +576,31 @@ export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: Pr
                 </div>
               )}
 
-              {galleryImages.length > 0 ? (
+              {(showcase ? showcaseImages.length > 1 : galleryImages.length > 0) ? (
                 <div className="gallery-grid">
-                  {galleryImages.map((image, idx) => (
+                  {(showcase ? showcaseImages.slice(1) : galleryImages).map((image, idx) => {
+                    const lightboxIndex = showcase ? idx + 1 : idx;
+                    return (
                     <figure
                       key={`${image.src}-${idx}`}
                       className="gallery-grid__item"
-                      onClick={() => setLightboxIdx(idx)}
+                      onClick={() => setLightboxIdx(lightboxIndex)}
                       role="button"
                       tabIndex={0}
-                      onKeyDown={(e) => e.key === "Enter" && setLightboxIdx(idx)}
+                      onKeyDown={(e) => e.key === "Enter" && setLightboxIdx(lightboxIndex)}
                       aria-label={image.alt || image.label}
                     >
                       <img src={image.src} alt={image.alt} loading="lazy" />
                       {image.label && <figcaption>{image.label}</figcaption>}
                     </figure>
-                  ))}
+                    );
+                  })}
                 </div>
               ) : (
                 <p className="modal-gallery-empty">{t.projects.modal.emptyGallery}</p>
               )}
 
-              {deviceVideos.length > 0 && (
+              {!showcase && deviceVideos.length > 0 && (
                 <div className="project-modal__device-videos">
                   {deviceVideos.map((video, index) => (
                     <figure key={`${video.src}-${index}`}>
@@ -516,11 +613,12 @@ export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: Pr
                 </div>
               )}
             </section>
+            )}
           </article>
         </div>
       ) : null}
 
-      {lightboxIdx !== null && activeProject && galleryImages[lightboxIdx] && (
+      {lightboxIdx !== null && activeProject && lightboxImages[lightboxIdx] && (
         <div className="lightbox" role="dialog" aria-modal="true" aria-label="Imagem ampliada">
           <button className="lightbox__backdrop" onClick={() => setLightboxIdx(null)} type="button" aria-label="Fechar" />
           <div className="lightbox__inner">
@@ -529,13 +627,13 @@ export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: Pr
             </button>
             <img
               className="lightbox__img"
-              src={galleryImages[lightboxIdx].src}
-              alt={galleryImages[lightboxIdx].alt}
+              src={lightboxImages[lightboxIdx].src}
+              alt={lightboxImages[lightboxIdx].alt}
             />
-            {galleryImages[lightboxIdx].label && (
-              <p className="lightbox__caption">{galleryImages[lightboxIdx].label}</p>
+            {lightboxImages[lightboxIdx].label && (
+              <p className="lightbox__caption">{lightboxImages[lightboxIdx].label}</p>
             )}
-            {galleryImages.length > 1 && (
+            {lightboxImages.length > 1 && (
               <>
                 <button
                   className="lightbox__nav lightbox__nav--prev"
@@ -549,8 +647,8 @@ export function ProjectsSection({ limit, showAllLink, showFilter, carousel }: Pr
                 <button
                   className="lightbox__nav lightbox__nav--next"
                   type="button"
-                  onClick={() => setLightboxIdx((i) => (i !== null ? Math.min(i + 1, galleryImages.length - 1) : i))}
-                  disabled={lightboxIdx === galleryImages.length - 1}
+                  onClick={() => setLightboxIdx((i) => (i !== null ? Math.min(i + 1, lightboxImages.length - 1) : i))}
+                  disabled={lightboxIdx === lightboxImages.length - 1}
                   aria-label="Próximo"
                 >
                   ›
