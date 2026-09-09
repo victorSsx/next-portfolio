@@ -1,5 +1,5 @@
 {
-  "availability": "busy",
+  "availability": "available",
   "packages": [
     {
       "id": "inicio-online",
@@ -14,8 +14,8 @@
       "discount": 35,
       "i18n": {
         "en": {
-          "title": "Online start",
-          "description": "The essential to establish an online presence and appear on Google. Ideal for those just starting out.",
+          "title": "Online Start",
+          "description": "The essentials to establish an online presence and appear on Google. Ideal for those just starting out.",
           "tag": "Economical"
         },
         "es": {
@@ -39,9 +39,9 @@
       "discount": 35,
       "i18n": {
         "en": {
-          "title": "Complete presence",
+          "title": "Complete Presence",
           "description": "Professional website with everything configured and post-delivery support included. The most balanced choice.",
-          "tag": "Most popular"
+          "tag": "Most Popular"
         },
         "es": {
           "title": "Presencia completa",
@@ -64,9 +64,9 @@
       "discount": 70,
       "i18n": {
         "en": {
-          "title": "Digital authority",
-          "description": "Website with a blog to grow on Google continuously, with technical SEO and a monthly care plan.",
-          "tag": "Best return"
+          "title": "Digital Authority",
+          "description": "Website with a blog to continuously grow on Google, with technical SEO and a monthly care plan.",
+          "tag": "Best Return"
         },
         "es": {
           "title": "Autoridad digital",
@@ -90,7 +90,7 @@
       "discount": 140,
       "i18n": {
         "en": {
-          "title": "Ready store",
+          "title": "Ready Store",
           "description": "Complete online store with Google visibility, fast website, and monthly maintenance included.",
           "tag": "Complete E-commerce"
         },
@@ -115,13 +115,13 @@
       "discount": 90,
       "i18n": {
         "en": {
-          "title": "Website rescue",
-          "description": "Website with problems, slow, or full of errors? I diagnose everything, fix up to 5 bugs, and make it fast — delivery within a week.",
-          "tag": "For emergencies"
+          "title": "Website Rescue Package",
+          "description": "Website with problems, slow, or full of errors? I diagnose everything, fix up to 5 bugs, and make it fast — delivered within a week.",
+          "tag": "For Emergencies"
         },
         "es": {
           "title": "Rescate de sitio",
-          "description": "¿Sitio con problemas, lento o lleno de errores? Diagnostico todo, corrijo hasta 5 bugs y además lo dejo rápido — entrega en hasta una semana.",
+          "description": "Sitio con problemas, lento o lleno de errores? Diagnostico todo, corrijo hasta 5 bugs y además lo dejo rápido — entrega en hasta una semana.",
           "tag": "Para urgencias"
         }
       }
@@ -141,12 +141,12 @@
       "i18n": {
         "en": {
           "title": "Pro Maintenance",
-          "description": "Complete monthly plan with initial diagnosis included and 30 days of support after setup — ideal for those who want their website always working without worry.",
+          "description": "Complete monthly plan with initial diagnosis included and 30 days of support after setup — ideal for those who want their site always running worry-free.",
           "tag": "Recurring"
         },
         "es": {
           "title": "Mantenimiento Pro",
-          "description": "Plan mensual completo con diagnóstico inicial incluido y 30 días de soporte después de la configuración — ideal para quien quiere el sitio siempre funcionando sin preocupación.",
+          "description": "Plan mensual completo con diagnóstico inicial incluido y 30 días de soporte después de la configuración — ideal para quien quiere el sitio siempre funcionando sin preocupaciones.",
           "tag": "Recurrente"
         }
       }
@@ -206,7 +206,17 @@
       "name": "lista-de-compras",
       "description": "Aplicação de lista de compras desenvolvida com Next.js, permitindo adicionar, organizar e gerenciar itens de forma simples e intuitiva.",
       "url": "https://lista-de-compras-sandy-iota.vercel.app/",
-      "icon": "🛒"
+      "icon": "🛒",
+      "i18n": {
+        "en": {
+          "name": "Shopping List",
+          "description": "Shopping list application developed with Next.js, allowing users to add, organize, and manage items simply and intuitively."
+        },
+        "es": {
+          "name": "lista-de-compras",
+          "description": "Aplicación de lista de compras desarrollada con Next.js, permitiendo añadir, organizar y gestionar ítems de forma simple e intuitiva."
+        }
+      }
     }
   ],
   "leads": [],
@@ -281,7 +291,7 @@
       "label": "Diagnóstico e correções",
       "i18n": {
         "en": {
-          "label": "Diagnosis and Fixes"
+          "label": "Diagnosis and Corrections"
         },
         "es": {
           "label": "Diagnóstico y correcciones"
@@ -341,8 +351,8 @@
       "startingAt": true,
       "i18n": {
         "en": {
-          "title": "Conversion page",
-          "summary": "A page focused on converting visitors into customers — with a sales structure, clear value proposition, and strong call to action.",
+          "title": "Conversion Page",
+          "summary": "A page focused on transforming visitors into customers — with a sales structure, clear value proposition, and strong call to action.",
           "details": [
             "Hero with headline and value proposition",
             "Benefit and social proof sections",
@@ -350,7 +360,7 @@
             "Responsive layout (mobile and desktop)",
             "Basic page SEO configured",
             "Google Analytics (GA4) configured",
-            "Delivery within 5 business days"
+            "Delivery in up to 5 business days"
           ]
         },
         "es": {
@@ -359,7 +369,7 @@
           "details": [
             "Hero con titular y propuesta de valor",
             "Secciones de beneficios y prueba social",
-            "Formulario de contacto o botón WhatsApp",
+            "Formulario de contacto o botón de WhatsApp",
             "Diseño responsivo (móvil y escritorio)",
             "SEO básico de la página configurado",
             "Google Analytics (GA4) configurado",
@@ -388,12 +398,12 @@
       "startingAt": true,
       "i18n": {
         "en": {
-          "title": "Institutional website",
+          "title": "Institutional Website",
           "summary": "Complete website to present your business professionally, build credibility, and receive customer contacts.",
           "details": [
             "Up to 5 pages (Home, About, Services, Contact + 1)",
             "WordPress + professional Elementor",
-            "Fixed WhatsApp and contact form",
+            "Sticky WhatsApp and contact form",
             "Responsive and mobile-adapted layout",
             "Basic SEO configured on all pages",
             "Google Analytics (GA4) configured",
@@ -435,7 +445,7 @@
       "startingAt": false,
       "i18n": {
         "en": {
-          "title": "Website with blog",
+          "title": "Website with Blog",
           "summary": "Institutional website with integrated blog to attract visitors from Google, build authority in your niche, and generate leads continuously.",
           "details": [
             "Everything from the institutional website included",
@@ -480,10 +490,10 @@
       "startingAt": false,
       "i18n": {
         "en": {
-          "title": "Extra page",
+          "title": "Extra Page",
           "summary": "For projects that need more pages beyond those included in the base package.",
           "details": [
-            "Layout following the site's visual identity",
+            "Layout following the site's visual style",
             "Content organized by sections",
             "Responsive on all devices",
             "Form or CTA if necessary"
@@ -530,7 +540,7 @@
             "Product page, cart, and checkout",
             "Payment method integration (PIX, card)",
             "Simple panel to manage orders",
-            "Responsive and conversion-optimized layout"
+            "Responsive layout optimized for conversion"
           ]
         },
         "es": {
@@ -564,7 +574,7 @@
       "startingAt": false,
       "i18n": {
         "en": {
-          "title": "Additional products",
+          "title": "Additional Products",
           "summary": "Registration of extra products beyond the 10 included in the store package.",
           "details": [
             "Photos, description, and price configured",
@@ -613,7 +623,7 @@
             "H1, H2, H3 headings reviewed",
             "XML sitemap and robots.txt configured",
             "Google Search Console: indexing and search monitoring",
-            "Advanced Analytics: tracked events and conversions",
+            "Advanced Analytics: events and conversions tracked",
             "Rank Math SEO configured"
           ]
         },
@@ -621,9 +631,9 @@
           "title": "Configuración Google",
           "summary": "Configuración completa para que Google entienda, indexe y empiece a mostrar su sitio en las búsquedas — base para cualquier estrategia de SEO.",
           "details": [
-            "Títulos y meta descripciones optimizados",
+            "Titles y meta descriptions optimizados",
             "URLs amigables y estructura limpia",
-            "Encabezados H1, H2, H3 revisados",
+            "Headings H1, H2, H3 revisados",
             "Sitemap XML y robots.txt configurados",
             "Google Search Console: indexación y monitoreo de búsquedas",
             "Analytics avanzado: eventos y conversiones rastreados",
@@ -650,8 +660,8 @@
       "startingAt": false,
       "i18n": {
         "en": {
-          "title": "Fast mobile site",
-          "summary": "Optimization focused on real speed — for the site to load quickly on mobile, improve PageSpeed, and stop losing visits due to slowness.",
+          "title": "Fast Mobile Site",
+          "summary": "Optimization focused on real speed — for the site to load fast on mobile, improve PageSpeed, and stop losing visits due to slowness.",
           "details": [
             "Image optimization and compression",
             "Advanced cache configuration (LiteSpeed)",
@@ -692,13 +702,13 @@
       "i18n": {
         "en": {
           "title": "Technical SEO",
-          "summary": "Audit and correction of technical issues preventing your site from ranking higher on Google — indexing, structure, crawling, and speed.",
+          "summary": "Audit and correction of technical problems preventing your site from ranking higher on Google — indexing, structure, crawling, and speed.",
           "details": [
             "Complete technical site audit",
             "Correction of indexing and crawl errors",
             "Internal link structure reviewed",
             "Search Console monitored and cleaned",
-            "Full report with everything done"
+            "Full report with all actions taken"
           ]
         },
         "es": {
@@ -732,13 +742,13 @@
       "startingAt": false,
       "i18n": {
         "en": {
-          "title": "Monthly plan",
+          "title": "Monthly Plan",
           "summary": "Your site always working: updates, backups, security, and small adjustments every month — without needing to call someone for every little thing.",
           "details": [
             "Plugin and WordPress updates",
             "Automatic weekly backup",
             "Security and uptime monitoring",
-            "Up to 2h of monthly adjustments included",
+            "Up to 2 hours of monthly adjustments included",
             "Monthly report with site status"
           ]
         },
@@ -772,7 +782,7 @@
       "startingAt": false,
       "i18n": {
         "en": {
-          "title": "Post-delivery support",
+          "title": "Post-delivery Support",
           "summary": "30 days of follow-up after delivery — to correct, adjust, and ensure everything is working as expected.",
           "details": [
             "Layout corrections and fine adjustments",
@@ -811,11 +821,11 @@
       "startingAt": true,
       "i18n": {
         "en": {
-          "title": "Old website update",
+          "title": "Old Website Update",
           "summary": "For outdated, slow, or visually old-fashioned websites — I update plugins, modernize the layout, and fix accumulated problems.",
           "details": [
             "Update WordPress and all plugins",
-            "Correction of post-update conflicts",
+            "Conflict resolution after update",
             "Layout and responsiveness adjustments",
             "Basic speed optimization included",
             "Full backup before any changes"
@@ -823,7 +833,7 @@
         },
         "es": {
           "title": "Actualización de sitio antiguo",
-          "summary": "Para sitios desactualizados, lentos o con un aspecto anticuado — actualizo plugins, modernizo el diseño y corrijo los problemas acumulados.",
+          "summary": "Para sitios desactualizados, lentos o con visual obsoleto — actualizo plugins, modernizo el diseño y corrijo los problemas acumulados.",
           "details": [
             "Actualización de WordPress y todos los plugins",
             "Corrección de conflictos post-actualización",
@@ -853,14 +863,14 @@
       "startingAt": false,
       "i18n": {
         "en": {
-          "title": "Website diagnosis",
+          "title": "Website Diagnosis",
           "summary": "Complete technical analysis of your website — speed, SEO, errors, usability, and security — with a detailed report and prioritized list of what to fix.",
           "details": [
             "Full report delivered within 48 hours",
             "Speed and Core Web Vitals analysis",
             "Technical SEO errors identified",
-            "Layout and usability issues pointed out",
-            "Security and broken link verification",
+            "Layout and usability issues highlighted",
+            "Security and broken link check",
             "Prioritized list of improvements with estimates"
           ]
         },
@@ -896,7 +906,7 @@
       "startingAt": false,
       "i18n": {
         "en": {
-          "title": "Specific bug fix",
+          "title": "Specific Bug Fix",
           "summary": "Resolution of a specific problem on your website — display error, broken functionality, form bug, or unexpected behavior.",
           "details": [
             "Problem diagnosis included",
@@ -937,12 +947,12 @@
       "startingAt": false,
       "i18n": {
         "en": {
-          "title": "Fixes package",
-          "summary": "For those who have accumulated several problems — solves up to 5 bugs or adjustments for a fixed price, with no surprises at the end.",
+          "title": "Bug Fix Package",
+          "summary": "For those who have accumulated several problems — resolves up to 5 bugs or adjustments for a fixed price, with no surprises at the end.",
           "details": [
-            "Up to 5 fixes or adjustments included",
-            "Layout, forms, speed, and functionality bugs",
-            "Delivery within 5 business days",
+            "Up to 5 corrections or adjustments included",
+            "Layout, form, speed, and functionality bugs",
+            "Delivery in up to 5 business days",
             "Report of what was done for each item",
             "More economical than hiring by the hour"
           ]
@@ -976,7 +986,33 @@
         "Requer o Plano de IA mensal (cobre o uso da IA e os ajustes)"
       ],
       "allowQuantity": false,
-      "startingAt": true
+      "startingAt": true,
+      "i18n": {
+        "en": {
+          "title": "AI Assistant on Website (Chatbot)",
+          "summary": "An AI assistant on your website that answers questions 24/7, recommends your services or products, and automatically captures leads.",
+          "details": [
+            "Trained with your business information (services, prices, FAQ)",
+            "Answers visitors instantly, anytime",
+            "Lead capture (name and contact) directly through chat",
+            "Option for service in Portuguese, English, and Spanish",
+            "Installation and configuration on your website",
+            "Requires the monthly AI Plan (covers AI usage and adjustments)"
+          ]
+        },
+        "es": {
+          "title": "Asistente de IA en el sitio (chatbot)",
+          "summary": "Un asistente de IA en su sitio que responde dudas 24/7, recomienda sus servicios o productos y capta leads automáticamente.",
+          "details": [
+            "Entrenado con la información de su negocio (servicios, precios, FAQ)",
+            "Responde a los visitantes al instante, a cualquier hora",
+            "Captación de leads (nombre y contacto) directamente por el chat",
+            "Opción de atención en portugués, inglés y español",
+            "Instalación y configuración en su sitio",
+            "Requiere el Plan de IA mensual (cubre el uso de la IA y los ajustes)"
+          ]
+        }
+      }
     },
     {
       "id": "ia-plano-mensal",
@@ -993,7 +1029,31 @@
         "Necessário para os serviços de chatbot e agente de IA"
       ],
       "allowQuantity": false,
-      "startingAt": false
+      "startingAt": false,
+      "i18n": {
+        "en": {
+          "title": "AI Plan (Monthly)",
+          "summary": "Keeps your AI assistant or agent running: covers AI usage, monitoring, and continuous adjustments.",
+          "details": [
+            "Covers AI usage cost (API)",
+            "Monthly monitoring and small adjustments",
+            "Update business information when needed",
+            "Support to keep the AI responding well",
+            "Required for chatbot and AI agent services"
+          ]
+        },
+        "es": {
+          "title": "Plan de IA (mensual)",
+          "summary": "Mantiene su asistente o agente de IA en línea: cubre el uso de la IA, el monitoreo y los ajustes continuos.",
+          "details": [
+            "Cubre el costo de uso de la IA (API)",
+            "Monitoreo y pequeños ajustes mensuales",
+            "Actualización de la información del negocio cuando sea necesario",
+            "Soporte para mantener la IA respondiendo bien",
+            "Necesario para los servicios de chatbot y agente de IA"
+          ]
+        }
+      }
     },
     {
       "id": "migracao-site",
@@ -1010,7 +1070,31 @@
         "Preço varia conforme o tamanho do site"
       ],
       "allowQuantity": false,
-      "startingAt": true
+      "startingAt": true,
+      "i18n": {
+        "en": {
+          "title": "Website Migration",
+          "summary": "I move your site from Wix, Squarespace, or elsewhere to WordPress (or to better hosting), without losing anything.",
+          "details": [
+            "Content and structure migration",
+            "From Wix/Squarespace/others to WordPress",
+            "Or secure hosting change",
+            "Without losing SEO or links",
+            "Price varies according to site size"
+          ]
+        },
+        "es": {
+          "title": "Migración de sitio",
+          "summary": "Llevo su sitio de Wix, Squarespace u otro lugar a WordPress (o a un hosting mejor), sin perder nada.",
+          "details": [
+            "Migración de contenido y estructura",
+            "De Wix/Squarespace/otros a WordPress",
+            "O cambio de hosting con seguridad",
+            "Sin perder SEO ni enlaces",
+            "El precio varía según el tamaño del sitio"
+          ]
+        }
+      }
     }
   ],
   "projects": [
@@ -1096,7 +1180,7 @@
         "en": {
           "title": "A Mais Radiologia Landing Page",
           "category": "Landing Page / Health / Dental Radiology / Lead Generation",
-          "summary": "Modern and responsive landing page for a dental radiology clinic, focused on lead capture and requesting exam quotes.",
+          "summary": "Modern and responsive landing page for a dental radiology clinic, created with a focus on lead capture and requesting exam quotes.",
           "status": "Demo",
           "workDone": [
             "Hero with banner image.",
@@ -1116,7 +1200,7 @@
           "summary": "Landing page moderna y responsiva para una clínica de radiología dental, creada con enfoque en la captación de leads y solicitud de presupuesto para exámenes.",
           "status": "Demostración",
           "workDone": [
-            "Hero con imagen en banner.",
+            "Hero con imagen de banner.",
             "Formulario de presupuesto.",
             "Tarjetas de beneficios.",
             "Tarjetas de exámenes.",
@@ -1214,14 +1298,14 @@
       "i18n": {
         "en": {
           "title": "FisioVida Landing Page",
-          "category": "Institutional Website / Landing page / Health and Physiotherapy",
+          "category": "Institutional Website / Landing page / Health and physiotherapy",
           "summary": "Responsive landing page for a physiotherapy clinic, featuring service presentation, benefits, testimonials, WhatsApp call-to-action, and contact form.",
           "status": "Demo",
           "workDone": [
-            "Conversion of the original Next.js project to WordPress.",
+            "Converted the original Next.js project to WordPress.",
             "Created a child theme of Hello Elementor,",
-            "ported the landing sections,",
-            "adapted the visual to native CSS,",
+            "ported the landing page sections,",
+            "adapted the visual design to native CSS,",
             "implemented a mobile menu,",
             "fixed WhatsApp button,",
             "form via admin-ajax.php,",
@@ -1316,10 +1400,10 @@
         "en": {
           "title": "Pedro Alexandre BJJ",
           "category": "Institutional Website / Sports Portfolio",
-          "summary": "Multilingual institutional website for a professional Jiu-Jitsu athlete, showcasing their journey, achievements, programs, training locations, sponsors, and contact channels.",
+          "summary": "Multilingual institutional website for a professional Jiu-Jitsu athlete, showcasing his journey, achievements, programs, training locations, sponsors, and contact channels.",
           "status": "Published",
           "workDone": [
-            "Creation and customization of the WordPress site, structuring main pages, SEO configuration, responsive layout, multilingual content, custom content types for events/achievements/locations/sponsors, and basic security and tracking optimizations."
+            "Website creation and customization in WordPress, structuring of main pages, SEO configuration, responsive layout, multilingual content, custom content types for events/achievements/locations/sponsors, and basic security and monitoring optimizations."
           ]
         },
         "es": {
@@ -1449,14 +1533,14 @@
           "status": "Completed",
           "workDone": [
             "Premium dark design system in an Astra child theme (color tokens, Inter typography, shadows, blue→teal gradients)",
-            "Customized Home: hero with particle canvas + floating product cards (glassmorphism), animated counters, category grid, featured products, promotional banner, and newsletter",
+            "Custom homepage: hero with particle canvas + floating product cards (glassmorphism), animated counters, category grid, featured products, promotional banner, and newsletter",
             "16 products in 4 categories (Audio, Wearables, Smartphones, Smart Home) with curated images",
             "Shop with sidebar: real-time search, category filter, price range slider, and sorting — all client-side, with mobile drawer",
-            "Product page: framed gallery, breadcrumb, prominent price, quantity stepper, trust badges, tabs, and related products",
+            "Product page: framed gallery, breadcrumb, highlighted price, quantity stepper, trust badges, tabs, and related products",
             "Redesigned Cart and Checkout: 2-column layout, sticky order summary, stylized payment methods, and handled empty states",
             "About and Contact pages: custom templates with hero, animated orbital visual, values section, and validated form",
-            "Cart in header (WooCommerce) with live counter via AJAX; conflict with SureCart plugin removed",
-            "Payments configured (bank transfer/PIX and cash on delivery) and fatal error in checkout fixed",
+            "Cart in the header (WooCommerce) with live counter via AJAX; conflict with SureCart plugin removed",
+            "Payments configured (bank transfer/PIX and cash on delivery) and fatal error in checkout corrected",
             "pt-BR translation of WooCommerce strings + fully responsive (desktop/tablet/mobile)"
           ]
         },
@@ -1466,7 +1550,7 @@
           "summary": "Tienda virtual de tecnología con identidad visual dark premium\nconstruida en WordPress + WooCommerce con tema-hijo totalmente personalizado \nResponsivo",
           "status": "Completado",
           "workDone": [
-            "Sistema de diseño dark premium en un tema-hijo de Astra (tokens de color, tipografía Inter, sombras, gradientes azul→teal)",
+            "Design system dark premium en un tema-hijo de Astra (tokens de color, tipografía Inter, sombras, gradientes azul→teal)",
             "Home personalizada: hero con canvas de partículas + tarjetas de producto flotantes (glassmorphism), contadores animados, cuadrícula de categorías, productos destacados, banner promocional y newsletter",
             "16 productos en 4 categorías (Audio, Wearables, Smartphones, Casa Inteligente) con imágenes curadas",
             "Tienda con sidebar: búsqueda en tiempo real, filtro por categoría, slider de rango de precios y ordenación — todo client-side, con drawer en móvil",
@@ -1475,7 +1559,7 @@
             "Páginas Sobre y Contacto: plantillas propias con hero, visual orbital animado, sección de valores y formulario con validación",
             "Carrito en el header (WooCommerce) con contador en vivo vía AJAX; eliminado conflicto con plugin SureCart",
             "Pagos configurados (transferencia/PIX y contra entrega) y corrección de error fatal en el checkout",
-            "Traducción es-ES de las strings de WooCommerce + totalmente responsivo (desktop/tablet/móvil)"
+            "Traducción es-ES de las strings de WooCommerce + totalmente responsivo (escritorio/tablet/móvil)"
           ]
         }
       }
@@ -1599,9 +1683,9 @@
             "- Resúmenes mensuales con gráficos (donut, barras, proyección, comparación)",
             "- Presupuestos por categoría con alertas (dentro/atención/excedido)",
             "- Metas de compra con proyección de intereses compuestos",
-            "- Estrategia entrada + cuotas (Tabla Price) con comparación al contado × a cuotas",
+            "- Estrategia de entrada + cuotas (Tabla Francesa) con comparación al contado × a cuotas",
             "- Integración con APIs de intereses (BrasilAPI/Banco Central) con fallback",
-            "- Tema claro/oscuro, responsivo, exportar/importar backup, deploy en Vercel"
+            "- Tema claro/oscuro, responsivo, exportar/importar copia de seguridad, deploy en Vercel"
           ]
         }
       }
@@ -1656,8 +1740,8 @@
           "summary": "Reconstruction of a WordPress site's blog using the Salient theme: two-column layout with a sticky author sidebar and newsletter, lead capture form at the end of posts integrated with leadlovers — all without touching the rest of the site.",
           "status": "Completed",
           "workDone": [
-            "Cleanup of old Elementor edits and restoration of the native Salient theme template",
-            "Two-column layout on the blog and posts: 70% for content and 30% for the sidebar",
+            "Cleaned up remnants of old Elementor edits and restored the native Salient theme template",
+            "Two-column layout for blog and posts: 70% for content and 30% for sidebar",
             "Sticky sidebar with author photo and name, newsletter call-to-action, and subscribe button",
             "Subscription form at the end of each post with name, email, and phone fields",
             "Automatic integration of leads with leadlovers for nurturing and email marketing",
@@ -1673,8 +1757,8 @@
             "Limpieza de residuos de ediciones antiguas en Elementor y restauración de la plantilla nativa del tema Salient",
             "Diseño de dos columnas en el blog y en los posts: 70% para el contenido y 30% para la sidebar",
             "Sidebar fija (sticky) con foto y nombre del autor, llamada a la newsletter y botón de suscripción",
-            "Formulario de suscripción al final de cada post con campos de nombre, e-mail y teléfono",
-            "Integración automática de los leads con leadlovers para nutrición y e-mail marketing",
+            "Formulario de suscripción al final de cada post con campos de nombre, email y teléfono",
+            "Integración automática de los leads con leadlovers para nutrición y email marketing",
             "Alcance enfocado exclusivamente en el blog, preservando header, footer y demás páginas del sitio"
           ]
         }
@@ -1807,20 +1891,20 @@
       ],
       "i18n": {
         "en": {
-          "title": "Encanto de Laço — Children's Bows Online Store",
+          "title": "Encanto de Laço — Online Store for Children's Bows",
           "category": "E-commerce / Online Store (WordPress + WooCommerce)",
           "summary": "Complete online store for the Encanto de Laço brand, specializing in handmade children's bows. From navigable prototype to custom WooCommerce theme, with a delicate identity (pink, beige, and pastel tones), catalog with variations, Brazilian shipping and payment methods — responsive and optimized for conversion.",
           "status": "Completed (demo)",
           "workDone": [
-            "High-fidelity and responsive prototype of the main screens (Home, Shop, Product, Cart, and Checkout) in HTML/CSS/JS",
-            "Custom design system: pink/beige/pastel palette, Playfair Display + Quicksand + Dancing Script typography, and an original SVG bow as a brand element",
+            "High-fidelity and responsive prototype of main screens (Home, Shop, Product, Cart, and Checkout) in HTML/CSS/JS",
+            "Proprietary design system: pink/beige/pastel palette, Playfair Display + Quicksand + Dancing Script typography, and an original SVG bow as a brand element",
             "WooCommerce installation and configuration for Brazil (BRL currency, pt-BR language, friendly permalinks, SEO-friendly)",
             "Custom Storefront child theme, porting the identity to the real store (homepage with hero, categories, and highlights; product page; cart; redesigned 2-column checkout)",
             "Catalog: 12 products in 4 categories, including variable product (color × size) and customer reviews",
             "Shipping: Brazil zone with free shipping above R$150, Sedex and PAC",
             "Transactional emails with the brand's visual identity",
             "Payment: Mercado Pago gateway (PIX, card, and boleto) integrated",
-            "Presentation material: demo videos (desktop and mobile) and high-resolution prints"
+            "Presentation material: demonstration videos (desktop and mobile) and high-resolution prints"
           ]
         },
         "es": {
@@ -1830,14 +1914,14 @@
           "status": "Completado (demostración)",
           "workDone": [
             "Prototipo de alta fidelidad y responsivo de las pantallas principales (Home, Tienda, Producto, Carrito y Checkout) en HTML/CSS/JS",
-            "Sistema de diseño propio: paleta rosa/beige/pastel, tipografía Playfair Display + Quicksand + Dancing Script y un lazo SVG autoral como elemento de marca",
+            "Design system propio: paleta rosa/beige/pastel, tipografía Playfair Display + Quicksand + Dancing Script y un lazo SVG autoral como elemento de marca",
             "Instalación y configuración de WooCommerce para Brasil (moneda BRL, idioma es-ES, permalinks amigables, SEO-friendly)",
             "Tema-hijo de Storefront a medida, portando la identidad a la tienda real (homepage con hero, categorías y destacados; página de producto; carrito; checkout rediseñado en 2 columnas)",
             "Catálogo: 12 productos en 4 categorías, incluyendo producto variable (color × tamaño) y evaluaciones de clientes",
             "Envío: zona Brasil con envío gratis a partir de R$150, Sedex y PAC",
-            "E-mails transaccionales con la identidad visual de la marca",
-            "Pago: pasarela Mercado Pago (PIX, tarjeta y boleto) integrada",
-            "Material de presentación: videos de demostración (desktop y móvil) e impresiones en alta resolución"
+            "Emails transaccionales con la identidad visual de la marca",
+            "Pago: gateway Mercado Pago (PIX, tarjeta y boleto) integrado",
+            "Material de presentación: videos de demostración (escritorio y móvil) y capturas de pantalla en alta resolución"
           ]
         }
       }
@@ -1972,7 +2056,39 @@
           ]
         }
       ],
-      "link": "https://juntos-pod.vercel.app/"
+      "link": "https://juntos-pod.vercel.app/",
+      "i18n": {
+        "en": {
+          "title": "Juntos, Pod+ — Podcast Content Portal",
+          "category": "Web Development · Content and Media Portal (WordPress) · UX/UI · SEO",
+          "summary": "Premium content portal for the \"Juntos, Pod+\" podcast, centralizing episodes, articles, and interviews about insurance and vehicle protection. Corporate visual (dark blue, white, and gold) focused on credibility, structured SEO, global search, and architecture prepared for monetization. Delivered as a navigable prototype and published on a public URL.",
+          "status": "Functional prototype completed and published",
+          "workDone": [
+            "Content architecture: Custom Post Types for Episodes (YouTube video, summary, tags, related) and Interviews (audio player, biography, complementary content) + Blog (categories, tags, author, related) and Seasons taxonomy.",
+            "Complete homepage: hero of the latest episode, sections for Latest Episodes / Articles / Interviews, sponsors area, newsletter, WhatsApp CTAs, and institutional footer.",
+            "Premium custom theme: dark blue + gold design system, fully responsive (desktop/tablet/mobile), with Single Templates for episodes, articles, and interviews — and compatible with Elementor (Theme Builder).",
+            "Unified global search (articles + episodes + interviews) and SEO: friendly URLs, breadcrumbs, and Schema.org (VideoObject, PodcastEpisode, Article, BreadcrumbList), ready for Rank Math.",
+            "Demonstrative content: 6 fictional episodes, 6 articles, and 3 interviews, with images.",
+            "Publication: static export of the site and deploy to a public URL (static host), with client-side search (JSON index + JS) and dynamic sharing links.",
+            "Presentation material: \"above the fold\" screenshots and walkthrough videos for portfolio."
+          ]
+        },
+        "es": {
+          "title": "Juntos, Pod+ — Portal de Contenido para Podcast",
+          "category": "Desarrollo Web · Portal de contenido y medios (WordPress) · UX/UI · SEO",
+          "summary": "Portal de contenido premium para el podcast \"Juntos, Pod+\"\n centralizando episodios, artículos y entrevistas sobre seguros y protección vehicular\n Visual corporativo (azul oscuro, blanco y dorado) enfocado en credibilidad\n SEO estructurado\nbúsqueda global y arquitectura preparada para monetización\n Entregado como prototipo navegable y publicado en URL pública.",
+          "status": "Prototipo funcional completado y publicado",
+          "workDone": [
+            "Arquitectura de contenido: Custom Post Types de Episodios (video YouTube, resumen, tags, relacionados) y Entrevistas (reproductor de audio, biografía, contenido complementario) + Blog (categorías, tags, autor, relacionados) y taxonomía de Temporadas.",
+            "Home completa: hero del episodio más reciente, secciones de Últimos Episodios / Artículos / Entrevistas, área de patrocinadores, newsletter, CTAs de WhatsApp y footer institucional.",
+            "Tema propio premium: design system en azul oscuro + dorado, totalmente responsivo (escritorio/tablet/móvil), con Single Templates para episodios, artículos y entrevistas — y compatible con Elementor (Theme Builder).",
+            "Búsqueda global unificada (artículos + episodios + entrevistas) y SEO: URLs amigables, breadcrumbs y Schema.org (VideoObject, PodcastEpisode, Article, BreadcrumbList), listo para Rank Math.",
+            "Contenido demostrativo: 6 episodios, 6 artículos y 3 entrevistas ficticios, con imágenes.",
+            "Publicación: export estático del sitio y deploy en URL pública (host estático), con búsqueda client-side (índice JSON + JS) y enlaces de compartición dinámicos.",
+            "Material de presentación: capturas de pantalla \"above the fold\" y videos de walkthrough para portafolio."
+          ]
+        }
+      }
     },
     {
       "id": "projeto-mq67d3cu",
@@ -2144,7 +2260,39 @@
           ]
         }
       ],
-      "link": "https://stately-peony-ce7eb9.netlify.app/"
+      "link": "https://stately-peony-ce7eb9.netlify.app/",
+      "i18n": {
+        "en": {
+          "title": "BVL Livros — Literary Portal & E-book Showcase",
+          "category": "Web Development / WordPress — content site (editorial blog) + sales showcase",
+          "summary": "Literary portal in WordPress that combines an editorial blog and an e-book showcase with checkout via Gumroad. Built as an Astra child theme, with its own bookstore visual identity (forest green, burgundy, and gold) and a carefully crafted reading experience.",
+          "status": "Functional prototype completed (pre-launch — ready to receive real products and links)",
+          "workDone": [
+            "Astra child theme developed from scratch: custom header and footer, accessible responsive menu, brand palette and typography.",
+            "Modular homepage: hero, metrics, book showcase (reusable shortcode integrated with Gumroad), recent posts grid, categories, and contact strip.",
+            "Article reading experience: automatic index (TOC), reading time, progress bar, and navigation between articles.",
+            "6 pages (Home, Books, About, Blog, Contact, Privacy Policy) + contact form (WPForms).",
+            "SEO (Rank Math, Open Graph) and internationalization (i18n) prepared.",
+            "Performance optimization (LCP preload, scroll with requestAnimationFrame) and accessibility (WCAG AA contrast, visible focus, prefers-reduced-motion).",
+            "CSS refactoring with consolidation of duplicate rules (~2,580 → ~2,470 lines), validated by visual regression tests via pixel diff (0% undesired change)."
+          ]
+        },
+        "es": {
+          "title": "BVL Libros — Portal Literario & Vitrina de E-books",
+          "category": "Desarrollo Web / WordPress — sitio de contenido (blog editorial) + vitrina de ventas",
+          "summary": "Portal literario en WordPress que reúne blog editorial y vitrina de e-books con checkout vía Gumroad\n Construido como tema-hijo de Astra, con identidad visual propia de librería (verde bosque, burdeos y dorado) y una experiencia de lectura cuidada.",
+          "status": "Prototipo funcional completado (pre-lanzamiento — listo para recibir productos y enlaces reales)",
+          "workDone": [
+            "Tema-hijo de Astra desarrollado desde cero: header y footer propios, menú responsivo accesible, paleta y tipografía de marca.",
+            "Home modular: hero, métricas, vitrina de libros (shortcode reutilizable integrado a Gumroad), cuadrícula de posts recientes, categorías y franja de contacto.",
+            "Experiencia de lectura de artículo: índice automático (TOC), tiempo de lectura, barra de progreso y navegación entre artículos.",
+            "6 páginas (Home, Libros, Sobre, Blog, Contacto, Política de Privacidad) + formulario de contacto (WPForms).",
+            "SEO (Rank Math, Open Graph) e internacionalización (i18n) preparados.",
+            "Optimización de rendimiento (preload del LCP, scroll con requestAnimationFrame) y accesibilidad (contraste WCAG AA, foco visible, prefers-reduced-motion).",
+            "Refactorización del CSS con consolidación de reglas duplicadas (~2.580 → ~2.470 líneas), validada por pruebas de regresión visual por diff de píxeles (0% de alteración indeseada)."
+          ]
+        }
+      }
     },
     {
       "id": "projeto-mttm1n6j",
@@ -2213,7 +2361,39 @@
       "link": "https://merry-snickerdoodle-fc3443.netlify.app/",
       "tags": [
         "Landing pages"
-      ]
+      ],
+      "i18n": {
+        "en": {
+          "title": "Landing Page Conversion Page Template",
+          "category": "Landing Page",
+          "summary": "Short description: Demonstrative landing page for an AI automation brand, with a premium look, interactive 3D animation, and a structure focused on lead capture. Developed as a reusable base for different niches.",
+          "status": "Demo Template",
+          "workDone": [
+            "Creation of visual identity and commercial texts.",
+            "Responsive development for desktop, tablet, and mobile.",
+            "Original 3D animation with metallic reflections, luminous filaments, and interaction with mouse and scroll.",
+            "Sections for benefits, process, frequently asked questions, and contact.",
+            "Demonstrative form with validation.",
+            "Brand, color, and text customization via WordPress.",
+            "Accessibility adjustments and basic SEO."
+          ]
+        },
+        "es": {
+          "title": "Landing Page modelo de Página de conversión",
+          "category": "Landing Page",
+          "summary": "Descripción corta\nLanding page demostrativa para una marca de automatización con IA, con visual premium, animación 3D interactiva y estructura orientada a la captación de leads. Desarrollada como base reutilizable para diferentes nichos.",
+          "status": "Modelo Demostración",
+          "workDone": [
+            "Creación de la identidad visual y los textos comerciales.",
+            "Desarrollo responsivo para escritorio, tablet y móvil.",
+            "Animación 3D autoral con reflejos metálicos, filamentos luminosos e interacción con ratón y desplazamiento.",
+            "Secciones de beneficios, proceso, preguntas frecuentes y contacto.",
+            "Formulario demostrativo con validación.",
+            "Personalización de marca, colores y textos por WordPress.",
+            "Ajustes de accesibilidad y SEO básico."
+          ]
+        }
+      }
     }
   ]
 }
