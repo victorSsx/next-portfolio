@@ -2145,6 +2145,74 @@
         }
       ],
       "link": "https://stately-peony-ce7eb9.netlify.app/"
+    },
+    {
+      "id": "projeto-mttm1n6j",
+      "title": "landing Page modelo de Pagina de conversão",
+      "category": "Landing Page",
+      "status": "Modelo Demonstração",
+      "stack": [
+        "WordPress",
+        "Astra com tema filho personalizado",
+        "PHP",
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "WebGL",
+        "GLSL"
+      ],
+      "summary": "Descrição curta\nLanding page demonstrativa para uma marca de automação com IA, com visual premium, animação 3D interativa e estrutura voltada à captação de leads. Desenvolvida como base reutilizável para diferentes nichos.",
+      "workDone": [
+        "Criação da identidade visual e dos textos comerciais.",
+        "Desenvolvimento responsivo para desktop, tablet e celular.",
+        "Animação 3D autoral com reflexos metálicos, filamentos luminosos e interação com mouse e rolagem.",
+        "Seções de benefícios, processo, perguntas frequentes e contato.",
+        "Formulário demonstrativo com validação.",
+        "Personalização de marca, cores e textos pelo WordPress.",
+        "Ajustes de acessibilidade e SEO básico."
+      ],
+      "mainImage": {
+        "src": "/projects/admin-uploads/projeto-mttm1n6j/mttnc848-captura-de-tela-2026-09-09-021638.png",
+        "alt": "Novo projeto - imagem principal"
+      },
+      "gallery": [
+        {
+          "src": "/projects/admin-uploads/projeto-mttm1n6j/mttnejbf-captura-de-tela-2026-09-09-021246.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 1"
+        }
+      ],
+      "videos": [],
+      "deviceViews": [
+        {
+          "device": "mobile",
+          "images": [
+            {
+              "src": "/projects/admin-uploads/projeto-mttm1n6j/mttncjyn-captura-de-tela-2026-09-09-021512.png",
+              "alt": "Novo projeto - vista mobile",
+              "label": "mobile 1"
+            },
+            {
+              "src": "/projects/admin-uploads/projeto-mttm1n6j/mttnd179-captura-de-tela-2026-09-09-021425.png",
+              "alt": "Novo projeto - vista mobile",
+              "label": "mobile 2"
+            }
+          ]
+        },
+        {
+          "device": "tablet",
+          "images": [
+            {
+              "src": "/projects/admin-uploads/projeto-mttm1n6j/mttndwho-captura-de-tela-2026-09-09-021204.png",
+              "alt": "Novo projeto - vista tablet",
+              "label": "tablet 1"
+            }
+          ]
+        }
+      ],
+      "tags": [
+        "Pagina de conversão"
+      ]
     }
   ]
 }
