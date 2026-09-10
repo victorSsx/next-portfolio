@@ -2394,6 +2394,98 @@
           ]
         }
       }
+    },
+    {
+      "id": "projeto-mtv85u33",
+      "title": "CleaningMasters",
+      "category": "Sites institucionais",
+      "status": "Projeto finalizado",
+      "stack": [
+        "WordPress",
+        "PHP",
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "Astra Child",
+        "Spectra",
+        "Yoast SEO",
+        "LiteSpeed Cache",
+        "Google Search Console"
+      ],
+      "summary": "Modernização do site da CleaningMasters, migrando do Google Sites para WordPress com foco em desempenho, responsividade, experiência do usuário e melhor indexação no Google.",
+      "workDone": [
+        "Desenvolvimento das páginas Principal, Serviços, Sobre Nós e Agendamento.",
+        "Criação de identidade visual responsiva.",
+        "Catálogo interativo de serviços com informações detalhadas.",
+        "Seleção de serviços e orçamento pelo WhatsApp.",
+        "Formulário de agendamento.",
+        "Integração com avaliações do Google e redes sociais.",
+        "Otimizações de SEO, sitemap, indexação, cache e velocidade.",
+        "Migração do ambiente local para a hospedagem em produção."
+      ],
+      "mainImage": {
+        "src": "/projects/admin-uploads/projeto-mtv85u33/mtv86576-captura-de-tela-2026-09-10-044616.png",
+        "alt": "Novo projeto - imagem principal"
+      },
+      "gallery": [
+        {
+          "src": "/projects/admin-uploads/projeto-mtv85u33/mtv87wka-captura-de-tela-2026-09-10-044448.png",
+          "alt": "CleaningMasters - print do projeto",
+          "label": "Print 1"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mtv85u33/mtv884cy-captura-de-tela-2026-09-10-044510.png",
+          "alt": "CleaningMasters - print do projeto",
+          "label": "Print 2"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mtv85u33/mtv889el-captura-de-tela-2026-09-10-044538.png",
+          "alt": "CleaningMasters - print do projeto",
+          "label": "Print 3"
+        }
+      ],
+      "videos": [],
+      "deviceViews": [
+        {
+          "device": "tablet",
+          "images": [
+            {
+              "src": "/projects/admin-uploads/projeto-mtv85u33/mtv88s5x-captura-de-tela-2026-09-10-044411.png",
+              "alt": "CleaningMasters - vista tablet",
+              "label": "tablet 1"
+            },
+            {
+              "src": "/projects/admin-uploads/projeto-mtv85u33/mtv891bw-captura-de-tela-2026-09-10-044425.png",
+              "alt": "CleaningMasters - vista tablet",
+              "label": "tablet 2"
+            }
+          ]
+        },
+        {
+          "device": "mobile",
+          "images": [
+            {
+              "src": "/projects/admin-uploads/projeto-mtv85u33/mtv89sr6-captura-de-tela-2026-09-10-044144.png",
+              "alt": "CleaningMasters - vista mobile",
+              "label": "mobile 1"
+            },
+            {
+              "src": "/projects/admin-uploads/projeto-mtv85u33/mtv8a1p7-captura-de-tela-2026-09-10-044219.png",
+              "alt": "CleaningMasters - vista mobile",
+              "label": "mobile 2"
+            },
+            {
+              "src": "/projects/admin-uploads/projeto-mtv85u33/mtv8akld-captura-de-tela-2026-09-10-044326.png",
+              "alt": "CleaningMasters - vista mobile",
+              "label": "mobile 3"
+            }
+          ]
+        }
+      ],
+      "link": "https://cleaningmasters.com.br/",
+      "tags": [
+        "Sites institucionais"
+      ]
     }
   ]
 }
