@@ -2486,6 +2486,117 @@
       "tags": [
         "Sites institucionais"
       ]
+    },
+    {
+      "id": "projeto-mu597sj6",
+      "title": "Moedas Raras",
+      "category": "E-commerce / Loja Virtual (WordPress + WooCommerce)",
+      "status": "Projeto demostrativo / ainda não hospedado",
+      "stack": [
+        "WordPress",
+        "WooCommerce",
+        "Astra Child",
+        "PHP",
+        "HTML5",
+        "CSS3",
+        "JavaScript"
+      ],
+      "summary": "Loja demonstrativa de moedas colecionáveis, com identidade visual elegante e experiência acessível para quem está começando a colecionar.",
+      "workDone": [
+        "Criação da identidade visual e personalização do tema.",
+        "Desenvolvimento de layouts responsivos para mobile, tablet e desktop.",
+        "Animações e efeitos visuais inspirados no site Lusion.",
+        "Catálogo com busca, ordenação e páginas de produtos.",
+        "Versão estática independente do WordPress, com sacola simulada para demonstração no portfólio."
+      ],
+      "mainImage": {
+        "src": "/projects/admin-uploads/projeto-mu597sj6/mu59862t-captura-de-tela-2026-09-17-043419.png",
+        "alt": "Novo projeto - imagem principal"
+      },
+      "gallery": [
+        {
+          "src": "/projects/admin-uploads/projeto-mu597sj6/mu598yw4-captura-de-tela-2026-09-17-043150.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 1"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mu597sj6/mu5999p2-captura-de-tela-2026-09-17-043208.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 2"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mu597sj6/mu599h3q-captura-de-tela-2026-09-17-043240.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 3"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mu597sj6/mu599rf1-captura-de-tela-2026-09-17-043301.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 4"
+        },
+        {
+          "src": "/projects/admin-uploads/projeto-mu597sj6/mu599y6v-captura-de-tela-2026-09-17-043333.png",
+          "alt": "Novo projeto - print do projeto",
+          "label": "Print 5"
+        }
+      ],
+      "videos": [],
+      "deviceViews": [
+        {
+          "device": "tablet",
+          "images": [
+            {
+              "src": "/projects/admin-uploads/projeto-mu597sj6/mu59aev9-captura-de-tela-2026-09-17-043003.png",
+              "alt": "Novo projeto - vista tablet",
+              "label": "tablet 1"
+            },
+            {
+              "src": "/projects/admin-uploads/projeto-mu597sj6/mu59au4e-captura-de-tela-2026-09-17-043019.png",
+              "alt": "Novo projeto - vista tablet",
+              "label": "tablet 2"
+            },
+            {
+              "src": "/projects/admin-uploads/projeto-mu597sj6/mu59be9e-captura-de-tela-2026-09-17-043112.png",
+              "alt": "Novo projeto - vista tablet",
+              "label": "tablet 3"
+            },
+            {
+              "src": "/projects/admin-uploads/projeto-mu597sj6/mu59bp6f-captura-de-tela-2026-09-17-043128.png",
+              "alt": "Novo projeto - vista tablet",
+              "label": "tablet 4"
+            }
+          ]
+        },
+        {
+          "device": "mobile",
+          "images": [
+            {
+              "src": "/projects/admin-uploads/projeto-mu597sj6/mu59c3tl-captura-de-tela-2026-09-17-042643.png",
+              "alt": "Novo projeto - vista mobile",
+              "label": "mobile 1"
+            },
+            {
+              "src": "/projects/admin-uploads/projeto-mu597sj6/mu59chv9-captura-de-tela-2026-09-17-042715.png",
+              "alt": "Novo projeto - vista mobile",
+              "label": "mobile 2"
+            },
+            {
+              "src": "/projects/admin-uploads/projeto-mu597sj6/mu59cucw-captura-de-tela-2026-09-17-042843.png",
+              "alt": "Novo projeto - vista mobile",
+              "label": "mobile 3"
+            },
+            {
+              "src": "/projects/admin-uploads/projeto-mu597sj6/mu59d5yr-captura-de-tela-2026-09-17-042904.png",
+              "alt": "Novo projeto - vista mobile",
+              "label": "mobile 4"
+            }
+          ]
+        }
+      ],
+      "link": "https://moedasraras.netlify.app/",
+      "tags": [
+        "Lojas / E-commerce"
+      ]
     }
   ]
 }
